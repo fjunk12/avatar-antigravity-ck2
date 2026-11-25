@@ -1,0 +1,42 @@
+#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+# Issue #610: True Christian Knight vanilla leak
+true_christian_knight;True Honorable Warrior;;;;;;;;;;;;;x
+desc_true_christian_knight;This character is renowned throughout the realm as a paragon of martial honor, discipline, and virtue.;;;;;;;;;;;;;x
+# Issue #609: Earth Monarchy (chinese_imperial_government) desc vanilla leak
+chinese_imperial_government_desc;The Earth Monarchy represents the ancient centralized throne of Ba Sing Se and the Earth Kingdom. The Earth Monarch rules through a vast bureaucracy and royal court, able to hold both castles and cities while commanding the loyalty of subordinate kings and governors across the realm.;;;;;;;;;;;;;x
+# Issue #597: Earth Kingdom Upkeep modifier missing description
+desc_supporting_the_earth_kingdom;The vast administrative apparatus of Ba Sing Se and the Royal Earth Palace requires substantial ongoing upkeep to maintain order and imperial authority across the Earth Kingdom.;;;;;;;;;;;;;x
+# Issue #559: Merchant from Hindustan vanilla event adapted to Ba Sing Se
+EVTDESC_RoI_215;A wealthy merchant caravan traveling from the grand markets of Ba Sing Se has arrived at your court, bearing exotic wares and curiosities from across the Earth Kingdom. Among his treasures is a breathtaking, flawlessly cut diamond of unusual brilliance, which he offers to sell you for a modest sum.;;;;;;;;;;;;;x
+EVTDESC_RoI_218;While riding through the courtyard, the blinding gleam of the diamond in your crown startled a passing komodo rhino! The beast bolted in panic, causing chaos among your retainers before it could be calmed.;;;;;;;;;;;;;x
+# Issue #312: Born in the Purple vanilla birth event adapted to Royal Earth Palace
+NEWBORN_PURPLE_SETUP;Royal Palace Birth;;;;;;;;;;;;;x
+NEWBORN_PURPLE_LOG;$NAME$ was born in the Royal Earth Palace of Ba Sing Se!;;;;;;;;;;;;;x
+born_in_the_purple;Born in the Royal Palace;;;;;;;;;;;;;x
+born_in_the_purple_desc;This character was born inside the Royal Earth Palace of Ba Sing Se while their parent reigned as Earth Monarch, granting them prestige and precedence in the line of succession.;;;;;;;;;;;;;x
+# Issue #32: Expand your Realm ambition tooltip fix
+tooltip_obj_see_the_realm_grow;Double your realm size within five years (Target: §M[This.realmSizeGoal.GetValue]§! holdings once active);;;;;;;;;;;;;x
+# Missing ATLA Decision Localization
+earthking_ra_loyalty_campaign;Launch Royal Loyalty Campaign;;;;;;;;;;;;;x
+earthking_ra_loyalty_campaign_desc;Dispatch royal envoys and stipends across the Earth Kingdom to strengthen the authority of the Earth Monarch.;;;;;;;;;;;;;x
+form_kuvira_earth_empire;Proclaim the Earth Empire;;;;;;;;;;;;;x
+form_kuvira_earth_empire_desc;Sweep away the decayed monarchy of old and forge a modern, unified Earth Empire through iron discipline and order.;;;;;;;;;;;;;x
+form_air_nation;Unite the Air Nation;;;;;;;;;;;;;x
+form_air_nation_desc;Bring the Four Air Temples together under a single united Air Nation to preserve our people and traditions in a changing world.;;;;;;;;;;;;;x
+avatar_end_withdrawal;End Spiritual Withdrawal;;;;;;;;;;;;;x
+avatar_end_withdrawal_desc;Return from your period of spiritual seclusion and once again take an active role in maintaining balance across the Four Nations.;;;;;;;;;;;;;x
+get_gay_married_;Marry Partner;;;;;;;;;;;;;x
+get_gay_married__desc;Enter into a formal marriage with this character.;;;;;;;;;;;;;x
+imperial_ambitions_3;Expand Fire Nation Industry;;;;;;;;;;;;;x
+imperial_ambitions_3_desc;Invest heavily in foundries, shipyards, and infrastructure to fuel the Fire Nation's imperial ambitions.;;;;;;;;;;;;;x
+show_me_best_benders_desc;Review the most powerful legendary and master benders currently alive across the Four Nations.;;;;;;;;;;;;;x
+give_to_the_sages;Entrust to the Sages;;;;;;;;;;;;;x
+give_to_the_sages_desc;Send this character to be raised and instructed by the Sages.;;;;;;;;;;;;;x
+absorb_pirate_governor_desc;Spend prestige to formally integrate this pirate governor's territory directly into your cartel.;;;;;;;;;;;;;x
+decision_abduct;Plot to Abduct;;;;;;;;;;;;;x
+decision_abduct_desc;Attempt to kidnap this character and drag them back to your dungeons.;;;;;;;;;;;;;x
+stop_abduct_decision;Abort Abduction Plot;;;;;;;;;;;;;x
+stop_abduct_decision_desc;Call off your ongoing abduction attempt.;;;;;;;;;;;;;x
+stop_abduct_decision_target;Cancel Abduction of Target;;;;;;;;;;;;;x
+stop_abduct_decision_target_desc;Call off your ongoing abduction attempt against this character.;;;;;;;;;;;;;x
+HYW_ally_earth_kingdom;Ally with the Earth Kingdom;;;;;;;;;;;;;x
