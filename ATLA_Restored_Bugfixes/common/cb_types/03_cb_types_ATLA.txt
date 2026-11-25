@@ -9,7 +9,7 @@ air_reclamation = {
 
 	can_use_gui = {
 		ROOT = { religion_group = air_religions }
-		realm = {
+		primary_title = {
 			NOT = { has_law = an_law_0 }
 		}
 	}
@@ -179,13 +179,13 @@ air_offensive = {
 		OR = {
 			AND = {
 				ROOT = { religion_group = air_religions }
-				realm = {
+				primary_title = {
 					has_law = an_law_3
 				}
 			}
 			AND = {
 				ROOT = { religion = nomadic_nihilism }
-				realm = {
+				primary_title = {
 					has_law = an_law_2
 				}
 			}
@@ -364,7 +364,7 @@ air_offensive_county = {
 		OR = {
 			AND = {
 				ROOT = { religion_group = air_religions }
-				realm = {
+				primary_title = {
 					OR = {
 						has_law = an_law_2
 						has_law = an_law_3
@@ -373,7 +373,7 @@ air_offensive_county = {
 			}
 			AND = {
 				ROOT = { religion = nomadic_nihilism }
-				realm = {
+				primary_title = {
 					has_law = an_law_1
 				}
 			}
@@ -1118,12 +1118,21 @@ cb_shatter_realm = { #Used by the Avatar for Crisis Wars
 						modifier = lost_crusade
 						years = 30
 					}
-					any_realm_title = { #Targets vassals AND ruler!
+					any_demesne_title = {
 						limit = {
 							higher_tier_than = DUKE
 							controls_religion = no
 						}
 						unsafe_destroy_landed_title = THIS
+					}
+					any_realm_character = {
+						any_demesne_title = {
+							limit = {
+								higher_tier_than = DUKE
+								controls_religion = no
+							}
+							unsafe_destroy_landed_title = THIS
+						}
 					}
 					any_player = {
 						narrative_event = { id = NAE.707 }

@@ -446,7 +446,6 @@ character_event = { #Avatar follow-up for previous event
 	
 	option = { #I'm happy to have them!
 		name = NAE.305.OPTA
-		FROM = { letter_event = { id = NAE.305 } }
 		event_target:avatar_candidate = {
 			opinion = {
 				who = ROOT
@@ -531,7 +530,7 @@ character_event = { #Avatar follow-up for previous event
 		}
 	}
 	
-	after = { FROM = { clr_character_flag = avatar_considering_candidate } }
+	after = { clr_character_flag = avatar_considering_candidate }
 	
 }
 

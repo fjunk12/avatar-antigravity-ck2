@@ -6974,7 +6974,7 @@ character_event = {
 	
 	option = { # Lightning
 		name = EVTOPTA_MNSAK_5067
-		add_trait = lightningbender
+		if = { limit = { NOT = { trait = combustionbender } } add_trait = lightningbender }
 	}
 }
 
@@ -7002,7 +7002,7 @@ character_event = {
 	
 	option = { # Lightning
 		name = EVTOPTA_MNSAK_5069
-		add_trait = innerflame
+		if = { limit = { NOT = { trait = combustionbender } } add_trait = innerflame }
 	}
 }
 
@@ -8243,7 +8243,7 @@ character_event = {
 		}
 		if = {
 			limit = { trait = firebender }
-			add_trait = lightningbender
+			if = { limit = { NOT = { trait = combustionbender } } add_trait = lightningbender }
 		}
 		if = {
 			limit = { trait = waterbender }
@@ -9268,7 +9268,7 @@ character_event = {
 	
 	option = { # End Training
 		name = EVTOPTA_MNSAK_5154
-		add_trait = smokebender
+		if = { limit = { NOT = { trait = combustionbender } } add_trait = smokebender }
 	}
 }
 
@@ -10775,7 +10775,7 @@ character_event = {
 	
 	option = { # End Training
 		name = EVTOPTA_MNSAK_5215
-		add_trait = lightningbender
+		if = { limit = { NOT = { trait = combustionbender } } add_trait = lightningbender }
 	}
 }
 

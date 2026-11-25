@@ -1,0 +1,45 @@
+# Avatar reincarnation safety net and Avatar State cycle-broken notification
+namespace = atlafix
+
+character_event = {
+	id = atlafix.1
+	hide_window = yes
+	is_triggered_only = yes # on_yearly_pulse
+
+	only_rulers = yes
+	has_global_flag = avatar_interregnum
+
+	trigger = {
+		NOT = { has_global_flag = avatar_cycle_broken }
+		NOT = { persistent_event_target:the_avatar = { is_alive = yes } }
+		OR = {
+			NOT = { has_global_flag = atlafix_tick }
+			had_global_flag = { flag = atlafix_tick days = 330 }
+		}
+	}
+
+	immediate = {
+		clr_global_flag = atlafix_tick
+		set_global_flag = atlafix_tick
+		export_to_variable = { which = global_atlafix_gap value = year }
+		subtract_variable = { which = global_atlafix_gap which = global_avatar_death_year }
+		if = {
+			limit = { check_variable = { which = global_atlafix_gap value >= 18 } }
+			log = "ATLA Bugfixes: Avatar did not reincarnate in time - spawning next Avatar via NAE.004"
+			character_event = { id = NAE.004 }
+		}
+	}
+}
+
+narrative_event = {
+	id = atlafix.10
+	title = atlafix.10.t
+	desc = atlafix.10.d
+	picture = GFX_evt_avatar_defeat
+	border = GFX_event_narrative_frame_avatar
+	is_triggered_only = yes
+
+	option = {
+		name = atlafix.10.a
+	}
+}
