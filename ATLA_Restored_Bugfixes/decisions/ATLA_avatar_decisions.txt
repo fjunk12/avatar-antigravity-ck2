@@ -1,0 +1,1286 @@
+targetted_decisions = {
+
+	## For Player Avatars
+	
+	show_avatar_decisions = {
+		ai = no
+		only_playable = yes
+		filter = all_including_me
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar #These are the same size as the targetted decision icons so it shouldn't matter
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOR = {
+				has_character_flag = avatar_decisions_open
+				has_character_flag = withdrawn_avatar
+				trait = bad_avatar
+			}
+		}
+		
+		potential = {
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = { always = yes }
+		
+		effect = {
+			FROM = { set_character_flag = avatar_decisions_open }
+		}
+	}
+	
+	hide_avatar_decisions = {
+		ai = no
+		only_playable = yes
+		filter = all_including_me
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = { always = yes }
+		
+		effect = {
+			FROM = { clr_character_flag = avatar_decisions_open }
+		}
+	}
+
+	give_avatar_endorsement = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			is_inaccessible_or_incapable_trigger = no
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_playable = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				NOT = { has_character_modifier = avatars_endorsement }
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.214 } }
+		}
+	}
+	
+	give_avatar_condemnation = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			is_inaccessible_or_incapable_trigger = no
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_playable = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				NOT = { has_character_modifier = avatars_condemnation }
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.215 } }
+		}
+	}
+	
+	avatar_military_support = {
+		ai = no
+		only_playable = yes
+		filter = independent_rulers
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			is_inaccessible_or_incapable_trigger = no
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			OR = {
+				war = yes
+				any_realm_province = {
+					any_province_holding = {
+						has_holding_modifier = looted_modifier
+					}
+				}
+			}
+			independent = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				custom_tooltip = {
+					text = NAE.AVATAR_RAID_DEC.TT #Must either be at war or a victim of a raid
+					OR = {
+						war = yes
+						any_realm_province = {
+							any_province_holding = {
+								has_holding_modifier = looted_modifier
+							}
+						}
+					}
+				}
+				independent = yes
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+				NOR = {
+					any_liege = { character = FROM }
+					any_realm_lord = { character = FROM }
+				}
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.218 } }
+		}
+		
+	}
+	
+	avatar_enforce_peace = {
+		ai = no
+		only_playable = yes
+		filter = independent_rulers
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			is_inaccessible_or_incapable_trigger = no
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			war = yes
+			independent = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				war = yes
+				independent = yes
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+				NOR = {
+					any_liege = { character = FROM }
+					any_realm_lord = { character = FROM }
+				}
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.217 } }
+		}
+		
+	}
+	
+	avatar_offer_protection = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_playable = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.205 } }
+		}
+	}
+	
+	avatar_end_heresy = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			OR = {
+				is_heretic = no
+				religion = followers_of_kyoshi
+			}
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			NOR = {
+				religion = way_of_chin
+				religion = followers_of_kyoshi
+			}
+			OR = {
+				any_demesne_province = { is_heretic = yes }
+				is_heretic = yes
+			}
+			is_playable = yes
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			FROM = {
+				is_heretic = no
+				NOT = { any_liege = { character = ROOT } } #Can't ask your own liege to convert!
+			}
+			ROOT = {
+				OR = {
+					AND = {
+						NOT = { religion = followers_of_kyoshi }
+						is_heretic = yes
+					}
+					AND = {
+						any_demesne_province = {
+							is_heretic = yes
+							NOT = { religion = followers_of_kyoshi }
+						}
+					}
+				}
+				independent = yes
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.202 } }
+		}
+	}
+	
+	avatar_hunt_enemy = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_playable = yes
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			FROM = {
+				any_friend = { trait = team_avatar }
+				has_injury_trigger = no
+				has_disease_trigger = no
+			}
+			ROOT = {
+				is_playable = yes
+				OR = {
+					is_hostile_to_avatar_trigger = yes
+					is_rival = FROM
+					has_character_modifier = known_murderer
+					any_kill_list_character = { count = 5 }
+				}
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.210 } }
+		}
+	}
+	
+	avatar_boost_economy = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_playable = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				is_playable = yes
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+				wealth < 100 #Much less stringent for the player
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.212 } }
+		}
+	}
+	
+	avatar_offer_to_tutor = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			age < 12
+			war = no
+			is_playable = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				age < 12
+				opinion = {
+					who = FROM
+					value = 30
+				}
+				war = no
+				is_playable = yes
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.209 } }
+		}
+	}
+	
+	avatar_harmonise_realm = {
+		ai = no
+		only_playable = yes
+		filter = independent_rulers
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			tier = DUKE
+			war = no
+			independent = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				tier = DUKE
+				war = no
+				independent = yes
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+				NOR = {
+					any_liege = { character = FROM }
+					any_realm_lord = { character = FROM }
+				}
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.216 } }
+		}
+	}
+	
+	avatar_harmonise_realm_king = {
+		ai = no
+		only_playable = yes
+		filter = independent_rulers
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_fully_realised_avatar
+		
+		from_potential = {
+			trait = fully_realised_avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			tier = KING
+			war = no
+			independent = yes
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				tier = KING
+				war = no
+				independent = yes
+				is_hostile_to_avatar_trigger = no
+				is_inaccessible_or_incapable_trigger = no
+				NOR = {
+					any_liege = { character = FROM }
+					any_realm_lord = { character = FROM }
+				}
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.224 } }
+		}
+	}
+	
+	avatar_free_slaver_county = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_fully_realised_avatar
+		
+		from_potential = {
+			trait = fully_realised_avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_playable = yes
+			ai = yes
+			OR = {
+				government = pirate_cartel
+				government = lawless_piracy
+			}
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				tier = COUNT
+				ai = yes
+				OR = {
+					government = pirate_cartel
+					government = lawless_piracy
+				}
+				has_law = slavery_legal
+				is_inaccessible_or_incapable_trigger = no
+				NOR = {
+					any_liege = { character = FROM }
+					any_realm_lord = { character = FROM }
+				}
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { letter_event = { id = NAE.227 } }
+		}
+	}
+	
+	avatar_sabotage_realm = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_fully_realised_avatar
+		
+		from_potential = {
+			trait = fully_realised_avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_modifier = avatar_interfere_cooldown }
+			has_character_flag = avatar_decisions_open
+		}
+		
+		potential = {
+			is_playable = yes
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			ROOT = {
+				is_playable = yes
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				add_character_modifier = {
+					modifier = avatar_interfere_cooldown
+					years = 2
+				}
+				clr_character_flag = avatar_decisions_open
+			}
+			ROOT = { character_event = { id = NAE.226 } }
+		}
+	}
+	
+	declare_crisis_war = {
+		filter = independent_rulers
+		ai_target_filter = independent_rulers
+		ai_check_interval = 1200 #Checks every 10 years
+		diplomacy_icon = GFX_icon_decadence_color ##NOTE: This might be ever so slightly too big, don't worry about it - Liz
+		
+		from_potential = {
+			trait = avatar
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { has_character_flag = declared_crisis_war }
+		}
+		
+		potential = {
+			tier = EMPEROR
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			FROM = {
+				war = no
+				OR = {
+					trait = fully_realised_avatar
+					AND = {
+						trait = avatar_waterbender
+						trait = avatar_earthbender
+						trait = avatar_firebender
+						trait = avatar_airbender
+					}
+				}
+			}
+			ROOT = {
+				tier = EMPEROR
+				OR = {
+					primary_title = { title = e_fifth_nation }
+					hidden_tooltip = {
+						AND = {
+							ai = no #Anti-player bias is real, but I'm not gonna let you game it you sneaky so-and-so!
+							tier = KING
+							realm_size = 120 #This is, on average, 40 provinces. Since there are ~200 provinces on the map, this is like, 20% of a world conquest
+							is_hostile_to_avatar_trigger = yes
+						}
+					}
+					custom_tooltip = {
+						text = AVATAR_PLAYER_CRISIS_WAR_TT #Belong to an Avatar-hostile religion or own a kingdom outside normal dejure bounds
+						OR = {
+							religion = way_of_chin
+							religion = equalism
+							religion = barbarism
+							has_religion_feature = religion_feature_old_barbarism
+							has_religion_feature = religion_feature_new_barbarism
+							religion = fire_nation_imperialism
+							
+							AND = {
+								primary_title = { title = e_fire_nation }
+								any_realm_title = {
+									tier = KING
+									NOT = { de_jure_liege = e_fire_nation }
+								}
+							}
+							AND = {
+								primary_title = { title = e_air_nomads }
+								any_realm_title = {
+									tier = KING
+									NOT = { de_jure_liege = e_air_nomads }
+								}
+							}
+							AND = {
+								primary_title = { title = e_water_tribes }
+								any_realm_title = {
+									tier = KING
+									NOT = { de_jure_liege = e_water_tribes }
+								}
+							}
+							AND = {
+								primary_title = {
+									tier = EMPEROR
+									region = world_greater_earth_kingdom
+								}
+								any_realm_title = {
+									tier = KING
+									NOT = { region = world_greater_earth_kingdom }
+								}
+							}
+						}
+					}
+				}
+				is_inaccessible_or_incapable_trigger = no
+			}
+		}
+		
+		effect = {
+			ROOT = {
+				save_event_target_as = crisis_defender
+				narrative_event = { id = NAE.701 } #War announced
+				character_event = { id = NAE.702 days = 30 } #Troops gather
+				narrative_event = { id = NAE.705 days = 720 }
+			}
+			FROM = { character_event = { id = NAE.704 days = 719 } } #Last minute Avatar checks
+		}
+		
+		ai_will_do = {
+			factor = 0.1
+			
+			modifier = {
+				trait = fully_realised_avatar
+				factor = 10
+			}
+			
+			modifier = {
+				AND = {
+					ai_zeal = 20
+					ai_ambition = 40
+				}
+				factor = 5
+			}
+		}
+	}
+	
+	avatar_withdraw = {
+		filter = self
+		ai_target_filter = self
+		ai_check_interval = 24
+		diplomacy_icon = GFX_trait_bad_avatar
+		
+		potential = {
+			trait = avatar
+			NOT = { has_character_flag = withdrawn_avatar }
+			OR = {
+				ai = no
+				calc_true_if = {
+					amount = 3
+					trait = depressed
+					trait = slothful
+					trait = cynical
+					trait = drunkard
+					trait = cactusaddict
+					trait = envious
+					trait = shy
+				}
+			}
+		}
+		
+		allow = { NOT = { has_character_flag = withdrawn_avatar } }
+		
+		effect = {
+			any_player = { character_event = { id = NAE.516 } } #Declares the Avatar has gone into withdrawal
+			set_character_flag = withdrawn_avatar
+		}
+
+	}
+	
+	avatar_end_withdrawal = {
+		filter = self
+		ai_target_filter = self
+		ai_check_interval = 24
+		diplomacy_icon = GFX_trait_avatar
+		
+		potential = {
+			trait = avatar
+			has_character_flag = withdrawn_avatar
+			OR = {
+				ai = no
+				calc_true_if = {
+					amount < 3
+					trait = depressed
+					trait = slothful
+					trait = cynical
+					trait = drunkard
+					trait = cactusaddict
+					trait = envious
+					trait = shy
+				}
+			}
+		}
+		
+		allow = { has_character_flag = withdrawn_avatar }
+		
+		effect = {
+			clr_character_flag = withdrawn_avatar
+			any_player = { character_event = { id = NAE.517 } } #Declares the Avatar has come out of withdrawal
+		}
+	}
+	
+	avatar_marry_lover = {
+		ai = no #The AI will have a chance to marry the Avatar every year
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_charview_arrange_marriage
+		
+		from_potential = {
+			is_inaccessible_or_incapable_trigger = no
+			trait = avatar
+			is_married = no
+		}
+		
+		potential = {
+			is_inaccessible_or_incapable_trigger = no
+			ai = no
+		}
+		
+		allow = {
+			ROOT = {
+				is_lover = FROM
+				is_married = no
+				NOR = {
+					government = republic_government
+					government = theocracy_government
+					government = order_government
+				}
+				OR = {
+					is_playable = no
+					real_tier = FROM
+					lower_tier_than = FROM
+				}
+			}
+			FROM = {
+				is_lover = ROOT
+				is_married = no
+			}
+		}
+		
+		effect = {
+			FROM = {
+				if = {
+					limit = { is_female = yes }
+					add_spouse_matrilineal = ROOT
+				}
+				else = { add_spouse = ROOT }
+			}
+		}
+	}
+
+	## For non-avatar players
+	marry_the_avatar = {
+		ai = no #The AI will have a chance to marry the Avatar every year
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_charview_arrange_marriage
+		
+		from_potential = {
+			is_inaccessible_or_incapable_trigger = no
+			is_lover = ROOT
+			can_marry = yes
+		}
+		
+		potential = {
+			is_inaccessible_or_incapable_trigger = no
+			trait = avatar
+			is_lover = FROM
+			ai = no
+		}
+		
+		allow = {
+			ROOT = {
+				is_married = no
+				NOR = {
+					government = republic_government
+					government = theocracy_government
+					government = order_government
+				}
+				OR = {
+					is_playable = no
+					lower_real_tier_than = FROM
+				}
+			}
+			FROM = { is_married = no }
+		}
+		
+		effect = {
+			FROM = {
+				if = {
+					limit = { is_female = yes }
+					add_spouse_matrilineal = ROOT
+				}
+				else = { add_spouse = ROOT }
+			}
+		}
+	}
+	
+	send_to_avatar = {
+		ai = no
+		only_playable = yes
+		filter = all
+		ai_target_filter = none
+		third_party_filter = home_court
+		ai_third_party_filter = none
+		third_party = FROM
+		diplomacy_icon = GFX_trait_team_avatar
+		
+		from_potential = { #The Sender
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+			NOT = { trait = avatar }
+		}
+		
+		potential = { #The Avatar
+			is_inaccessible_or_incapable_trigger = no
+			war = no
+			trait = avatar
+			NOR = {
+				has_character_flag = withdrawn_avatar
+				trait = bad_avatar
+			}
+		}
+		
+		third_party_potential = { #The Candidate
+			FROMFROM = {
+				is_inaccessible_or_incapable_trigger = no
+				is_ruler = no
+				dynasty = FROM
+				host = { character = FROM }
+				age < 30
+				age = 12
+				is_hostile_to_avatar_trigger = no
+				is_married = no
+				NOR = {
+					trait = avatar
+					trait = team_avatar
+					trait = former_team_avatar
+				}
+			}
+		}
+		
+		allow = {
+			show_only_failed_conditions = yes
+			FROM = {
+				NOT = { any_close_relative = { trait = team_avatar } }
+			}
+			ROOT = {
+				NOT = { has_character_flag = avatar_considering_candidate }
+				war = no
+			}
+		}
+		
+		third_party_allow = {
+			FROMFROM = {
+				age < 30
+				age = 12
+				is_hostile_to_avatar_trigger = no
+				is_married = no
+			}
+		}
+		
+		effect = {
+			FROMFROM = { save_event_target_as = avatar_candidate }
+			ROOT = {
+				set_character_flag = avatar_considering_candidate
+				character_event = { id = NAE.305 }
+			}
+		}
+	}
+	
+	offer_avatar_land = {
+		ai = no #Giving the Avatar land is just less content, only the player should make this mistake
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		
+		from_potential = {
+			is_hostile_to_avatar_trigger = no
+			is_inaccessible_or_incapable_trigger = no
+			war = no
+			higher_tier_than = COUNT
+		}
+		
+		potential = {
+			trait = avatar
+			is_ruler = no
+			NOT = { has_character_flag = avatar_considering_candidate }
+		}
+		
+		allow = {
+			FROM = {
+				higher_tier_than = DUKE
+				num_of_duke_titles = 2
+				custom_tooltip = {
+					text = NAE_AVATAR_LAND_DEC_TT #Must own a county within a duchy you also own, outside of your capital duchy.
+					any_demesne_province = {
+						duchy = {
+							owner = {
+								character = FROM
+								NOT = {
+									capital_scope = {
+										county = {
+											de_jure_liege = PREVPREVPREV
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		effect = {
+			ROOT = { set_character_flag = avatar_considering_candidate }
+			FROM = { character_event = { id = NAE.402 days = 7 random = 3 } } #We fire this for the decision-taker since there's no reason to ping the Avatar
+		}
+		
+		ai_acceptance = {
+			factor = 10
+			yes_threshold = 50
+			
+			additive_modifier = { #This *CAN* be overcome! It's just difficult.
+				value = -90
+				localisation_key = "AIREASON_AVATAR_TRAINING" #I need to complete my training!
+				NOR = {
+					trait = fully_realised_avatar
+					AND = {
+						trait = avatar_waterbender
+						trait = avatar_earthbender
+						trait = avatar_firebender
+						trait = avatar_airbender
+					}
+				}
+			}
+			
+			additive_modifier = { #This is slightly less than offset by opinion. The Avatar needs a special reason to settle down in your realm!
+				value = -30
+				localisation_key = "AIREASON_BASE_RELUCTANCE"
+				always = yes
+			}
+			additive_modifier = {
+				value = -250
+				localisation_key = "AI_AVATAR_REASON_CRISIS_WAR"
+				has_character_flag = preparing_for_crisis_war
+			}
+			
+			additive_modifier = {
+				value = 20
+				localisation_key = "AI_AVATAR_REASON_LOVER"
+				is_lover = FROM
+				NOT = { spouse = { character = FROM } } #Avatars will only marry their lovers, and we don't want to double up!
+			}
+			
+			additive_modifier = {
+				value = 20
+				localisation_key = "AI_AVATAR_REASON_FRIEND"
+				is_friend = FROM
+			}
+			
+			additive_modifier = {
+				value = 20
+				localisation_key = "AI_AVATAR_REASON_TEAM_AVATAR"
+				FROM = { trait = former_team_avatar }
+			}
+			
+			additive_modifier = {
+				value = 50
+				localisation_key = "AI_AVATAR_REASON_SPOUSE"
+				spouse = { character = FROM }
+			}
+			
+			additive_modifier = {
+				value = 10
+				localisation_key = "AI_AVATAR_REASON_FAMILY"
+				OR = {
+					spouse = {
+						NOT = { character = FROM }
+						dynasty = FROM
+					}
+					any_child = { dynasty = FROM }
+					dynasty = FROM
+				}
+			}
+			
+			additive_modifier = {
+				value = 10
+				localisation_key = "AI_AVATAR_REASON_WANTS_LAND"
+				OR = {
+					trait = greedy
+					trait = content
+					trait = envious
+					trait = craven
+				}
+			}
+			
+			additive_modifier = {
+				value = 20
+				localisation_key = "AI_AVATAR_REASON_HAS_FAMILY"
+				OR = {
+					is_married = yes
+					any_child = { age < 21 }
+				}
+			}
+			additive_modifier = {
+				value = 5
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = 20 } }
+				opinion = { who = FROM value = 0 }
+			}
+			additive_modifier = {
+				value = 10
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = 40 } }
+				opinion = { who = FROM value = 20 } 
+			}
+			additive_modifier = {
+				value = 15
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = 60 } }
+				opinion = { who = FROM value = 40 } 
+			}
+			additive_modifier = {
+				value = 20
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = 80 } }
+				opinion = { who = FROM value = 60 } 
+			}
+			additive_modifier = {
+				value = 25
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = 100 } }
+				opinion = { who = FROM value = 80 } 
+			}
+			additive_modifier = {
+				value = 30
+				localisation_key = AIREASON_OPINION
+				opinion = { who = FROM value = 100 }
+			}
+			additive_modifier = {
+				value = -5
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = 0 } }
+				opinion = { who = FROM value = -20 }
+			}
+			additive_modifier = {
+				value = -10
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = -20 } }
+				opinion = { who = FROM value = -40 } 
+			}
+			additive_modifier = {
+				value = -15
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = -40 } }
+				opinion = { who = FROM value = -60 } 
+			}
+			additive_modifier = {
+				value = -20
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = -60 } }
+				opinion = { who = FROM value = -80 } 
+			}
+			additive_modifier = {
+				value = -25
+				localisation_key = AIREASON_OPINION
+				NOT = { opinion = { who = FROM value = -80 } }
+				opinion = { who = FROM value = -100 } 
+			}
+			additive_modifier = {
+				value = -30
+				localisation_key = AIREASON_OPINION
+				opinion = { who = FROM value <= -100 }
+			}
+		}
+	}
+	
+	## TODO: MOVE DURING NEXT BIG FILE CLEARUP ##
+	
+	get_gay_married_ = {
+		only_playable = yes
+		ai_check_interval = 36
+		filter = all
+		ai_target_filter = sub_realm #AI will only seek to gay marry their vassals to prevent alliance weirdness
+		
+		from_potential = {
+			can_marry = yes
+			OR = {
+				trait = homosexual
+				trait = bisexual
+			}
+			has_lover = yes
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		potential = {
+			can_marry = yes
+			OR = {
+				trait = homosexual
+				trait = bisexual
+			}
+			is_lover = FROM
+			is_inaccessible_or_incapable_trigger = no
+		}
+		
+		allow = {
+			always = yes #I will not be providing an option to turn off gay marriage. Ever. - Liz
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					ROOT = { ai = no }
+				}
+				ROOT = { character_event = { id = NAE.903 } }
+			}
+			else = { FROM = { add_spouse = ROOT } } #This won't matter, since gay marriage
+		}
+		
+		ai_will_do = {
+			factor = 0.6 #Only a chance to pop the question
+		}
+	}
+}

@@ -16,7 +16,42 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
 
 ## Summary of Fixes
 
-### Critical Script, Event & Crash Fixes
+### Avatar System, Team Avatar & Crash Fixes
+- **Avatar Help Hover CTD (`events/ATLA_avatar_interfere_events.txt`)**: Wrapped `new_character` blocks following character creation in `hidden_tooltip` so hovering options before the character exists cannot crash the game.
+- **Avatar Reincarnation Safety Net & Spawn Guards (`events/ATLA_avatar_system.txt`, `events/atlafix_avatar_events.txt`, `common/on_actions/zz_atlafix_on_actions.txt`)**:
+  - Added a yearly safety net (`atlafix.1`) so if the random player holding the 16-year `NAE.004` timer dies (or in observe mode), the Avatar still reincarnates after 18 years instead of disappearing permanently.
+  - Guarded `NAE.002` and `NAE.004` against spawning a second Avatar while one is already alive or after the cycle is broken.
+  - Restricted `NAE.004` spawn provinces to `has_owner = yes` so the Avatar never spawns in an ownerless province.
+  - Moved the stale `new_character` Air Nomad gender rule from `NAE.004` into `NAE.0041` where `new_character` actually exists.
+- **Breaking the Avatar Cycle in Duels (`events/ATLA_Duel_events.txt`, `events/ATLA_avatar_system.txt`, `events/atlafix_avatar_events.txt`)**: Dying within 10 days of activating the Avatar State in a duel sets `avatar_cycle_broken`, fires the cycle-broken narrative event (`atlafix.10`) instead of `NAE.005`, and prevents future reincarnations.
+- **Send Family Member to Team Avatar (`decisions/ATLA_avatar_decisions.txt`, `events/ATLA_avatar_acquintances_events.txt`)**:
+  - Fixed `send_to_avatar` to use `third_party = FROM` and `third_party_filter = home_court`, and wrapped `third_party_potential` and `third_party_allow` in `FROMFROM = { ... }` checking `dynasty = FROM` and `host = { character = FROM }` instead of evaluating against `ROOT` (the Avatar).
+  - Removed a stray self-calling `FROM = { letter_event = { id = NAE.305 } }` in `NAE.305` Option A and fixed `after` clearing `avatar_considering_candidate` on `FROM` instead of `ROOT` (the Avatar), which permanently locked the decision after one use.
+  - Removed dead `hermetic_glasses` artifact reference in `events/ATLA_avatar_acquintances_events.txt`.
+
+### Hundred Year War, Imperialism & CB Fixes
+- **Death of Roku & Hundred Year War Events (`events/ATLA_hundred_year_war.txt`, `decisions/ATLA_imperialism_decisions.txt`, Issue #615)**:
+  - Fixed `ATLAE.19` and `ATLAE.10` so Roku reliably dies in the volcano eruption even when `HYW_1` is not set, and prevented `ATLAE.19` from repeating via `roku_volcano_fired`.
+  - Fixed `ATLAE.23` (Sozin's Comet): replaced `NOR` with `NOT = { AND = { ... } }` so Fire Lords always have an option, gated the comet buff to `trait = firebender`, and set `HYW_4` when launching the Air Nomad purge.
+  - Fixed `ATLAE.69` ("Air Nomads survived") checking never-set `HYW_5`–`HYW_8` flags instead of actual Air Temple holders, and fixed `imperial_ambitions_22` ("Recruit the Barbarians") checking never-set `HYW_8`.
+  - Fixed `ATLAE.118` / `ATLAE.132` ("Prince's Ambition") fallback `random_child` always overwriting Ozai, fixed `ATLAE.122`/`127`/`130` invalid `FROM = { wealth = ROOT }` after death, and removed `trigger = { ai = no }` on `ATLAE.129`'s sole option.
+- **"A New Era" Event Spam (`events/ATLA_imperial.txt` & `common/laws/a_atla_laws.txt`, Issue #567)**:
+  - Guarded the `ATLA_imperial.1` calls inside law `effect` with `NOT = { has_global_flag = GLOBSTATE_age_of_imperialism }` so 800–928 title-history starts still switch the Fire Lord to `fire_imperial_government` once while preventing repeat fires on reload/recalculation.
+  - Added `NOT = { has_global_flag = GLOBSTATE_age_of_imperialism }` to `ATLA_imperial.1`'s `trigger`, set `GLOBSTATE_age_of_imperialism` in `immediate`, and added fallback desc/option in `ATLA_imperial.2` for rulers outside the Four Nations culture groups.
+- **Crisis War, Air Nomad & Air Reclamation CBs (`common/cb_types/03_cb_types_ATLA.txt`, Issue #71)**:
+  - Fixed `cb_shatter_realm` using non-existent `any_realm_title` (replaced with `any_demesne_title` + `any_realm_character = { any_demesne_title = ... }`) so defeated kingdom and empire titles are actually destroyed.
+  - Fixed 5 invalid `realm = { has_law = ... }` scopes -> `primary_title = { has_law = ... }`.
+  - Moved `religion_group = air_religions` into `can_use` on `air_reclamation` so non-Air-Nomad rulers do not receive Air Nomad Reclamation Claims.
+- **Fifth Nation CBs & Pirate Cartel Government (`common/cb_types/outlaw_religions_cbs.txt`, `common/governments/feudal_governments.txt`, Issue #632)**:
+  - Fixed `cb_slave_colony` ("Enslave Province") calling `set_defacto_liege = THIS` *after* `make_tributary` (which immediately broke the tributary due to `breaks_on_realm_change = yes`), and fixed `culture = THIS` on a duchy scope.
+  - Fixed `lawless_piracy` superseding `pirate_cartel` whenever a Pirate Cartel ruler grants land to courtiers or wins Plunder wars.
+
+### Bending, Societies, Decisions & Events
+- **Combustion Bending Protection (`ATLA_bending.txt`, `ATLA_society_agni_kai.txt`, `ATLA_bloodline_events.txt`, `ATLA_random_events.txt`, `ATLA_special.txt`)**: Guarded fire sub-bending trait grants (`lightningbender`, `blueflames`, `smokebender`, `innerflame*`) so they no longer delete `combustionbender`.
+- **Childhood Bending Sub-Traits (`events/ATLA_bending.txt`, Issue #501)**:
+  - Required matching bending element (or Avatar educator) in `bending.162` before firing `bending.163`.
+  - Fixed blind seismic sense teaching `seismicsense_nonblind` instead of `seismicsense`.
+  - Removed duplicate `# No` option in `bending.163` and converted tier upgrade `if` blocks to `if / else_if`.
 - **Claim Duels (`decisions/hf_warrior_lodge_decisions.txt`)**: Fixed broken call to non-existent event `HF.10095` -> `HFP.10095`.
 - **Wonder Maintenance (`events/LT_wonder_maintenance_events.txt`)**: Fixed invalid `else = { limit = { ... } }` -> `else_if = { limit = { ... } }`.
 - **Tea Society Missions (`events/ATLA_tea_society_events.txt`)**:
@@ -27,16 +62,6 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
   - Fixed inverted rank condition on `twl_quest_pacify_rebellion` (`society_rank >= 3` -> `society_rank < 3`).
   - Added missing `society_rank < 2` exclusions to `twl_quest_train` and `twl_investigate_court` so Rank 1 members are no longer assigned impossible Rank 2 missions.
   - Moved `MNSAK.5222` (`hide_window = yes`) ping into `immediate`.
-- **Death of Roku Eruption (`events/ATLA_hundred_year_war.txt`, Issue #615)**:
-  - Fixed `ATLAE.19` and `ATLAE.10` so Roku reliably dies in the volcano eruption even when `HYW_1` is not set, and prevented `ATLAE.19` from repeating via `roku_volcano_fired`.
-  - Fixed `ATLAE.122`/`127`/`130` invalid `FROM = { wealth = ROOT }` after death (replaced with `transfer_scaled_wealth` before death) and removed `trigger = { ai = no }` on `ATLAE.129`'s sole option.
-- **"A New Era" Event Spam (`events/ATLA_imperial.txt` & `common/laws/a_atla_laws.txt`, Issue #567)**:
-  - Moved `ATLA_imperial.1` calls from law `effect` (which re-runs on load/recalculation) into `pass_effect`, guarded by `GLOBSTATE_age_of_imperialism`.
-  - Set `GLOBSTATE_age_of_imperialism` in `ATLA_imperial.1` `immediate` and added fallback desc/option in `ATLA_imperial.2` for rulers outside the Four Nations culture groups.
-- **Childhood Bending Sub-Traits (`events/ATLA_bending.txt`, Issue #501)**:
-  - Required matching bending element (or Avatar educator) in `bending.162` before firing `bending.163`.
-  - Fixed blind seismic sense teaching `seismicsense_nonblind` instead of `seismicsense`.
-  - Removed duplicate `# No` option in `bending.163` and converted tier upgrade `if` blocks to `if / else_if`.
 - **Air Nomad Elder Council Voting & Laws (`events/ATLA_air_nomad_events.txt`, Issue #303)**:
   - Replaced hardcoded 3-vote threshold across all 6 policies with true majority voting (`yes_votes > no_votes`), so solo Elder Council members and small councils can pass policies.
   - Fixed `NOMAD.608` Protectionism setting `global_cp_trade_vote` instead of `global_cp_protection_vote`.
@@ -45,28 +70,25 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
   - Added `hide_from = yes` and `show_root = yes` to `ATLAE.4000` so Avatar Kyoshi appears as the portrait instead of the random maintenance ruler.
   - Fixed impossible trigger condition in `ATLAE.4007` ("Fall of the Chin Remnant": `year = 588` + `NOT = { year = 580 }` -> `NOT = { year = 590 }`).
   - Fixed `ATLAE.4007` calling `long_character_event` `ATLAE.4004` via `narrative_event`.
-- **Fifth Nation CBs & Pirate Cartel Government (`common/cb_types/outlaw_religions_cbs.txt`, `common/governments/feudal_governments.txt`, Issue #632)**:
-  - Fixed `cb_slave_colony` ("Enslave Province") calling `set_defacto_liege = THIS` *after* `make_tributary` (which immediately broke the tributary due to `breaks_on_realm_change = yes`), and fixed `culture = THIS` on a duchy scope.
-  - Fixed `lawless_piracy` superseding `pirate_cartel` whenever a Pirate Cartel ruler grants land to courtiers or wins Plunder wars.
-- **Air Reclamation CB (`common/cb_types/03_cb_types_ATLA.txt`, Issue #71)**: Moved `religion_group = air_religions` into `can_use` so non-Air-Nomad rulers do not receive Air Nomad Reclamation Claims.
+- **Earth King & Rare Pet Events (`events/ATLA_earthking.txt`, `events/ATLA_pets_events.txt`)**:
+  - Removed the `earth_kingdom_cultures` restriction on Option B of `earthking.66` so foreign conquerors holding the Earth Kingdom have a valid option.
+  - Added a trigger to `PETS.5` requiring an active `searching_for_*` flag so rare-pet searches stop after giving up.
+- **Water Tribe Settlement Conversion (`decisions/settlement_decisions.txt`)**: Allowed `water_tribe_government` rulers to use `convert_tribal_to_castle`.
 - **Colonisation System (`decisions/ATLA_colony_decisions.txt`, `events/ATLA_colony_system.txt`, Issue #505)**:
   - Changed `colonize_province` filter from `owned` to `sub_realm_owned` and fixed inverted `is_liege_or_above = FROM` so rulers can colonize both direct and vassal counties (and never their liege's).
   - Fixed `ATLA.9000` ticking vassal colonies multiple times per year (`any_realm_province` -> `any_demesne_province`).
-  - Fixed inverted stewardship penalties in `ATLA.9001` (`> 10`/`> 4` -> `< 10`/`< 4`).
-  - Fixed swapped Fire Nation colonial cultures in `ATLA.9006` (`colonial_fire_air` / `colonial_fire_water`).
-  - Prevented `ATLA.9008` from double-firing `ATLA.9004` on independent rulers.
-- **Spiritual Journey (`decisions/ATLA_religious_decisions.txt`, Issue #50)**: Removed permanent `HYW_0` global flag block on `spiritual_journey`.
+  - Fixed inverted stewardship penalties in `ATLA.9001` (`> 10`/`> 4` -> `< 10`/`< 4`), swapped Fire Nation colonial cultures in `ATLA.9006`, and prevented double-firing `ATLA.9004` in `ATLA.9008`.
+- **Spiritual Journey (`decisions/ATLA_religious_decisions.txt`, Issue #50)**: Removed permanent `HYW_0` global flag block on `spiritual_journey` and added `religion = tui_and_la` (Northern Water Tribe).
 - **Religious Conversion & Secret Faith (`decisions/conversion_decisions.txt`, `decisions/mnm_secret_religious_societies_decisions.txt`, Issue #104)**:
   - Changed `convert_to_spouse_religion` filter from `home_court` to `spouse` so landed/foreign spouses are valid targets.
   - Allowed `convert_to_liege_religion` across non-modern religion groups, and added liege support to `secretly_convert_to_close_relations_religion`.
-- **Pacifist Airbender Ambitions (`common/objectives/00_ambitions.txt`, `00_zeus_ambitions.txt`, Issue #608)**: Excluded `air_spirituality` from `obj_see_the_realm_grow`, `obj_become_king`, and `obj_build_a_war_chest`.
+- **Pacifist Airbender Ambitions (`common/objectives/00_ambitions.txt`, `00_zeus_ambitions.txt`, Issue #608)**: Excluded `air_spirituality`, `air_acolytism`, and `air_acolytism_reformed` from `obj_see_the_realm_grow`, `obj_become_king`, and `obj_build_a_war_chest`.
 - **Imprisoned Spouse Fertility (`common/event_modifiers/00_event_modifiers.txt`, Issue #49)**: Added `fertility = -10.0` to `house_arrest` so imprisoned wives stop conceiving children while locked up.
 - **Validator Script Fixes**:
   - Removed non-existent `succ_byzantine_elective` in `events/plot_events.txt`.
   - Replaced non-existent `nick_the_devil` with `nick_the_wicked` in `events/wol_intrigue_events.txt` and `events/wol_scholarship_events.txt`.
   - Fixed empty modifier block in `events/wol_family_events.txt`.
   - Replaced non-existent vanilla regions `world_africa`/`world_india` with `world_si_wong`/`world_southern_earth_kingdom` in `common/scripted_effects/00_scripted_effects.txt`.
-  - Removed dead `hermetic_glasses` artifact reference in `events/ATLA_avatar_acquintances_events.txt`.
   - Added missing `namespace` declarations to `events/rip_eternal_life_events.txt`, `events/soa_various_events.txt`, `events/hfp_duel_events.txt`, and `events/job_lord_spiritual.txt`.
 
 ### Map, Unit Models & Portrait GFX Fixes
@@ -81,12 +103,12 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
 
 ### Localization, Vanilla Flavor Leaks & Encoding Fixes
 - **Last Airbender Bookmark (`common/bookmarks/00_bookmarks.txt`, `localisation/ATLA_bookmarks.csv`, Issue #667)**: Fixed Ozai's broken `ERA_CHAR_NAME_2` -> `ERA_CHAR_NAME_23`, added missing Last Airbender bookmark/character descriptions (`ERA_CHAR_NAME_23/24`, `ERA_CHAR_INFO_23/24`, `BM_AIRBENDER_ERA`), fixed corrupted `erai?1` text, and filled in placeholder Hundred Year War bookmark descriptions.
-- **Vanilla Flavor Overrides (`localisation/0000_ATLA_bugfix_loc.csv`)**:
+- **Vanilla Flavor Overrides & Missing Keys (`localisation/0000_ATLA_bugfix_loc.csv`)**:
   - Issue #610: Renamed `true_christian_knight` -> "True Honorable Warrior".
   - Issue #609: Added ATLA `chinese_imperial_government_desc` for Earth Monarchy.
-  - Issue #597: Added `desc_supporting_the_earth_kingdom` for Earth Kingdom Upkeep.
+  - Issue #597: Added `supporting_the_earth_kingdom_desc` (and `desc_supporting_the_earth_kingdom`) for Earth Kingdom Upkeep.
   - Issue #559: Adapted `EVTDESC_RoI_215`/`218` ("Merchant from Hindustan") to Ba Sing Se / komodo rhino.
   - Issue #312: Adapted `NEWBORN_PURPLE_SETUP`/`LOG` and `born_in_the_purple` to the Royal Earth Palace.
   - Issue #32: Fixed `tooltip_obj_see_the_realm_grow` scope (`[Root.realmSizeGoal.GetValue]` -> `[This.realmSizeGoal.GetValue]`).
-  - Added missing localization for 11 ATLA decisions and their descriptions.
+  - Added ~125 missing/mismatched ATLA keys (pet shop `PETS.*`, Avatar past-life/interregnum/duel strings, Mandate modifiers, Barbarian events, Airball/Sand Sailer/White Lotus/Fire Nation events, and ATLA decisions).
 - **Windows-1252 Encoding Repairs**: Restored corrupted UTF-8 / `U+FFFD` bytes in `localisation/ATLA_bloodlines.csv` (30 broken `§` color codes), `localisation/ATLA_custom_titles.csv` (85 corrupted diacritics), `events/roi_various_events.txt`, and `events/ze_adolescence_events.txt`.

@@ -2,9 +2,11 @@
 # Issue #610: True Christian Knight vanilla leak
 true_christian_knight;True Honorable Warrior;;;;;;;;;;;;;x
 desc_true_christian_knight;This character is renowned throughout the realm as a paragon of martial honor, discipline, and virtue.;;;;;;;;;;;;;x
+true_christian_knight_desc;This character is renowned throughout the realm as a paragon of martial honor, discipline, and virtue.;;;;;;;;;;;;;x
 # Issue #609: Earth Monarchy (chinese_imperial_government) desc vanilla leak
 chinese_imperial_government_desc;The Earth Monarchy represents the ancient centralized throne of Ba Sing Se and the Earth Kingdom. The Earth Monarch rules through a vast bureaucracy and royal court, able to hold both castles and cities while commanding the loyalty of subordinate kings and governors across the realm.;;;;;;;;;;;;;x
 # Issue #597: Earth Kingdom Upkeep modifier missing description
+supporting_the_earth_kingdom_desc;The vast administrative apparatus of Ba Sing Se and the Royal Earth Palace requires substantial ongoing upkeep to maintain order and imperial authority across the Earth Kingdom.;;;;;;;;;;;;;x
 desc_supporting_the_earth_kingdom;The vast administrative apparatus of Ba Sing Se and the Royal Earth Palace requires substantial ongoing upkeep to maintain order and imperial authority across the Earth Kingdom.;;;;;;;;;;;;;x
 # Issue #559: Merchant from Hindustan vanilla event adapted to Ba Sing Se
 EVTDESC_RoI_215;A wealthy merchant caravan traveling from the grand markets of Ba Sing Se has arrived at your court, bearing exotic wares and curiosities from across the Earth Kingdom. Among his treasures is a breathtaking, flawlessly cut diamond of unusual brilliance, which he offers to sell you for a modest sum.;;;;;;;;;;;;;x
@@ -27,8 +29,8 @@ avatar_end_withdrawal;End Spiritual Withdrawal;;;;;;;;;;;;;x
 avatar_end_withdrawal_desc;Return from your period of spiritual seclusion and once again take an active role in maintaining balance across the Four Nations.;;;;;;;;;;;;;x
 get_gay_married_;Marry Partner;;;;;;;;;;;;;x
 get_gay_married__desc;Enter into a formal marriage with this character.;;;;;;;;;;;;;x
-imperial_ambitions_3;Expand Fire Nation Industry;;;;;;;;;;;;;x
-imperial_ambitions_3_desc;Invest heavily in foundries, shipyards, and infrastructure to fuel the Fire Nation's imperial ambitions.;;;;;;;;;;;;;x
+imperial_ambitions_3;Expand the Colonies;;;;;;;;;;;;;x
+imperial_ambitions_3_desc;If we are to further our borders, we must expand our colonies further inland. Further expeditions will be launched to survey the neighbouring region.;;;;;;;;;;;;;x
 show_me_best_benders_desc;Review the most powerful legendary and master benders currently alive across the Four Nations.;;;;;;;;;;;;;x
 give_to_the_sages;Entrust to the Sages;;;;;;;;;;;;;x
 give_to_the_sages_desc;Send this character to be raised and instructed by the Sages.;;;;;;;;;;;;;x
@@ -40,3 +42,107 @@ stop_abduct_decision_desc;Call off your ongoing abduction attempt.;;;;;;;;;;;;;x
 stop_abduct_decision_target;Cancel Abduction of Target;;;;;;;;;;;;;x
 stop_abduct_decision_target_desc;Call off your ongoing abduction attempt against this character.;;;;;;;;;;;;;x
 HYW_ally_earth_kingdom;Ally with the Earth Kingdom;;;;;;;;;;;;;x
+airball_improve_bending;Airball Bending Training;;;;;;;;;;;;;x
+airball_improve_bending_desc;Spend some of your standing in the Airball Association on a few weeks of intensive training with its best players.;;;;;;;;;;;;;x
+# Avatar Cycle Broken Event
+atlafix.10.t;The Cycle Is Broken;;;;;;;;;;;;;x
+atlafix.10.d;The Avatar has been struck down while in the Avatar State. Every past life, from the first Avatar onward, was channelled through that body in that moment, and now the light has gone out of all of them at once.\n\nThere will be no reincarnation. The Air Nomads will search for a child who is not coming, and the spirits will have no bridge to the human world. Whatever comes next, the world will have to face it without the Avatar.;;;;;;;;;;;;;x
+atlafix.10.a;The world is on its own now.;;;;;;;;;;;;;x
+# Missing & Mismatched Base Mod Event, Tooltip, Trait & Modifier Localization
+BAR.8.A;The Barbarian crusade against Waterbenders wages ever on. Tested in many battles and clad in the heavy metal taken in countless raids, a cadre of elite veteran warriors have pledged themselves to the service of the Barbarian Warchief. These brutal souls have been organised into a personal honour guard - and for every one that falls, another ten seem ready to take their place.;;;;;;;;;;;;;x
+MANDATE_PEASANT_REVOLT;The peasantry will take up arms against you!;;;;;;;;;;;;;x
+improve_bending_event_accept;What a rare tea!;;;;;;;;;;;;;x
+path_of_spirit_tooltip;This option is available because you walk the §GPath of the Spirits.§!;;;;;;;;;;;;;x
+sell_avatar_event_desc;When your buyer asks your slave for their special skills, they're listed off: reading, writing, bending all four elements...\n\nYour buyer stares in disbelief. "Oh spirits, you're the Avatar... You idiots stole the Avatar?! HOW did you steal the Avatar?!"\n'Well, first we roughed 'em up a bit.' one of your henchmen explains, stunning the whole market into a silence.\n\nOnly when the Avatar speaks is it broken. They explain that while they're not upset about this obvious misunderstanding, their past lives may feel differently...\n\nWhen their eyes start to glow, the market clears out at a truly unprecedented speed. Perhaps it would be best to get away from here for a while. Very, VERY far away.;;;;;;;;;;;;;x
+PETS.RARE.TT;You will begin the search for your legendary animal! It will take at least a few months, and could take years, assuming you ever find one. You'll be able to cancel your search if you want to, periodically.;;;;;;;;;;;;;x
+fervor_cd_tt;Build Racing Fervor decision will be unavailable for §Y1 year§! after use;;;;;;;;;;;;;x
+NAE.517.D;The Avatar has exited withdrawal, performing their duties once again.;;;;;;;;;;;;;x
+NAE.610.OPTB;I welcome them in;;;;;;;;;;;;;x
+NAE.613.OPT;This person is a stranger to me;;;;;;;;;;;;;x
+NAE.315.OPTA;And some are even shared with the realm!;;;;;;;;;;;;;x
+agni_kai_refused_dishonor;Dishonoured by Cowardice;;;;;;;;;;;;;x
+duel_refused_dishonor;Refused Duel;;;;;;;;;;;;;x
+EVTOPTC_EK_66a;We trust our great monarch...;;;;;;;;;;;;;x
+EVTOPTC_EK_66b;My power is now absolute.;;;;;;;;;;;;;x
+EVTOPTC_EK_66c;A startling turn of events.;;;;;;;;;;;;;x
+PETS.1.D;Every animal, great and small, can make for an appropriate pet - but only a few are fit for a ruler such as myself. What kind of pet am I looking for?;;;;;;;;;;;;;x
+PETS.1.OPTA;Something normal;;;;;;;;;;;;;x
+PETS.1.OPTB;Something regional;;;;;;;;;;;;;x
+PETS.1.OPTC;Something truly rare;;;;;;;;;;;;;x
+PETS.1.OPTD;Actually, I don't want a pet right now;;;;;;;;;;;;;x
+PETS.2.D;One can't go wrong with a cat or a dog. They're the most classic companions of mankind for a reason! But an ostrich-horse can be just as fast a friend, if one raises it right.;;;;;;;;;;;;;x
+PETS.2.OPTA;I'll take a cat;;;;;;;;;;;;;x
+PETS.2.OPTB;I'll take a dog;;;;;;;;;;;;;x
+PETS.2.OPTC;I'll take an ostrich-horse;;;;;;;;;;;;;x
+PETS.2.OPTD;On second thought...;;;;;;;;;;;;;x
+PETS.3.D;There are so many strange and wonderful creatures through the world! But a ruler doesn't have time to keep a menagerie. I'll have to content myself with...;;;;;;;;;;;;;x
+PETS.3.OPTA;A local specialty;;;;;;;;;;;;;x
+PETS.3.OPTB;An Arctic Camel;;;;;;;;;;;;;x
+PETS.3.OPTC;A Sky Bison, if I can find one;;;;;;;;;;;;;x
+PETS.3.OPTD;On second thought...;;;;;;;;;;;;;x
+PETS.4.D;There are legendary creatures throughout the world. Those thought extinct, those thought unreal, and those thought untameable. If I could claim one as my pet, they could make for a valuable and trusted friend. Not to mention how impressive it would be! It will take a great deal of time and money, of course.;;;;;;;;;;;;;x
+PETS.4.OPTA;I'll find the extinct Cat-Deer!;;;;;;;;;;;;;x
+PETS.4.OPTB;I'll seek out an ordinary Bear!;;;;;;;;;;;;;x
+PETS.4.OPTC;I'll tame a mighty Dragon!;;;;;;;;;;;;;x
+PETS.4.OPTD;On second thought...;;;;;;;;;;;;;x
+EVTTOOLTIPBduel.1;A routine strike at the torso region would be an all-round safe move;;;;;;;;;;;;;x
+EVTTOOLTIPDduel.1;Whether by necessity or as part of a clever tactic;;;;;;;;;;;;;x
+EVTTOOLTIPBduel.2;A routine strike at the torso region would be an all-round safe move;;;;;;;;;;;;;x
+EVTTOOLTIPDduel.2;Whether by necessity or as part of a clever tactic;;;;;;;;;;;;;x
+EVTDESCHYW.58;Omashu remains free. While the Fire Nation burns its way across the Earth Kingdom, its old king holds his city as if the war were a game he has already won.;;;;;;;;;;;;;x
+EVTDESC_AIRBALL_1010;Your fellow members of the Airball Association have asked you to work on your balance. Training on the poles is the only way to improve.;;;;;;;;;;;;;x
+EVTOPT_AIRBALL_1013;My balance has never been better.;;;;;;;;;;;;;x
+EVTDESC_SANDR.620;[Root.GetFirstName],\n\nThe Grand Master has heard your request and agrees that you have earned a higher place among the Sand Sailers.;;;;;;;;;;;;;x
+EVTOPTA_SANDR.621;I am honoured.;;;;;;;;;;;;;x
+EVTOPTB_SANDR.1068;Let them try again!;;;;;;;;;;;;;x
+EVTOPTA_PRT_20084;How dare they!;;;;;;;;;;;;;x
+EVTOPTAhA.145;May you find your own path.;;;;;;;;;;;;;x
+EVTOPTB_MNSAK_5100;Shout for help!;;;;;;;;;;;;;x
+EVTOPTD_MNSAK_5156;[From.GetFirstName] will pledge allegiance to the Fire Nation.;;;;;;;;;;;;;x
+EVTOPTbending.97;My parents have decided I will not get a bending teacher. I will have to make do on my own.;;;;;;;;;;;;;x
+EVTOPTspecial.46;I can fly!;;;;;;;;;;;;;x
+TOOLTIPAspecial.26;You will begin practising on small animals.;;;;;;;;;;;;;x
+TOOLTIPBspecial.26;You put the idea out of your mind.;;;;;;;;;;;;;x
+TOOLTIPAspecial.27;You continue practising on small rodents.;;;;;;;;;;;;;x
+NOMADEVTDESC500;My [GetFromRelation] [From.GetFullName] has chosen me as [From.GetHerHis] successor.;;;;;;;;;;;;;x
+mandate.6;So be it.;;;;;;;;;;;;;x
+mandate11b;Royal Authority will decrease slightly.;;;;;;;;;;;;;x
+mandatepuppet;The Grand Secretariat will rule in my name.;;;;;;;;;;;;;x
+mandatepuppetcons;The Grand Secretariat will rule in my name.;;;;;;;;;;;;;x
+can_reform_barbarism;The Barbarian faith can now be reformed.;;;;;;;;;;;;;x
+CB_AVATAR_CRISIS_WAR;Avatar Crisis War;;;;;;;;;;;;;x
+WAR_AVATAR_CRISIS_WAR;The Avatar's Crisis War against [Base.GetTitledFirstName];;;;;;;;;;;;;x
+NAE.105.TT;All your bending traits are combined into Fully Realised Avatar, which gives all of their bonuses.;;;;;;;;;;;;;x
+NAE.112.OPTA;Dammit!;;;;;;;;;;;;;x
+NAE.213.TT;The Avatar will join your court and help your people.;;;;;;;;;;;;;x
+NAE.313.D;My family member has come home from travelling with the Avatar, and has become an expert with weapons along the way.;;;;;;;;;;;;;x
+NAE.315.OPTB;And most of it they give away to those in need!;;;;;;;;;;;;;x
+NAE.500.D;The Avatar has arrived at the court of [From.GetTitledFirstName].;;;;;;;;;;;;;x
+NAE.551.OPTA;Glad to help.;;;;;;;;;;;;;x
+NAE.552.OPTA;Their loss.;;;;;;;;;;;;;x
+NAE.623.OPTC;I'm just in touch with my past lives. It's fine.;;;;;;;;;;;;;x
+NAE.624.OPTD;There is only one option left to me...;;;;;;;;;;;;;x
+NAE.702.OPTD;This isn't your fight.;;;;;;;;;;;;;x
+NAE.THANK;Thank you, Avatar.;;;;;;;;;;;;;x
+ek_unrest;Earth Kingdom Unrest;;;;;;;;;;;;;x
+ek_law_low_mandate_change;Recent Mandate Reform;;;;;;;;;;;;;x
+duel_refused_freely;Declined a Duel;;;;;;;;;;;;;x
+superhero_cooldown;Recently Saved the Day;;;;;;;;;;;;;x
+bisexual;Bisexual;;;;;;;;;;;;;x
+bisexual_desc;This character is attracted to both men and women.;;;;;;;;;;;;;x
+secretly_fire_nation_imperialism;Secretly Fire Imperialist;;;;;;;;;;;;;x
+secretly_fire_nation_imperialism_desc;This character secretly follows Fire Imperialism.;;;;;;;;;;;;;x
+mandateposituvemodifier1;Mandate of the Spirits: Faint;;;;;;;;;;;;;x
+mandatenegativemodifier1;Mandate Questioned: Murmurs;;;;;;;;;;;;;x
+mandateposituvemodifier2;Mandate of the Spirits: Modest;;;;;;;;;;;;;x
+mandatenegativemodifier2;Mandate Questioned: Doubts;;;;;;;;;;;;;x
+mandateposituvemodifier3;Mandate of the Spirits: Firm;;;;;;;;;;;;;x
+mandatenegativemodifier3;Mandate Questioned: Discontent;;;;;;;;;;;;;x
+mandateposituvemodifier4;Mandate of the Spirits: Strong;;;;;;;;;;;;;x
+mandatenegativemodifier4;Mandate Questioned: Defiance;;;;;;;;;;;;;x
+mandateposituvemodifier5;Mandate of the Spirits: Great;;;;;;;;;;;;;x
+mandatenegativemodifier5;Mandate Questioned: Unrest;;;;;;;;;;;;;x
+mandateposituvemodifier6;Mandate of the Spirits: Heavenly;;;;;;;;;;;;;x
+mandatenegativemodifier6;Mandate Questioned: Revolt;;;;;;;;;;;;;x
+NAE.625.OPTB;I've mastered my past lives.;;;;;;;;;;;;;x
+NAE.625.OPTC;I'm not fit to rule anymore.;;;;;;;;;;;;;x

@@ -256,6 +256,7 @@ decisions = {
 				religion = fire_spirituality
 				religion = bhanti_spirituality
 				religion = southern_spirituality
+				religion = tui_and_la
 				religion = bhanti_spirituality_reformed
 			}
 			NOT = {

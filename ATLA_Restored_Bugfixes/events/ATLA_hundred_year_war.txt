@@ -907,10 +907,7 @@ narrative_event = { # Sozin's Comet Arrives
 		name = EVTOPTAh.36
 		trigger = {
 			trait = firebender
-			NOR = {
-				has_landed_title = e_fire_nation
-				has_global_flag = HYW_15
-			}
+			NOT = { AND = { has_landed_title = e_fire_nation has_global_flag = HYW_15 } }
 		}
 		add_character_modifier = { name = power_of_the_comet duration = 4000 }
 		add_character_modifier = { name = agni_blessing duration = -1 }
@@ -920,10 +917,7 @@ narrative_event = { # Sozin's Comet Arrives
 		name = EVTOPTAh.37
 		trigger = {
 			NOT = { trait = firebender }
-			NOR = {
-				has_landed_title = e_fire_nation
-				has_global_flag = HYW_15
-			}
+			NOT = { AND = { has_landed_title = e_fire_nation has_global_flag = HYW_15 } }
 		}
 	}
 	
@@ -936,8 +930,12 @@ narrative_event = { # Sozin's Comet Arrives
 		hidden_tooltip = {
 			set_global_flag = HYW_13
 			set_global_flag = HYW_9
-			add_character_modifier = { name = power_of_the_comet duration = 4000 }
-			add_character_modifier = { name = agni_blessing duration = -1 }
+			set_global_flag = HYW_4
+			if = {
+				limit = { trait = firebender }
+				add_character_modifier = { name = power_of_the_comet duration = 4000 }
+				add_character_modifier = { name = agni_blessing duration = -1 }
+			}
 			character_event = { id = ATLAE.27 }
 			any_playable_ruler = {
 				character_event = { id = CM.10550 }
@@ -2612,10 +2610,12 @@ character_event = { # Air Nomads - Check Survival
 		year = 840
 		NOT = { year = 845 }
 		NOT = { has_global_flag = HYW_21 }
-		NOT = { has_global_flag = HYW_5 }
-		NOT = { has_global_flag = HYW_6 }
-		NOT = { has_global_flag = HYW_7 }
-		NOT = { has_global_flag = HYW_8 }
+		OR = {
+			c_northern_air_temple = { holder_scope = { religion_group = air_religions } }
+			c_southern_air_temple = { holder_scope = { religion_group = air_religions } }
+			c_eastern_air_temple = { holder_scope = { religion_group = air_religions } }
+			c_western_air_temple = { holder_scope = { religion_group = air_religions } }
+		}
 	}
 	
 	mean_time_to_happen = {
@@ -4401,13 +4401,16 @@ character_event = { # SHDS - Prince's Ambition - Firelord hears
 			set_character_flag = usurper_son
 			break = yes
 		}
-		random_child = {
-			limit = {
-				is_adult = yes
-				NOT = { has_character_flag = chosen_son }
+		if = {
+			limit = { NOT = { any_child = { is_adult = yes has_character_flag = is_ozai } } }
+			random_child = {
+				limit = {
+					is_adult = yes
+					NOT = { has_character_flag = chosen_son }
+				}
+				save_event_target_as = usurper_son
+				set_character_flag = usurper_son
 			}
-			save_event_target_as = usurper_son
-			set_character_flag = usurper_son
 		}
 	}
 	
@@ -4691,13 +4694,16 @@ character_event = { # SHDS - Firelord hears of victory
 			set_character_flag = usurper_son
 			break = yes
 		}
-		random_child = {
-			limit = {
-				is_adult = yes
-				NOT = { has_character_flag = chosen_son }
+		if = {
+			limit = { NOT = { any_child = { is_adult = yes has_character_flag = is_ozai } } }
+			random_child = {
+				limit = {
+					is_adult = yes
+					NOT = { has_character_flag = chosen_son }
+				}
+				save_event_target_as = usurper_son
+				set_character_flag = usurper_son
 			}
-			save_event_target_as = usurper_son
-			set_character_flag = usurper_son
 		}
 	}
 

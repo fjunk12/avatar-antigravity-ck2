@@ -1739,7 +1739,11 @@ obj_become_king = {
 	ai_capital_kingdom_focus = yes # AI characters with this ambition will actually focus on taking the kingdom
 	
 	potential = {
-		NOT = { religion = air_spirituality }
+		NOR = {
+			religion = air_spirituality
+			religion = air_acolytism
+			religion = air_acolytism_reformed
+		}
 		is_adult = yes
 		is_playable = yes
 		is_landed = yes
@@ -2678,7 +2682,11 @@ obj_see_the_realm_grow = {
 		is_playable = yes
 		is_landed = yes
 		higher_tier_than = BARON
-		NOT = { religion = air_spirituality }
+		NOR = {
+			religion = air_spirituality
+			religion = air_acolytism
+			religion = air_acolytism_reformed
+		}
 		#NOT = { has_character_modifier = conquerer_ambition_timer }
 		NOT = { realm_size = 52 }
 		NOT = { has_character_flag = tookFiveYearFocus }

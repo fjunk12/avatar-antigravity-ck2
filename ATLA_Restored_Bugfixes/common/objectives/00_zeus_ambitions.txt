@@ -373,7 +373,11 @@ obj_build_a_war_chest = {
 	type = character
 	
 	potential = {
-		NOT = { religion = air_spirituality }
+		NOR = {
+			religion = air_spirituality
+			religion = air_acolytism
+			religion = air_acolytism_reformed
+		}
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = war_chest_timer }
 		is_nomadic = no

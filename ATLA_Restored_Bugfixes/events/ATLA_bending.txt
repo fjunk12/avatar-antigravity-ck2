@@ -3839,7 +3839,7 @@ character_event = {
 			random_list = {
 				25 = {
 					FROM = {
-						add_trait = lightningbender
+						if = { limit = { NOT = { trait = combustionbender } } add_trait = lightningbender }
 					}
 					modifier = {
 						factor = 2
@@ -4103,7 +4103,7 @@ character_event = {
 	option = {
 		random_list = {
 			5 = {
-				add_trait = blueflames
+				if = { limit = { NOT = { trait = combustionbender } } add_trait = blueflames }
 			}
 			95 = {
 			}

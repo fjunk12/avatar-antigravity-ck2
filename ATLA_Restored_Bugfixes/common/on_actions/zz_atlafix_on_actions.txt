@@ -1,0 +1,6 @@
+# ATLA Restored Bugfixes
+on_yearly_pulse = {
+	events = {
+		atlafix.1 # Avatar reincarnation safety net
+	}
+}
