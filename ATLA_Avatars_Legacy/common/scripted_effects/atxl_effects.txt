@@ -1,0 +1,400 @@
+# ATLA_Avatars_Legacy - scripted effects
+
+# Safely locates the living Avatar using both base markers (trait = avatar + is_avatar flag)
+# and caches them in global event_target:atxl_avatar.
+atxl_find_avatar_effect = {
+	clear_global_event_target = atxl_avatar
+	random_character = {
+		limit = {
+			trait = avatar
+			has_character_flag = is_avatar
+			is_alive = yes
+		}
+		save_global_event_target_as = atxl_avatar
+	}
+}
+
+# Helper: clear culture-group flags for Zealots / Iron Peace
+atxl_clear_zealot_cg_flags_effect = {
+	clr_global_flag = atxl_zealot_cg_earth
+	clr_global_flag = atxl_zealot_cg_fire
+	clr_global_flag = atxl_zealot_cg_water
+	clr_global_flag = atxl_zealot_cg_air
+}
+atxl_clear_ironpeace_cg_flags_effect = {
+	clr_global_flag = atxl_ironpeace_cg_earth
+	clr_global_flag = atxl_ironpeace_cg_fire
+	clr_global_flag = atxl_ironpeace_cg_water
+	clr_global_flag = atxl_ironpeace_cg_air
+}
+
+# Cleanup for Iron Peace (used by both mission resolution and 50-year fade)
+atxl_cleanup_ironpeace_effect = {
+	clr_global_flag = atxl_leg_ironpeace
+	atxl_clear_ironpeace_cg_flags_effect = yes
+	any_independent_ruler = {
+		limit = { has_character_modifier = atxl_iron_peace_ruler }
+		remove_character_modifier = atxl_iron_peace_ruler
+	}
+}
+
+# Sets a legacy (restarting its 50-year clock) and notifies every player. Run in the dying Avatar's scope.
+atxl_set_legacy_spirits_effect = {
+	clr_global_flag = atxl_leg_spirits
+	set_global_flag = atxl_leg_spirits
+	any_player = {
+		set_character_flag = atxl_newleg_spirits
+		character_event = { id = atxl.5 days = 7 }
+	}
+}
+atxl_set_legacy_lawless_effect = {
+	clr_global_flag = atxl_leg_lawless
+	set_global_flag = atxl_leg_lawless
+	any_player = {
+		set_character_flag = atxl_newleg_lawless
+		character_event = { id = atxl.5 days = 7 }
+	}
+}
+atxl_set_legacy_zealots_effect = {
+	clr_global_flag = atxl_leg_zealots
+	set_global_flag = atxl_leg_zealots
+	atxl_clear_zealot_cg_flags_effect = yes
+	if = {
+		limit = { culture_group = fire_nation_cultures }
+		set_global_flag = atxl_zealot_cg_fire
+	}
+	else_if = {
+		limit = { culture_group = water_tribe_cultures }
+		set_global_flag = atxl_zealot_cg_water
+	}
+	else_if = {
+		limit = { culture_group = air_nomad_cultures }
+		set_global_flag = atxl_zealot_cg_air
+	}
+	else = {
+		set_global_flag = atxl_zealot_cg_earth
+	}
+	any_player = {
+		set_character_flag = atxl_newleg_zealots
+		character_event = { id = atxl.5 days = 7 }
+	}
+}
+atxl_set_legacy_ambition_effect = {
+	clr_global_flag = atxl_leg_ambition
+	set_global_flag = atxl_leg_ambition
+	any_player = {
+		set_character_flag = atxl_newleg_ambition
+		character_event = { id = atxl.5 days = 7 }
+	}
+}
+atxl_set_legacy_ironpeace_effect = {
+	atxl_cleanup_ironpeace_effect = yes
+	set_global_flag = atxl_leg_ironpeace
+	if = {
+		limit = { top_liege = { culture_group = fire_nation_cultures } }
+		set_global_flag = atxl_ironpeace_cg_fire
+	}
+	else_if = {
+		limit = { top_liege = { culture_group = water_tribe_cultures } }
+		set_global_flag = atxl_ironpeace_cg_water
+	}
+	else_if = {
+		limit = { top_liege = { culture_group = air_nomad_cultures } }
+		set_global_flag = atxl_ironpeace_cg_air
+	}
+	else = {
+		set_global_flag = atxl_ironpeace_cg_earth
+	}
+	any_independent_ruler = {
+		limit = {
+			higher_tier_than = COUNT
+			atxl_matches_ironpeace_cg_trigger = yes
+		}
+		add_character_modifier = { name = atxl_iron_peace_ruler years = 5 }
+	}
+	any_player = {
+		set_character_flag = atxl_newleg_ironpeace
+		character_event = { id = atxl.5 days = 7 }
+	}
+}
+
+# Picks one independent duke+ ruler for a Zealots event (weighted 2:1 toward dying Avatar's culture group)
+atxl_trigger_zealot_event_effect = {
+	random_list = {
+		67 = {
+			if = {
+				limit = {
+					any_independent_ruler = {
+						atxl_zealot_target_trigger = yes
+						atxl_matches_zealot_cg_trigger = yes
+					}
+				}
+				random_independent_ruler = {
+					limit = {
+						atxl_zealot_target_trigger = yes
+						atxl_matches_zealot_cg_trigger = yes
+					}
+					clr_character_flag = atxl_zealot_recent
+					set_character_flag = atxl_zealot_recent
+					character_event = { id = atxl.14 days = 14 random = 60 }
+				}
+			}
+			else = {
+				random_independent_ruler = {
+					limit = { atxl_zealot_target_trigger = yes }
+					clr_character_flag = atxl_zealot_recent
+					set_character_flag = atxl_zealot_recent
+					character_event = { id = atxl.14 days = 14 random = 60 }
+				}
+			}
+		}
+		33 = {
+			random_independent_ruler = {
+				limit = { atxl_zealot_target_trigger = yes }
+				clr_character_flag = atxl_zealot_recent
+				set_character_flag = atxl_zealot_recent
+				character_event = { id = atxl.14 days = 14 random = 60 }
+			}
+		}
+	}
+}
+
+# Unchecked Ambition looks for a champion (run once a year from the world pulse)
+atxl_find_champion_effect = {
+	if = {
+		limit = {
+			e_fire_nation = {
+				has_holder = yes
+				holder_scope = {
+					independent = yes
+					atxl_ambitious_ruler_trigger = yes
+				}
+			}
+		}
+		e_fire_nation = { holder_scope = { atxl_make_champion_fire_strike_effect = yes } }
+	}
+	else_if = {
+		limit = {
+			NOT = { e_fire_nation = { has_holder = yes } }
+			any_independent_ruler = { atxl_fire_unifier_candidate_trigger = yes }
+		}
+		random_independent_ruler = {
+			limit = { atxl_fire_unifier_candidate_trigger = yes }
+			preferred_limit = { tier = KING }
+			atxl_make_champion_fire_unify_effect = yes
+		}
+	}
+	else_if = {
+		limit = {
+			atxl_ba_sing_se_weak_trigger = yes
+			any_independent_ruler = { atxl_earth_uniter_candidate_trigger = yes }
+		}
+		random_independent_ruler = {
+			limit = { atxl_earth_uniter_candidate_trigger = yes }
+			preferred_limit = { tier = EMPEROR }
+			preferred_limit = { tier = KING }
+			atxl_make_champion_earth_effect = yes
+		}
+	}
+}
+
+atxl_make_champion_common_effect = {
+	save_global_event_target_as = atxl_champion
+	set_global_flag = atxl_champion_active
+	character_event = { id = atxl.3 }
+	any_player = {
+		limit = { NOT = { character = PREV } }
+		character_event = { id = atxl.10 days = 14 }
+	}
+}
+atxl_make_champion_fire_strike_effect = {
+	set_character_flag = atxl_champion_fire_strike
+	atxl_make_champion_common_effect = yes
+}
+atxl_make_champion_fire_unify_effect = {
+	set_character_flag = atxl_champion_fire_unify
+	atxl_make_champion_common_effect = yes
+}
+atxl_make_champion_earth_effect = {
+	set_character_flag = atxl_champion_earth
+	atxl_make_champion_common_effect = yes
+}
+
+# The champion stops being one (stood down, declined, died, or proclaimed Earth Empire)
+atxl_end_champion_effect = {
+	clr_character_flag = atxl_champion_fire_strike
+	clr_character_flag = atxl_champion_fire_unify
+	clr_character_flag = atxl_champion_earth
+	remove_character_modifier = atxl_ambition_unchecked
+	clr_global_flag = atxl_champion_active
+	clear_global_event_target = atxl_champion
+}
+
+# An AI champion opens their first war at once (a player declares their own from diplomacy)
+atxl_champion_declare_effect = {
+	if = {
+		limit = { has_character_flag = atxl_champion_earth }
+		random_independent_ruler = {
+			limit = {
+				NOT = { character = ROOT }
+				culture_group = earth_kingdom_cultures
+				NOT = { war_with = ROOT }
+				any_realm_province = {
+					region = world_greater_earth_kingdom
+					any_neighbor_province = {
+						has_owner = yes
+						owner = {
+							OR = {
+								character = ROOT
+								is_liege_or_above = ROOT
+							}
+						}
+					}
+				}
+			}
+			random_realm_province = {
+				limit = {
+					region = world_greater_earth_kingdom
+					any_neighbor_province = {
+						has_owner = yes
+						owner = {
+							OR = {
+								character = ROOT
+								is_liege_or_above = ROOT
+							}
+						}
+					}
+				}
+				county = { save_event_target_as = atxl_war_title }
+			}
+			ROOT = { war = { target = PREV casus_belli = atxl_cb_earth_unification thirdparty_title = event_target:atxl_war_title } }
+		}
+	}
+	else_if = {
+		limit = { has_character_flag = atxl_champion_fire_unify }
+		random_independent_ruler = {
+			limit = {
+				NOT = { character = ROOT }
+				culture_group = fire_nation_cultures
+				NOT = { war_with = ROOT }
+				any_realm_province = { region = world_fire_isles }
+			}
+			random_realm_province = {
+				limit = { region = world_fire_isles }
+				duchy = { save_event_target_as = atxl_war_title }
+			}
+			ROOT = { war = { target = PREV casus_belli = atxl_cb_fire_unification thirdparty_title = event_target:atxl_war_title } }
+		}
+	}
+	else_if = {
+		limit = { has_character_flag = atxl_champion_fire_strike }
+		random_independent_ruler = {
+			limit = {
+				NOT = { character = ROOT }
+				culture_group = earth_kingdom_cultures
+				NOT = { war_with = ROOT }
+				any_realm_province = {
+					port = yes
+					region = world_greater_earth_kingdom
+				}
+			}
+			preferred_limit = { NOT = { higher_tier_than = DUKE } }
+			random_realm_province = {
+				limit = {
+					port = yes
+					region = world_greater_earth_kingdom
+				}
+				county = { save_event_target_as = atxl_war_title }
+			}
+			ROOT = { war = { target = PREV casus_belli = atxl_cb_fire_strike thirdparty_title = event_target:atxl_war_title } }
+		}
+	}
+}
+
+# The Avatar lifts a burden. Run in the Avatar's scope.
+atxl_resolve_spirits_effect = {
+	clr_global_flag = atxl_leg_spirits
+	any_province = {
+		limit = { has_province_modifier = atxl_restless_spirits }
+		remove_province_modifier = atxl_restless_spirits
+	}
+	any_player = {
+		limit = { NOT = { character = PREV } }
+		set_character_flag = atxl_solved_spirits
+		character_event = { id = atxl.6 days = 7 }
+	}
+}
+atxl_resolve_lawless_effect = {
+	clr_global_flag = atxl_leg_lawless
+	any_province = {
+		limit = { has_province_modifier = atxl_daofei_country }
+		remove_province_modifier = atxl_daofei_country
+	}
+	any_player = {
+		limit = { NOT = { character = PREV } }
+		set_character_flag = atxl_solved_lawless
+		character_event = { id = atxl.6 days = 7 }
+	}
+}
+atxl_resolve_zealots_effect = {
+	clr_global_flag = atxl_leg_zealots
+	atxl_clear_zealot_cg_flags_effect = yes
+	any_province = {
+		limit = { has_province_modifier = atxl_zealot_unrest }
+		remove_province_modifier = atxl_zealot_unrest
+	}
+	any_player = {
+		limit = { NOT = { character = PREV } }
+		set_character_flag = atxl_solved_zealots
+		character_event = { id = atxl.6 days = 7 }
+	}
+}
+atxl_resolve_ambition_effect = {
+	clr_global_flag = atxl_leg_ambition
+	if = {
+		limit = { has_global_flag = atxl_champion_active }
+		event_target:atxl_champion = { atxl_end_champion_effect = yes }
+	}
+	any_player = {
+		limit = { NOT = { character = PREV } }
+		set_character_flag = atxl_solved_ambition
+		character_event = { id = atxl.6 days = 7 }
+	}
+}
+atxl_resolve_ironpeace_effect = {
+	atxl_cleanup_ironpeace_effect = yes
+	any_province = {
+		limit = { has_province_modifier = atxl_iron_peace_prov }
+		remove_province_modifier = atxl_iron_peace_prov
+	}
+	any_player = {
+		limit = { NOT = { character = PREV } }
+		set_character_flag = atxl_solved_ironpeace
+		character_event = { id = atxl.6 days = 7 }
+	}
+}
+
+# The Avatar begins a mission to lift a burden (takes 6-12 months, resolves in atxl.12)
+atxl_start_mission_effect = {
+	set_character_flag = atxl_on_mission
+	add_character_modifier = { name = atxl_avatar_on_mission days = 400 }
+	character_event = { id = atxl.12 days = 180 random = 180 }
+	any_player = {
+		limit = { NOT = { character = PREV } }
+		character_event = { id = atxl.13 days = 7 }
+	}
+}
+
+# Clears the mission flags (run in the Avatar's scope)
+atxl_end_mission_effect = {
+	clr_character_flag = atxl_on_mission
+	clr_character_flag = atxl_mission_won
+	clr_character_flag = atxl_mission_lost
+	clr_character_flag = atxl_mission_spirits
+	clr_character_flag = atxl_mission_lawless
+	clr_character_flag = atxl_mission_zealots
+	clr_character_flag = atxl_mission_ironpeace
+	remove_character_modifier = atxl_avatar_on_mission
+	clr_character_flag = atxl_mission_cooldown
+	set_character_flag = atxl_mission_cooldown
+}

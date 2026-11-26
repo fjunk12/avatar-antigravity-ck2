@@ -1,0 +1,54 @@
+# ATLA_Avatars_Legacy - event modifiers
+
+# Province modifiers
+atxl_restless_spirits = {
+	icon = 1
+	local_tax_modifier = -0.2
+	local_revolt_risk = 0.02
+}
+atxl_daofei_country = {
+	icon = 1
+	local_tax_modifier = -0.15
+	local_revolt_risk = 0.03
+}
+atxl_zealot_unrest = {
+	icon = 1
+	local_revolt_risk = 0.04
+}
+atxl_iron_peace_prov = {
+	icon = 1
+	local_revolt_risk = 0.02
+}
+
+# Character modifiers
+atxl_iron_peace_ruler = {
+	icon = 1
+	vassal_opinion = -10
+}
+atxl_ambition_unchecked = {
+	icon = 7
+	martial = 2
+	land_morale = 0.1
+	monthly_character_prestige = 0.5
+}
+atxl_defied_avatar = {
+	icon = 1
+	general_opinion = -15
+}
+atxl_humbled_by_avatar = {
+	icon = 1
+	monthly_character_prestige = -0.5
+}
+atxl_avatar_fights_beside_us = {
+	icon = 7
+	land_morale = 0.15
+	levy_size = 0.1
+}
+atxl_avatar_on_mission = {
+	icon = 24
+	monthly_character_piety = 0.5
+}
+atxl_avatar_doubted = {
+	icon = 1
+	general_opinion = -5
+}

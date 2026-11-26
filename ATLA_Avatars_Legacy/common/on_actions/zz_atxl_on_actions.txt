@@ -1,0 +1,11 @@
+# ATLA_Avatars_Legacy - on_actions
+on_death = {
+	events = {
+		atxl.1 # A dying Avatar leaves a burden behind
+	}
+}
+on_yearly_pulse = {
+	events = {
+		atxl.2 # Yearly world pulse: burdens act on the world, fade after 50 years, Unchecked Ambition seeks a champion
+	}
+}

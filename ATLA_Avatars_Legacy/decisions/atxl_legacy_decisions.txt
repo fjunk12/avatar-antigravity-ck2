@@ -1,0 +1,239 @@
+# ATLA_Avatars_Legacy - Avatar missions, Champion confrontation, Legacy viewer, Earth Empire proclamation
+# Self-targeted decisions allow both player and AI Avatars (landed or unlanded) to act on burdens.
+
+targetted_decisions = {
+
+	atxl_avatar_calm_spirits = {
+		filter = self
+		ai_target_filter = self
+		ai_check_interval = 12
+		diplomacy_icon = GFX_trait_avatar
+		potential = {
+			has_global_flag = atxl_leg_spirits
+			atxl_avatar_can_act_trigger = yes
+			NOT = { has_character_flag = atxl_on_mission }
+		}
+		allow = {
+			custom_tooltip = {
+				text = atxl_mission_cooldown_tt
+				OR = {
+					NOT = { has_character_flag = atxl_mission_cooldown }
+					had_character_flag = { flag = atxl_mission_cooldown days = 730 }
+				}
+			}
+			OR = {
+				learning = 10
+				trait = fully_realised_avatar
+			}
+			piety = 50
+		}
+		effect = {
+			piety = -50
+			set_character_flag = atxl_mission_spirits
+			atxl_start_mission_effect = yes
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 2 trait = fully_realised_avatar }
+			modifier = { factor = 1.5 learning = 14 }
+		}
+	}
+
+	atxl_avatar_hunt_daofei = {
+		filter = self
+		ai_target_filter = self
+		ai_check_interval = 12
+		diplomacy_icon = GFX_trait_avatar
+		potential = {
+			has_global_flag = atxl_leg_lawless
+			atxl_avatar_can_act_trigger = yes
+			NOT = { has_character_flag = atxl_on_mission }
+		}
+		allow = {
+			custom_tooltip = {
+				text = atxl_mission_cooldown_tt
+				OR = {
+					NOT = { has_character_flag = atxl_mission_cooldown }
+					had_character_flag = { flag = atxl_mission_cooldown days = 730 }
+				}
+			}
+			OR = {
+				martial = 10
+				trait = fully_realised_avatar
+			}
+		}
+		effect = {
+			set_character_flag = atxl_mission_lawless
+			atxl_start_mission_effect = yes
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 2 trait = fully_realised_avatar }
+			modifier = { factor = 1.5 martial = 14 }
+		}
+	}
+
+	atxl_avatar_disavow_zealots = {
+		filter = self
+		ai_target_filter = self
+		ai_check_interval = 12
+		diplomacy_icon = GFX_trait_avatar
+		potential = {
+			has_global_flag = atxl_leg_zealots
+			atxl_avatar_can_act_trigger = yes
+			NOT = { has_character_flag = atxl_on_mission }
+		}
+		allow = {
+			custom_tooltip = {
+				text = atxl_mission_cooldown_tt
+				OR = {
+					NOT = { has_character_flag = atxl_mission_cooldown }
+					had_character_flag = { flag = atxl_mission_cooldown days = 730 }
+				}
+			}
+			OR = {
+				diplomacy = 10
+				learning = 10
+				trait = fully_realised_avatar
+			}
+		}
+		effect = {
+			set_character_flag = atxl_mission_zealots
+			atxl_start_mission_effect = yes
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 2 trait = fully_realised_avatar }
+			modifier = { factor = 1.5 diplomacy = 14 }
+			modifier = { factor = 1.5 learning = 14 }
+		}
+	}
+
+	atxl_avatar_heal_divide = {
+		filter = self
+		ai_target_filter = self
+		ai_check_interval = 12
+		diplomacy_icon = GFX_trait_avatar
+		potential = {
+			has_global_flag = atxl_leg_ironpeace
+			atxl_avatar_can_act_trigger = yes
+			NOT = { has_character_flag = atxl_on_mission }
+		}
+		allow = {
+			custom_tooltip = {
+				text = atxl_mission_cooldown_tt
+				OR = {
+					NOT = { has_character_flag = atxl_mission_cooldown }
+					had_character_flag = { flag = atxl_mission_cooldown days = 730 }
+				}
+			}
+			OR = {
+				diplomacy = 12
+				trait = fully_realised_avatar
+			}
+		}
+		effect = {
+			set_character_flag = atxl_mission_ironpeace
+			atxl_start_mission_effect = yes
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = { factor = 2 trait = fully_realised_avatar }
+			modifier = { factor = 1.5 diplomacy = 16 }
+		}
+	}
+
+	# Player Avatar confronts the Champion of Unchecked Ambition (ROOT = champion, FROM = Avatar)
+	# (AI Avatars confront from the yearly world pulse atxl.2)
+	atxl_avatar_confront_champion = {
+		ai = no
+		filter = all
+		ai_target_filter = none
+		diplomacy_icon = GFX_trait_avatar
+		from_potential = {
+			atxl_avatar_can_act_trigger = yes
+		}
+		potential = {
+			atxl_is_champion_trigger = yes
+		}
+		allow = {
+			FROM = {
+				custom_tooltip = {
+					text = atxl_confront_cooldown_tt
+					OR = {
+						NOT = { has_character_flag = atxl_confronted }
+						had_character_flag = { flag = atxl_confronted days = 1825 }
+					}
+				}
+			}
+		}
+		effect = {
+			FROM = {
+				save_global_event_target_as = atxl_avatar
+				clr_character_flag = atxl_confronted
+				set_character_flag = atxl_confronted
+			}
+			character_event = { id = atxl.8 days = 7 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+}
+
+decisions = {
+
+	# View active burdens in force (any player may inspect)
+	atxl_view_legacies = {
+		ai = no
+		potential = { atxl_any_legacy_trigger = yes }
+		allow = { always = yes }
+		effect = { character_event = { id = atxl.7 } }
+		ai_will_do = { factor = 0 }
+	}
+
+	# Earth Champion holding Ba Sing Se may proclaim the Earth Empire
+	atxl_proclaim_earth_empire = {
+		is_high_prio = yes
+		ai_check_interval = 12
+		potential = {
+			has_character_flag = atxl_champion_earth
+			independent = yes
+			NOT = { is_title_active = e_earth_empire }
+			NOR = {
+				has_landed_title = e_earth_empire
+				has_landed_title = e_earth_kingdom
+			}
+		}
+		allow = {
+			has_landed_title = c_royal_earth_palace
+			OR = {
+				completely_controls_region = world_north_east_earth_kingdom
+				realm_size = 150
+			}
+			prestige = 500
+		}
+		effect = {
+			prestige = -500
+			primary_title = { save_event_target_as = atxl_old_primary }
+			e_earth_empire = {
+				activate_title = { title = THIS status = yes }
+				grant_title = ROOT
+				hidden_tooltip = {
+					copy_title_laws = event_target:atxl_old_primary
+					make_primary_title = yes
+				}
+			}
+			if = {
+				limit = { has_landed_title = k_earth_kingdom }
+				k_earth_kingdom = { de_jure_liege = e_earth_empire }
+			}
+			set_global_flag = atxl_earth_empire_proclaimed
+			any_player = {
+				limit = { NOT = { character = ROOT } }
+				character_event = { id = atxl.11 days = 3 }
+			}
+			clr_global_flag = atxl_leg_ambition
+			atxl_end_champion_effect = yes
+		}
+		ai_will_do = { factor = 1 }
+	}
+}
