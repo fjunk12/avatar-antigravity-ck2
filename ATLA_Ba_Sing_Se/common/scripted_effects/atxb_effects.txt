@@ -91,11 +91,11 @@ atxb_yearly_income_effect = {
 		set_variable = { which = global_atxb_last_skim which = global_atxb_cap }
 	}
 	# cap: 25% of the king's gold, and nothing below 25 gold
-	export_to_variable = { which = atxb_purse value = wealth }
-	multiply_variable = { which = atxb_purse value = 0.25 }
+	export_to_variable = { which = global_atxb_purse value = wealth }
+	multiply_variable = { which = global_atxb_purse value = 0.25 }
 	if = {
-		limit = { check_variable = { which = global_atxb_last_skim which = atxb_purse } }
-		set_variable = { which = global_atxb_last_skim which = atxb_purse }
+		limit = { check_variable = { which = global_atxb_last_skim which = global_atxb_purse } }
+		set_variable = { which = global_atxb_last_skim which = global_atxb_purse }
 	}
 	if = {
 		limit = { NOT = { wealth = 25 } }
@@ -207,15 +207,21 @@ atxb_complete_roads_effect = {
 		}
 		add_province_modifier = { name = atxb_royal_road duration = -1 }
 	}
-	set_character_flag = atxb_done_roads
-	character_event = { id = atxb.15 }
+	if = {
+		limit = { ai = no }
+		set_character_flag = atxb_done_roads
+		character_event = { id = atxb.15 days = 0 }
+	}
 }
 atxb_complete_law_effect = {
 	set_global_flag = atxb_done_law
 	change_variable = { which = global_royalAuthority value = 5 }
 	atxb_clamp_authority_effect = yes
-	set_character_flag = atxb_done_law
-	character_event = { id = atxb.15 }
+	if = {
+		limit = { ai = no }
+		set_character_flag = atxb_done_law
+		character_event = { id = atxb.15 days = 1 }
+	}
 	any_tributary = {
 		limit = { atxb_ek_tributary_trigger = yes }
 		opinion = { who = PREV modifier = opinion_atxb_single_law years = 20 }
@@ -231,8 +237,11 @@ atxb_complete_granaries_effect = {
 		limit = { region = world_ba_sing_se }
 		add_province_modifier = { name = atxb_granaries duration = -1 }
 	}
-	set_character_flag = atxb_done_granaries
-	character_event = { id = atxb.15 }
+	if = {
+		limit = { ai = no }
+		set_character_flag = atxb_done_granaries
+		character_event = { id = atxb.15 days = 2 }
+	}
 }
 
 # Looting: everything in the treasury goes to the looter (character scope)
@@ -332,6 +341,7 @@ atxb_fund_local_defense_effect = {
 				archers = { 150 150 }
 			}
 			attrition = 1.0
+			maintenance_multiplier = 0
 			disband_on_peace = yes
 		}
 	}
@@ -352,9 +362,10 @@ atxb_progress_roads_effect = {
 				set_variable = { which = global_atxb_w_roads_stage value = 0 }
 				atxb_complete_roads_effect = yes
 			}
-			else = {
+			else_if = {
+				limit = { ai = no }
 				set_character_flag = atxb_report_roads
-				character_event = { id = atxb.10 }
+				character_event = { id = atxb.10 days = 0 }
 			}
 		}
 		else = {
@@ -363,12 +374,16 @@ atxb_progress_roads_effect = {
 				limit = { check_variable = { which = global_atxb_w_roads_stall value = 3 } }
 				set_variable = { which = global_atxb_w_roads_stage value = 0 }
 				set_variable = { which = global_atxb_w_roads_stall value = 0 }
-				set_character_flag = atxb_abandon_roads
-				character_event = { id = atxb.11 }
+				if = {
+					limit = { ai = no }
+					set_character_flag = atxb_abandon_roads
+					character_event = { id = atxb.11 days = 0 }
+				}
 			}
-			else = {
+			else_if = {
+				limit = { ai = no }
 				set_character_flag = atxb_stall_roads
-				character_event = { id = atxb.11 }
+				character_event = { id = atxb.11 days = 0 }
 			}
 		}
 	}
@@ -394,9 +409,10 @@ atxb_progress_law_effect = {
 				set_variable = { which = global_atxb_w_law_stage value = 0 }
 				atxb_complete_law_effect = yes
 			}
-			else = {
+			else_if = {
+				limit = { ai = no }
 				set_character_flag = atxb_report_law
-				character_event = { id = atxb.10 }
+				character_event = { id = atxb.10 days = 1 }
 			}
 		}
 		else = {
@@ -405,12 +421,16 @@ atxb_progress_law_effect = {
 				limit = { check_variable = { which = global_atxb_w_law_stall value = 3 } }
 				set_variable = { which = global_atxb_w_law_stage value = 0 }
 				set_variable = { which = global_atxb_w_law_stall value = 0 }
-				set_character_flag = atxb_abandon_law
-				character_event = { id = atxb.11 }
+				if = {
+					limit = { ai = no }
+					set_character_flag = atxb_abandon_law
+					character_event = { id = atxb.11 days = 1 }
+				}
 			}
-			else = {
+			else_if = {
+				limit = { ai = no }
 				set_character_flag = atxb_stall_law
-				character_event = { id = atxb.11 }
+				character_event = { id = atxb.11 days = 1 }
 			}
 		}
 	}
@@ -436,9 +456,10 @@ atxb_progress_granaries_effect = {
 				set_variable = { which = global_atxb_w_granaries_stage value = 0 }
 				atxb_complete_granaries_effect = yes
 			}
-			else = {
+			else_if = {
+				limit = { ai = no }
 				set_character_flag = atxb_report_granaries
-				character_event = { id = atxb.10 }
+				character_event = { id = atxb.10 days = 2 }
 			}
 		}
 		else = {
@@ -447,12 +468,16 @@ atxb_progress_granaries_effect = {
 				limit = { check_variable = { which = global_atxb_w_granaries_stall value = 3 } }
 				set_variable = { which = global_atxb_w_granaries_stage value = 0 }
 				set_variable = { which = global_atxb_w_granaries_stall value = 0 }
-				set_character_flag = atxb_abandon_granaries
-				character_event = { id = atxb.11 }
+				if = {
+					limit = { ai = no }
+					set_character_flag = atxb_abandon_granaries
+					character_event = { id = atxb.11 days = 2 }
+				}
 			}
-			else = {
+			else_if = {
+				limit = { ai = no }
 				set_character_flag = atxb_stall_granaries
-				character_event = { id = atxb.11 }
+				character_event = { id = atxb.11 days = 2 }
 			}
 		}
 	}

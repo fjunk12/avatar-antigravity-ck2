@@ -105,7 +105,17 @@ character_event = {
 					atxb_pledge_base_trigger = yes
 					war = yes
 				}
-				random = { chance = 25 character_event = { id = atxb.29 } }
+				if = {
+					limit = { check_variable = { which = global_atxb_tribs value = 20 } }
+					random = { chance = 6 character_event = { id = atxb.29 } }
+				}
+				else_if = {
+					limit = { check_variable = { which = global_atxb_tribs value = 10 } }
+					random = { chance = 12 character_event = { id = atxb.29 } }
+				}
+				else = {
+					random = { chance = 25 character_event = { id = atxb.29 } }
+				}
 			}
 		}
 	}
@@ -204,14 +214,20 @@ character_event = {
 
 	option = {
 		name = atxb.10.a
-		clr_character_flag = atxb_report_roads
-		clr_character_flag = atxb_report_law
-		clr_character_flag = atxb_report_granaries
 	}
-	after = {
-		clr_character_flag = atxb_report_roads
-		clr_character_flag = atxb_report_law
-		clr_character_flag = atxb_report_granaries
+	after = { # clear only the report this popup showed (the first match, same order as the descs)
+		if = {
+			limit = { has_character_flag = atxb_report_roads }
+			clr_character_flag = atxb_report_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_report_law }
+			clr_character_flag = atxb_report_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_report_granaries }
+			clr_character_flag = atxb_report_granaries
+		}
 	}
 }
 
@@ -219,10 +235,10 @@ character_event = {
 character_event = {
 	id = atxb.11
 	desc = { trigger = { has_character_flag = atxb_stall_roads } text = atxb.11.d_stall_roads }
-	desc = { trigger = { has_character_flag = atxb_stall_law } text = atxb.11.d_stall_law }
-	desc = { trigger = { has_character_flag = atxb_stall_granaries } text = atxb.11.d_stall_granaries }
 	desc = { trigger = { has_character_flag = atxb_abandon_roads } text = atxb.11.d_abandon_roads }
+	desc = { trigger = { has_character_flag = atxb_stall_law } text = atxb.11.d_stall_law }
 	desc = { trigger = { has_character_flag = atxb_abandon_law } text = atxb.11.d_abandon_law }
+	desc = { trigger = { has_character_flag = atxb_stall_granaries } text = atxb.11.d_stall_granaries }
 	desc = { trigger = { has_character_flag = atxb_abandon_granaries } text = atxb.11.d_abandon_granaries }
 	picture = GFX_evt_ba_sing_se
 	is_triggered_only = yes
@@ -232,13 +248,31 @@ character_event = {
 	option = {
 		name = atxb.11.a
 	}
-	after = {
-		clr_character_flag = atxb_stall_roads
-		clr_character_flag = atxb_stall_law
-		clr_character_flag = atxb_stall_granaries
-		clr_character_flag = atxb_abandon_roads
-		clr_character_flag = atxb_abandon_law
-		clr_character_flag = atxb_abandon_granaries
+	after = { # clear only the report this popup showed (the first match, same order as the descs)
+		if = {
+			limit = { has_character_flag = atxb_stall_roads }
+			clr_character_flag = atxb_stall_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_abandon_roads }
+			clr_character_flag = atxb_abandon_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_stall_law }
+			clr_character_flag = atxb_stall_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_abandon_law }
+			clr_character_flag = atxb_abandon_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_stall_granaries }
+			clr_character_flag = atxb_stall_granaries
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_abandon_granaries }
+			clr_character_flag = atxb_abandon_granaries
+		}
 	}
 }
 
@@ -254,10 +288,19 @@ character_event = {
 	option = {
 		name = atxb.15.a
 	}
-	after = {
-		clr_character_flag = atxb_done_roads
-		clr_character_flag = atxb_done_law
-		clr_character_flag = atxb_done_granaries
+	after = { # clear only the report this popup showed (the first match, same order as the descs)
+		if = {
+			limit = { has_character_flag = atxb_done_roads }
+			clr_character_flag = atxb_done_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_done_law }
+			clr_character_flag = atxb_done_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_done_granaries }
+			clr_character_flag = atxb_done_granaries
+		}
 	}
 }
 
@@ -285,6 +328,7 @@ character_event = {
 		atxb_find_king_effect = yes
 		random_list = {
 			45 = {
+				modifier = { factor = 0 atxb_any_work_running_trigger = no }
 				set_character_flag = atxb_sab_hit
 				atxb_sabotage_setback_effect = yes
 			}
