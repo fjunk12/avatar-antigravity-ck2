@@ -1,0 +1,124 @@
+# ATLA_Avatars_Legacy - scripted triggers
+
+atxl_any_legacy_trigger = {
+	OR = {
+		has_global_flag = atxl_leg_spirits
+		has_global_flag = atxl_leg_lawless
+		has_global_flag = atxl_leg_zealots
+		has_global_flag = atxl_leg_ambition
+		has_global_flag = atxl_leg_ironpeace
+	}
+}
+
+# A ruler bold enough to take up Unchecked Ambition
+atxl_ambitious_ruler_trigger = {
+	is_adult = yes
+	prisoner = no
+	NOT = { trait = incapable }
+	NOT = { has_character_flag = atxl_declined_ambition }
+	OR = {
+		trait = ambitious
+		AND = { trait = proud martial = 10 }
+		AND = { trait = wroth martial = 10 }
+		AND = { trait = greedy martial = 12 }
+		martial = 16
+	}
+}
+
+# A Fire Nation lord who could unite the islands by force (when e_fire_nation has no holder)
+atxl_fire_unifier_candidate_trigger = {
+	is_landed = yes
+	independent = yes
+	higher_tier_than = COUNT
+	culture_group = fire_nation_cultures
+	capital_scope = { region = world_fire_isles }
+	atxl_ambitious_ruler_trigger = yes
+}
+
+# An Earth ruler who could become an Earth imperialist while Ba Sing Se is weak
+atxl_earth_uniter_candidate_trigger = {
+	is_landed = yes
+	independent = yes
+	higher_tier_than = COUNT
+	culture_group = earth_kingdom_cultures
+	NOT = { culture = sandbender_culture }
+	capital_scope = { region = world_greater_earth_kingdom }
+	NOR = {
+		has_landed_title = e_earth_kingdom
+		has_landed_title = k_earth_kingdom
+	}
+	atxl_ambitious_ruler_trigger = yes
+}
+
+# Ba Sing Se is weak: neither e_earth_kingdom nor k_earth_kingdom has a holder,
+# or the holder is a puppet, or base Royal Authority is below 20
+atxl_ba_sing_se_weak_trigger = {
+	OR = {
+		NOR = {
+			e_earth_kingdom = { has_holder = yes }
+			k_earth_kingdom = { has_holder = yes }
+		}
+		e_earth_kingdom = {
+			has_holder = yes
+			holder_scope = { trait = earthkingpuppet }
+		}
+		k_earth_kingdom = {
+			has_holder = yes
+			holder_scope = { trait = earthkingpuppet }
+		}
+		NOT = { check_variable = { which = global_royalAuthority value = 20 } }
+	}
+}
+
+atxl_is_champion_trigger = {
+	OR = {
+		has_character_flag = atxl_champion_fire_strike
+		has_character_flag = atxl_champion_fire_unify
+		has_character_flag = atxl_champion_earth
+	}
+}
+
+# The Avatar can act (verified by both base markers: trait = avatar and is_avatar flag)
+atxl_avatar_can_act_trigger = {
+	trait = avatar
+	has_character_flag = is_avatar
+	is_adult = yes
+	prisoner = no
+	NOT = { trait = incapable }
+	NOT = { has_character_flag = withdrawn_avatar }
+}
+
+# Independent duke+ ruler eligible for a Zealots of the Old Avatar event (once per 5 years)
+atxl_zealot_target_trigger = {
+	is_landed = yes
+	independent = yes
+	higher_tier_than = COUNT
+	is_adult = yes
+	prisoner = no
+	NOT = { trait = incapable }
+	NOT = { trait = avatar }
+	OR = {
+		NOT = { has_character_flag = atxl_zealot_recent }
+		had_character_flag = { flag = atxl_zealot_recent days = 1825 }
+	}
+}
+
+# Matches the culture group of the Avatar who left Zealots behind
+atxl_matches_zealot_cg_trigger = {
+	OR = {
+		AND = { has_global_flag = atxl_zealot_cg_earth culture_group = earth_kingdom_cultures }
+		AND = { has_global_flag = atxl_zealot_cg_fire culture_group = fire_nation_cultures }
+		AND = { has_global_flag = atxl_zealot_cg_water culture_group = water_tribe_cultures }
+		AND = { has_global_flag = atxl_zealot_cg_air culture_group = air_nomad_cultures }
+	}
+}
+
+# Matches the culture group policed by the Avatar who left An Iron Peace behind
+atxl_matches_ironpeace_cg_trigger = {
+	OR = {
+		AND = { has_global_flag = atxl_ironpeace_cg_earth culture_group = earth_kingdom_cultures }
+		AND = { has_global_flag = atxl_ironpeace_cg_fire culture_group = fire_nation_cultures }
+		AND = { has_global_flag = atxl_ironpeace_cg_water culture_group = water_tribe_cultures }
+		AND = { has_global_flag = atxl_ironpeace_cg_air culture_group = air_nomad_cultures }
+	}
+}

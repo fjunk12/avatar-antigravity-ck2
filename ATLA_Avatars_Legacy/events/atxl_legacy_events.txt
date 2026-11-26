@@ -1,0 +1,826 @@
+# ATLA_Avatars_Legacy - Every Avatar solves one problem and leaves another.
+#
+# Event index:
+#   atxl.1   on_death on dying Avatar: roll the burden they leave (hidden)
+#   atxl.2   on_yearly_pulse world tick: burdens act, fade after 50 years, Unchecked Ambition seeks champion (hidden)
+#   atxl.3   a ruler is chosen as Champion of Unchecked Ambition
+#   atxl.4   new Avatar learns of active burdens at age 16 (players)
+#   atxl.5   news: an Avatar died and left a burden
+#   atxl.6   news: a burden has been lifted
+#   atxl.7   "The Avatar's Legacy": overview of active burdens (decision)
+#   atxl.8   the Avatar confronts the Champion (Champion decides)
+#   atxl.9   the Champion defies the Avatar (Avatar decides: buffs + independent join OR unlanded volunteer host)
+#   atxl.10  news: a Champion of Ambition rises
+#   atxl.11  news: the Earth Empire is proclaimed
+#   atxl.12  the Avatar's mission concludes (6-12 months)
+#   atxl.13  news: the Avatar sets out on a mission
+#   atxl.14  Zealots of the Old Avatar: ruler choice (Placate with coin / Placate with piety / Push back)
+
+namespace = atxl
+
+# atxl.1: A dying Avatar leaves one of five burdens behind
+character_event = {
+	id = atxl.1
+	hide_window = yes
+	is_triggered_only = yes # on_death
+
+	has_character_flag = is_avatar
+
+	immediate = {
+		log = "ATLA Avatar's Legacy: Avatar [Root.GetFullName] died, rolling legacy burden"
+		if = {
+			limit = { has_character_flag = is_kyoshi } # canon: zealots and enforcers acting in Kyoshi's name
+			atxl_set_legacy_zealots_effect = yes
+		}
+		else_if = {
+			limit = { has_character_flag = is_roku } # canon: spared Sozin
+			atxl_set_legacy_ambition_effect = yes
+		}
+		else = {
+			random_list = {
+				20 = { # Restless Spirits: neglected spirits for mortal affairs (Yangchen)
+					modifier = { factor = 2 NOT = { learning = 10 } }
+					modifier = { factor = 2 is_ruler = yes }
+					modifier = { factor = 0.3 trait = mystic }
+					modifier = { factor = 0.5 trait = zealous }
+					atxl_set_legacy_spirits_effect = yes
+				}
+				20 = { # Daofei Country: died young or withdrew from duty (Kuruk)
+					modifier = { factor = 3 NOT = { age = 40 } }
+					modifier = { factor = 3 has_character_flag = withdrawn_avatar }
+					modifier = { factor = 0.5 age = 70 }
+					atxl_set_legacy_lawless_effect = yes
+				}
+				15 = { # Zealots of the Old Avatar: revered, devout, or long-lived Avatar leaves purist disciples (Kyoshi)
+					modifier = { factor = 2 learning = 12 }
+					modifier = { factor = 2 piety = 250 }
+					modifier = { factor = 2 trait = zealous }
+					modifier = { factor = 2 age = 70 }
+					modifier = { factor = 0.3 NOT = { age = 40 } }
+					atxl_set_legacy_zealots_effect = yes
+				}
+				20 = { # Unchecked Ambition: merciful where firmness was needed (Roku)
+					modifier = { factor = 2 trait = kind }
+					modifier = { factor = 1.5 trait = content }
+					modifier = { factor = 1.5 trait = charitable }
+					modifier = { factor = 0.3 trait = wroth }
+					atxl_set_legacy_ambition_effect = yes
+				}
+				15 = { # An Iron Peace: enforced order with a heavy hand
+					modifier = { factor = 3 trait = wroth }
+					modifier = { factor = 2 trait = zealous }
+					modifier = { factor = 2 trait = cruel }
+					modifier = { factor = 0.3 trait = kind }
+					atxl_set_legacy_ironpeace_effect = yes
+				}
+			}
+		}
+	}
+}
+
+# atxl.2: Yearly world pulse (single-tick via global flag)
+character_event = {
+	id = atxl.2
+	hide_window = yes
+	is_triggered_only = yes # on_yearly_pulse
+
+	only_rulers = yes
+
+	trigger = {
+		atxl_any_legacy_trigger = yes
+		OR = {
+			NOT = { has_global_flag = atxl_leg_tick }
+			had_global_flag = { flag = atxl_leg_tick days = 330 }
+		}
+	}
+
+	immediate = {
+		clr_global_flag = atxl_leg_tick
+		set_global_flag = atxl_leg_tick
+
+		# Refresh safe global reference to the living Avatar once per year
+		atxl_find_avatar_effect = yes
+
+		# Burdens fade naturally after 50 years (18250 days) even if unresolved
+		if = {
+			limit = {
+				has_global_flag = atxl_leg_spirits
+				had_global_flag = { flag = atxl_leg_spirits days = 18250 }
+			}
+			clr_global_flag = atxl_leg_spirits
+		}
+		if = {
+			limit = {
+				has_global_flag = atxl_leg_lawless
+				had_global_flag = { flag = atxl_leg_lawless days = 18250 }
+			}
+			clr_global_flag = atxl_leg_lawless
+		}
+		if = {
+			limit = {
+				has_global_flag = atxl_leg_zealots
+				had_global_flag = { flag = atxl_leg_zealots days = 18250 }
+			}
+			clr_global_flag = atxl_leg_zealots
+			atxl_clear_zealot_cg_flags_effect = yes
+		}
+		if = {
+			limit = {
+				has_global_flag = atxl_leg_ironpeace
+				had_global_flag = { flag = atxl_leg_ironpeace days = 18250 }
+			}
+			atxl_cleanup_ironpeace_effect = yes
+		}
+		if = {
+			limit = {
+				has_global_flag = atxl_leg_ambition
+				had_global_flag = { flag = atxl_leg_ambition days = 18250 }
+				NOT = { has_global_flag = atxl_champion_active }
+			}
+			clr_global_flag = atxl_leg_ambition
+		}
+
+		# 1. Restless Spirits: 4 random owned provinces a year
+		if = {
+			limit = { has_global_flag = atxl_leg_spirits }
+			random_province = {
+				limit = { has_owner = yes NOT = { has_province_modifier = atxl_restless_spirits } }
+				add_province_modifier = { name = atxl_restless_spirits years = 5 }
+			}
+			random_province = {
+				limit = { has_owner = yes NOT = { has_province_modifier = atxl_restless_spirits } }
+				add_province_modifier = { name = atxl_restless_spirits years = 5 }
+			}
+			random_province = {
+				limit = { has_owner = yes NOT = { has_province_modifier = atxl_restless_spirits } }
+				add_province_modifier = { name = atxl_restless_spirits years = 5 }
+			}
+			random_province = {
+				limit = { has_owner = yes NOT = { has_province_modifier = atxl_restless_spirits } }
+				add_province_modifier = { name = atxl_restless_spirits years = 5 }
+			}
+		}
+
+		# 2. Daofei Country: 4 random owned Earth Kingdom provinces a year
+		if = {
+			limit = { has_global_flag = atxl_leg_lawless }
+			random_province = {
+				limit = { has_owner = yes region = world_greater_earth_kingdom NOT = { has_province_modifier = atxl_daofei_country } }
+				add_province_modifier = { name = atxl_daofei_country years = 5 }
+			}
+			random_province = {
+				limit = { has_owner = yes region = world_greater_earth_kingdom NOT = { has_province_modifier = atxl_daofei_country } }
+				add_province_modifier = { name = atxl_daofei_country years = 5 }
+			}
+			random_province = {
+				limit = { has_owner = yes region = world_greater_earth_kingdom NOT = { has_province_modifier = atxl_daofei_country } }
+				add_province_modifier = { name = atxl_daofei_country years = 5 }
+			}
+			random_province = {
+				limit = { has_owner = yes region = world_greater_earth_kingdom NOT = { has_province_modifier = atxl_daofei_country } }
+				add_province_modifier = { name = atxl_daofei_country years = 5 }
+			}
+		}
+
+		# 3. Zealots of the Old Avatar: up to 2 independent duke+ rulers a year (weighted 2:1 to late Avatar's culture group)
+		if = {
+			limit = { has_global_flag = atxl_leg_zealots }
+			atxl_trigger_zealot_event_effect = yes
+			atxl_trigger_zealot_event_effect = yes
+		}
+
+		# 4. An Iron Peace: maintain vassal-opinion pressure on policed culture-group rulers + 3 unrest provinces a year
+		if = {
+			limit = { has_global_flag = atxl_leg_ironpeace }
+			any_independent_ruler = {
+				limit = {
+					higher_tier_than = COUNT
+					atxl_matches_ironpeace_cg_trigger = yes
+					NOT = { has_character_modifier = atxl_iron_peace_ruler }
+				}
+				add_character_modifier = { name = atxl_iron_peace_ruler years = 5 }
+			}
+			random_province = {
+				limit = {
+					has_owner = yes
+					owner = { top_liege = { atxl_matches_ironpeace_cg_trigger = yes } }
+					NOT = { has_province_modifier = atxl_iron_peace_prov }
+				}
+				add_province_modifier = { name = atxl_iron_peace_prov years = 5 }
+			}
+			random_province = {
+				limit = {
+					has_owner = yes
+					owner = { top_liege = { atxl_matches_ironpeace_cg_trigger = yes } }
+					NOT = { has_province_modifier = atxl_iron_peace_prov }
+				}
+				add_province_modifier = { name = atxl_iron_peace_prov years = 5 }
+			}
+			random_province = {
+				limit = {
+					has_owner = yes
+					owner = { top_liege = { atxl_matches_ironpeace_cg_trigger = yes } }
+					NOT = { has_province_modifier = atxl_iron_peace_prov }
+				}
+				add_province_modifier = { name = atxl_iron_peace_prov years = 5 }
+			}
+		}
+
+		# 5. Unchecked Ambition: manage Champion lifecycle using global event_target:atxl_champion
+		if = {
+			limit = {
+				has_global_flag = atxl_champion_active
+				NOT = {
+					event_target:atxl_champion = {
+						is_alive = yes
+						atxl_is_champion_trigger = yes
+					}
+				}
+			}
+			clr_global_flag = atxl_champion_active
+			clear_global_event_target = atxl_champion
+		}
+
+		# A Fire Nation Unifier who claims e_fire_nation pivots to strike the Earth Kingdom coast
+		if = {
+			limit = {
+				has_global_flag = atxl_champion_active
+				event_target:atxl_champion = {
+					has_character_flag = atxl_champion_fire_unify
+					has_landed_title = e_fire_nation
+					NOT = {
+						any_war = {
+							using_cb = atxl_cb_fire_unification
+							attacker = { has_character_flag = atxl_champion_fire_unify }
+						}
+					}
+				}
+			}
+			event_target:atxl_champion = {
+				clr_character_flag = atxl_champion_fire_unify
+				set_character_flag = atxl_champion_fire_strike
+				character_event = { id = atxl.3 }
+				any_player = {
+					limit = { NOT = { character = PREV } }
+					character_event = { id = atxl.10 days = 14 }
+				}
+			}
+		}
+
+		# An AI Avatar confronts the active Champion (35% chance/year, 5-year cooldown)
+		if = {
+			limit = {
+				has_global_flag = atxl_champion_active
+				event_target:atxl_avatar = {
+					is_alive = yes
+					ai = yes
+					atxl_avatar_can_act_trigger = yes
+					OR = {
+						NOT = { has_character_flag = atxl_confronted }
+						had_character_flag = { flag = atxl_confronted days = 1825 }
+					}
+				}
+			}
+			random = {
+				chance = 35
+				event_target:atxl_avatar = {
+					clr_character_flag = atxl_confronted
+					set_character_flag = atxl_confronted
+				}
+				event_target:atxl_champion = { character_event = { id = atxl.8 days = 7 } }
+			}
+		}
+
+		# Seek a new Champion for up to 30 years (10950 days) while Unchecked Ambition stands
+		if = {
+			limit = {
+				has_global_flag = atxl_leg_ambition
+				NOT = { has_global_flag = atxl_champion_active }
+				NOT = { had_global_flag = { flag = atxl_leg_ambition days = 10950 } }
+			}
+			atxl_find_champion_effect = yes
+		}
+
+		# Notify a player Avatar once at age 16 of active burdens they inherit
+		if = {
+			limit = {
+				event_target:atxl_avatar = {
+					is_alive = yes
+					age = 16
+					NOT = { has_character_flag = atxl_burden_told }
+				}
+			}
+			event_target:atxl_avatar = {
+				set_character_flag = atxl_burden_told
+				if = {
+					limit = { ai = no }
+					character_event = { id = atxl.4 }
+				}
+			}
+		}
+	}
+}
+
+# atxl.3: A ruler is chosen as the Champion of Unchecked Ambition
+character_event = {
+	id = atxl.3
+	desc = {
+		trigger = { has_character_flag = atxl_champion_fire_strike }
+		text = atxl.3.d_fire_strike
+	}
+	desc = {
+		trigger = { has_character_flag = atxl_champion_fire_unify }
+		text = atxl.3.d_fire_unify
+	}
+	desc = {
+		trigger = { has_character_flag = atxl_champion_earth }
+		text = atxl.3.d_earth
+	}
+	picture = GFX_evt_battle
+	is_triggered_only = yes
+
+	option = { # Seize the moment
+		name = atxl.3.a
+		add_character_modifier = { name = atxl_ambition_unchecked years = 20 }
+		if = {
+			limit = { ai = yes }
+			atxl_champion_declare_effect = yes
+		}
+		ai_chance = { factor = 90 }
+	}
+	option = { # Hold back
+		name = atxl.3.b
+		set_character_flag = atxl_declined_ambition
+		atxl_end_champion_effect = yes
+		ai_chance = { factor = 10 }
+	}
+}
+
+# atxl.4: The new Avatar learns of the burdens they inherit (age 16, player)
+character_event = {
+	id = atxl.4
+	desc = atxl.4.d
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	option = {
+		name = atxl.4.a
+		if = {
+			limit = { has_global_flag = atxl_leg_spirits }
+			custom_tooltip = { text = atxl_leg_spirits_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_lawless }
+			custom_tooltip = { text = atxl_leg_lawless_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_zealots }
+			custom_tooltip = { text = atxl_leg_zealots_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_ambition }
+			custom_tooltip = { text = atxl_leg_ambition_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_ironpeace }
+			custom_tooltip = { text = atxl_leg_ironpeace_tt }
+		}
+	}
+}
+
+# atxl.5: News: an Avatar has died and left a burden behind
+character_event = {
+	id = atxl.5
+	desc = { trigger = { has_character_flag = atxl_newleg_spirits } text = atxl.5.d_spirits }
+	desc = { trigger = { has_character_flag = atxl_newleg_lawless } text = atxl.5.d_lawless }
+	desc = { trigger = { has_character_flag = atxl_newleg_zealots } text = atxl.5.d_zealots }
+	desc = { trigger = { has_character_flag = atxl_newleg_ambition } text = atxl.5.d_ambition }
+	desc = { trigger = { has_character_flag = atxl_newleg_ironpeace } text = atxl.5.d_ironpeace }
+	picture = GFX_evt_avatar_defeat
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	option = {
+		name = atxl.5.a
+		clr_character_flag = atxl_newleg_spirits
+		clr_character_flag = atxl_newleg_lawless
+		clr_character_flag = atxl_newleg_zealots
+		clr_character_flag = atxl_newleg_ambition
+		clr_character_flag = atxl_newleg_ironpeace
+	}
+}
+
+# atxl.6: News: a burden has been lifted by the Avatar
+character_event = {
+	id = atxl.6
+	desc = { trigger = { has_character_flag = atxl_solved_spirits } text = atxl.6.d_spirits }
+	desc = { trigger = { has_character_flag = atxl_solved_lawless } text = atxl.6.d_lawless }
+	desc = { trigger = { has_character_flag = atxl_solved_zealots } text = atxl.6.d_zealots }
+	desc = { trigger = { has_character_flag = atxl_solved_ambition } text = atxl.6.d_ambition }
+	desc = { trigger = { has_character_flag = atxl_solved_ironpeace } text = atxl.6.d_ironpeace }
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	option = {
+		name = atxl.6.a
+		clr_character_flag = atxl_solved_spirits
+		clr_character_flag = atxl_solved_lawless
+		clr_character_flag = atxl_solved_zealots
+		clr_character_flag = atxl_solved_ambition
+		clr_character_flag = atxl_solved_ironpeace
+	}
+}
+
+# atxl.7: Overview of active burdens in force (from atxl_view_legacies decision)
+character_event = {
+	id = atxl.7
+	desc = atxl.7.d
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	option = {
+		name = atxl.7.a
+		if = {
+			limit = { has_global_flag = atxl_leg_spirits }
+			custom_tooltip = { text = atxl_leg_spirits_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_lawless }
+			custom_tooltip = { text = atxl_leg_lawless_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_zealots }
+			custom_tooltip = { text = atxl_leg_zealots_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_ambition }
+			custom_tooltip = { text = atxl_leg_ambition_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_leg_ironpeace }
+			custom_tooltip = { text = atxl_leg_ironpeace_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxl_champion_active }
+			custom_tooltip = { text = atxl_champion_named_tt }
+		}
+	}
+}
+
+# atxl.8: The Avatar confronts the Champion. ROOT = the Champion.
+character_event = {
+	id = atxl.8
+	desc = atxl.8.d
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	option = { # Stand down
+		name = atxl.8.a
+		prestige = -100
+		add_character_modifier = { name = atxl_humbled_by_avatar years = 10 }
+		if = {
+			limit = { event_target:atxl_avatar = { is_alive = yes } }
+			event_target:atxl_avatar = {
+				prestige = 200
+				atxl_resolve_ambition_effect = yes
+			}
+		}
+		else = {
+			atxl_resolve_ambition_effect = yes
+		}
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 2 event_target:atxl_avatar = { trait = fully_realised_avatar } }
+			modifier = { factor = 2 opinion = { who = event_target:atxl_avatar value = 25 } }
+			modifier = { factor = 1.5 trait = craven }
+			modifier = { factor = 2 has_character_modifier = atxl_defied_avatar }
+			modifier = { factor = 0.5 trait = ambitious }
+			modifier = { factor = 0.5 trait = wroth }
+			modifier = { factor = 0.5 trait = proud }
+		}
+	}
+	option = { # Defy the Avatar
+		name = atxl.8.b
+		add_character_modifier = { name = atxl_defied_avatar years = 10 }
+		if = {
+			limit = { event_target:atxl_avatar = { is_alive = yes } }
+			event_target:atxl_avatar = { character_event = { id = atxl.9 days = 3 } }
+		}
+		ai_chance = { factor = 60 }
+	}
+}
+
+# atxl.9: The Champion defies the Avatar. ROOT = the Avatar.
+character_event = {
+	id = atxl.9
+	desc = atxl.9.d
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	option = { # Fight beside those they attack
+		name = atxl.9.a
+		prestige = 100
+		event_target:atxl_champion = {
+			any_war = {
+				limit = {
+					attacker = { character = event_target:atxl_champion }
+					OR = {
+						using_cb = atxl_cb_fire_strike
+						using_cb = atxl_cb_fire_unification
+						using_cb = atxl_cb_earth_unification
+					}
+				}
+				defender = {
+					add_character_modifier = { name = atxl_avatar_fights_beside_us years = 3 }
+					# A landed, independent Avatar joins the defensive war directly
+					if = {
+						limit = {
+							ROOT = {
+								is_ruler = yes
+								independent = yes
+								NOT = { war_with = event_target:atxl_champion }
+								NOT = { character = PREV }
+							}
+						}
+						ROOT = { join_defender_wars = PREV }
+					}
+				}
+			}
+		}
+		# An unlanded Avatar moves to a defender's court and rallies a modest war-only Volunteer Host
+		if = {
+			limit = { is_ruler = no }
+			event_target:atxl_champion = {
+				random_war = {
+					limit = {
+						attacker = { character = event_target:atxl_champion }
+						OR = {
+							using_cb = atxl_cb_fire_strike
+							using_cb = atxl_cb_fire_unification
+							using_cb = atxl_cb_earth_unification
+						}
+					}
+					defender = { save_event_target_as = atxl_avatar_host }
+				}
+			}
+			if = {
+				limit = { event_target:atxl_avatar_host = { is_alive = yes } }
+				move_character = event_target:atxl_avatar_host
+				event_target:atxl_avatar_host = {
+					if = {
+						limit = {
+							OR = {
+								NOT = { has_character_flag = atxl_volunteers_raised }
+								had_character_flag = { flag = atxl_volunteers_raised days = 1095 }
+							}
+						}
+						clr_character_flag = atxl_volunteers_raised
+						set_character_flag = atxl_volunteers_raised
+						capital_scope = { save_event_target_as = atxl_vol_prov }
+						spawn_unit = {
+							province = event_target:atxl_vol_prov
+							home = event_target:atxl_vol_prov
+							owner = event_target:atxl_avatar_host
+							troops = {
+								light_infantry = { 300 300 }
+								heavy_infantry = { 200 200 }
+								archers = { 150 150 }
+							}
+							attrition = 0.5
+							maintenance_multiplier = 0
+							disband_on_peace = yes
+						}
+					}
+				}
+			}
+		}
+		ai_chance = { factor = 80 }
+	}
+	option = { # Not yet
+		name = atxl.9.b
+		ai_chance = { factor = 20 }
+	}
+}
+
+# atxl.10: News: a Champion of Ambition rises (ROOT = another player)
+character_event = {
+	id = atxl.10
+	desc = {
+		trigger = { event_target:atxl_champion = { has_character_flag = atxl_champion_fire_strike } }
+		text = atxl.10.d_fire_strike
+	}
+	desc = {
+		trigger = { event_target:atxl_champion = { has_character_flag = atxl_champion_fire_unify } }
+		text = atxl.10.d_fire_unify
+	}
+	desc = {
+		trigger = { event_target:atxl_champion = { has_character_flag = atxl_champion_earth } }
+		text = atxl.10.d_earth
+	}
+	picture = GFX_evt_council
+	is_triggered_only = yes
+
+	trigger = { has_global_flag = atxl_champion_active }
+
+	option = {
+		name = atxl.10.a
+	}
+}
+
+# atxl.11: News: the Earth Empire is proclaimed (FROM = the new emperor)
+character_event = {
+	id = atxl.11
+	desc = atxl.11.d
+	picture = GFX_evt_council
+	is_triggered_only = yes
+
+	option = {
+		name = atxl.11.a
+	}
+}
+
+# atxl.12: The Avatar's mission ends (ROOT = the Avatar)
+character_event = {
+	id = atxl.12
+	desc = {
+		trigger = { has_character_flag = atxl_mission_won has_character_flag = atxl_mission_spirits }
+		text = atxl.12.d_won_spirits
+	}
+	desc = {
+		trigger = { has_character_flag = atxl_mission_won has_character_flag = atxl_mission_lawless }
+		text = atxl.12.d_won_lawless
+	}
+	desc = {
+		trigger = { has_character_flag = atxl_mission_won has_character_flag = atxl_mission_zealots }
+		text = atxl.12.d_won_zealots
+	}
+	desc = {
+		trigger = { has_character_flag = atxl_mission_won has_character_flag = atxl_mission_ironpeace }
+		text = atxl.12.d_won_ironpeace
+	}
+	desc = {
+		trigger = { has_character_flag = atxl_mission_lost }
+		text = atxl.12.d_lost
+	}
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	immediate = {
+		# Succeed cleanly if the burden already faded while the Avatar travelled
+		if = {
+			limit = {
+				OR = {
+					AND = { has_character_flag = atxl_mission_spirits NOT = { has_global_flag = atxl_leg_spirits } }
+					AND = { has_character_flag = atxl_mission_lawless NOT = { has_global_flag = atxl_leg_lawless } }
+					AND = { has_character_flag = atxl_mission_zealots NOT = { has_global_flag = atxl_leg_zealots } }
+					AND = { has_character_flag = atxl_mission_ironpeace NOT = { has_global_flag = atxl_leg_ironpeace } }
+				}
+			}
+			set_character_flag = atxl_mission_won
+		}
+		else = {
+			random_list = {
+				50 = {
+					modifier = { factor = 2 trait = fully_realised_avatar }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_spirits learning = 14 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_spirits learning = 18 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_spirits trait = mystic }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_lawless martial = 14 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_lawless martial = 18 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_zealots diplomacy = 14 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_zealots learning = 14 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_ironpeace diplomacy = 14 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_ironpeace diplomacy = 18 }
+					modifier = { factor = 1.5 has_character_flag = atxl_mission_ironpeace trait = kind }
+					set_character_flag = atxl_mission_won
+				}
+				50 = {
+					modifier = { factor = 1.5 NOT = { age = 20 } }
+					modifier = { factor = 1.5 trait = craven }
+					set_character_flag = atxl_mission_lost
+				}
+			}
+		}
+	}
+
+	option = {
+		name = atxl.12.a
+		trigger = { has_character_flag = atxl_mission_won }
+		prestige = 150
+		if = {
+			limit = { has_character_flag = atxl_mission_spirits has_global_flag = atxl_leg_spirits }
+			piety = 100
+			atxl_resolve_spirits_effect = yes
+		}
+		if = {
+			limit = { has_character_flag = atxl_mission_lawless has_global_flag = atxl_leg_lawless }
+			atxl_resolve_lawless_effect = yes
+		}
+		if = {
+			limit = { has_character_flag = atxl_mission_zealots has_global_flag = atxl_leg_zealots }
+			atxl_resolve_zealots_effect = yes
+		}
+		if = {
+			limit = { has_character_flag = atxl_mission_ironpeace has_global_flag = atxl_leg_ironpeace }
+			atxl_resolve_ironpeace_effect = yes
+		}
+		atxl_end_mission_effect = yes
+	}
+	option = {
+		name = atxl.12.b
+		trigger = { has_character_flag = atxl_mission_lost }
+		prestige = -50
+		add_character_modifier = { name = atxl_avatar_doubted years = 2 }
+		atxl_end_mission_effect = yes
+	}
+}
+
+# atxl.13: News: the Avatar sets out on a mission (FROM = the Avatar)
+character_event = {
+	id = atxl.13
+	desc = { trigger = { FROM = { has_character_flag = atxl_mission_spirits } } text = atxl.13.d_spirits }
+	desc = { trigger = { FROM = { has_character_flag = atxl_mission_lawless } } text = atxl.13.d_lawless }
+	desc = { trigger = { FROM = { has_character_flag = atxl_mission_zealots } } text = atxl.13.d_zealots }
+	desc = { trigger = { FROM = { has_character_flag = atxl_mission_ironpeace } } text = atxl.13.d_ironpeace }
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	is_triggered_only = yes
+
+	trigger = { FROM = { has_character_flag = atxl_on_mission } }
+
+	option = {
+		name = atxl.13.a
+	}
+}
+
+# atxl.14: Zealots of the Old Avatar meddle in a ruler's realm (ROOT = independent duke+ ruler)
+character_event = {
+	id = atxl.14
+	desc = atxl.14.d
+	picture = GFX_evt_heretic
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = atxl_leg_zealots
+		is_landed = yes
+		independent = yes
+		higher_tier_than = COUNT
+	}
+
+	option = { # Placate them with coin (tier-scaled)
+		name = atxl.14.a
+		trigger = {
+			OR = {
+				AND = { tier = DUKE wealth = 40 }
+				AND = { tier = KING wealth = 75 }
+				AND = { tier = EMPEROR wealth = 120 }
+			}
+		}
+		if = {
+			limit = { tier = EMPEROR }
+			wealth = -120
+		}
+		else_if = {
+			limit = { tier = KING }
+			wealth = -75
+		}
+		else = {
+			wealth = -40
+		}
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 0.5 trait = greedy }
+			modifier = { factor = 1.5 trait = content }
+		}
+	}
+	option = { # Placate them with public piety
+		name = atxl.14.b
+		trigger = { piety = 50 }
+		piety = -50
+		ai_chance = {
+			factor = 35
+			modifier = { factor = 1.5 trait = zealous }
+			modifier = { factor = 0.5 trait = cynical }
+		}
+	}
+	option = { # Push back against their meddling
+		name = atxl.14.c
+		prestige = 50
+		capital_scope = {
+			add_province_modifier = { name = atxl_zealot_unrest years = 5 }
+		}
+		ai_chance = {
+			factor = 25
+			modifier = { factor = 2 trait = proud }
+			modifier = { factor = 2 trait = wroth }
+			modifier = { factor = 2 trait = cynical }
+			modifier = { factor = 0.5 trait = craven }
+		}
+	}
+}

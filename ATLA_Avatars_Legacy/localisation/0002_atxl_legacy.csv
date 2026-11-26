@@ -1,0 +1,117 @@
+#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+# ATLA_Avatars_Legacy - Localisation (cp1252 / ASCII safe)
+# Modifiers
+atxl_restless_spirits;Restless Spirits;;;;;;;;;;;;;x
+desc_atxl_restless_spirits;Spirits neglected by the last Avatar haunt the countryside, disrupting harvests and stirring unrest.;;;;;;;;;;;;;x
+atxl_restless_spirits_desc;Spirits neglected by the last Avatar haunt the countryside, disrupting harvests and stirring unrest.;;;;;;;;;;;;;x
+atxl_daofei_country;Daofei Country;;;;;;;;;;;;;x
+desc_atxl_daofei_country;With the last Avatar gone too soon or withdrawn from mortal affairs, outlaw bands rule the roads and villages.;;;;;;;;;;;;;x
+atxl_daofei_country_desc;With the last Avatar gone too soon or withdrawn from mortal affairs, outlaw bands rule the roads and villages.;;;;;;;;;;;;;x
+atxl_zealot_unrest;Zealot Agitation;;;;;;;;;;;;;x
+desc_atxl_zealot_unrest;Self-appointed keepers of the late Avatar's legacy stir up anger in the capital after being defied.;;;;;;;;;;;;;x
+atxl_zealot_unrest_desc;Self-appointed keepers of the late Avatar's legacy stir up anger in the capital after being defied.;;;;;;;;;;;;;x
+atxl_iron_peace_prov;Simmering Resentment;;;;;;;;;;;;;x
+desc_atxl_iron_peace_prov;Harsh enforcement under the last Avatar left bitter memories across the provinces.;;;;;;;;;;;;;x
+atxl_iron_peace_prov_desc;Harsh enforcement under the last Avatar left bitter memories across the provinces.;;;;;;;;;;;;;x
+atxl_iron_peace_ruler;Shadow of an Iron Peace;;;;;;;;;;;;;x
+desc_atxl_iron_peace_ruler;Vassals chafe against authority in the wake of the last Avatar's heavy-handed peace.;;;;;;;;;;;;;x
+atxl_iron_peace_ruler_desc;Vassals chafe against authority in the wake of the last Avatar's heavy-handed peace.;;;;;;;;;;;;;x
+atxl_ambition_unchecked;Unchecked Ambition;;;;;;;;;;;;;x
+desc_atxl_ambition_unchecked;Emboldened by the passing of a merciful Avatar, this ruler marches with fearless resolve.;;;;;;;;;;;;;x
+atxl_ambition_unchecked_desc;Emboldened by the passing of a merciful Avatar, this ruler marches with fearless resolve.;;;;;;;;;;;;;x
+atxl_defied_avatar;Defied the Avatar;;;;;;;;;;;;;x
+desc_atxl_defied_avatar;This ruler openly refused the Avatar's demand to lay down arms.;;;;;;;;;;;;;x
+atxl_defied_avatar_desc;This ruler openly refused the Avatar's demand to lay down arms.;;;;;;;;;;;;;x
+atxl_humbled_by_avatar;Humbled by the Avatar;;;;;;;;;;;;;x
+desc_atxl_humbled_by_avatar;Confronted by the Avatar, this ruler bowed and abandoned their conquests.;;;;;;;;;;;;;x
+atxl_humbled_by_avatar_desc;Confronted by the Avatar, this ruler bowed and abandoned their conquests.;;;;;;;;;;;;;x
+atxl_avatar_fights_beside_us;The Avatar Fights Beside Us;;;;;;;;;;;;;x
+desc_atxl_avatar_fights_beside_us;The Avatar has rallied to the defense of this realm against unchecked ambition.;;;;;;;;;;;;;x
+atxl_avatar_fights_beside_us_desc;The Avatar has rallied to the defense of this realm against unchecked ambition.;;;;;;;;;;;;;x
+atxl_avatar_on_mission;Addressing a Past Legacy;;;;;;;;;;;;;x
+desc_atxl_avatar_on_mission;The Avatar is travelling across the nations to lift a burden left behind by a past life.;;;;;;;;;;;;;x
+atxl_avatar_on_mission_desc;The Avatar is travelling across the nations to lift a burden left behind by a past life.;;;;;;;;;;;;;x
+atxl_avatar_doubted;The Avatar Doubted;;;;;;;;;;;;;x
+desc_atxl_avatar_doubted;A failed effort to mend a past Avatar's burden has shaken confidence in the current incarnation.;;;;;;;;;;;;;x
+atxl_avatar_doubted_desc;A failed effort to mend a past Avatar's burden has shaken confidence in the current incarnation.;;;;;;;;;;;;;x
+# Casus Belli
+CB_ATXL_FIRE_STRIKE;Strike the Earth Coast;;;;;;;;;;;;;x
+WAR_ATXL_FIRE_STRIKE;Fire Nation Coastal Strike for $TITLE$;;;;;;;;;;;;;x
+CB_ATXL_FIRE_UNIFICATION;Unite the Fire Islands;;;;;;;;;;;;;x
+WAR_ATXL_FIRE_UNIFICATION;Fire Isles Unification War for $TITLE$;;;;;;;;;;;;;x
+CB_ATXL_EARTH_UNIFICATION;Earth Imperialism;;;;;;;;;;;;;x
+WAR_ATXL_EARTH_UNIFICATION;Earth Imperialist War for $TITLE$;;;;;;;;;;;;;x
+# Decisions
+atxl_avatar_calm_spirits;Calm the Restless Spirits;;;;;;;;;;;;;x
+atxl_avatar_calm_spirits_desc;Journey to the haunted borderlands and appease the spirits neglected by a past life. Takes six to twelve months and may fail.;;;;;;;;;;;;;x
+atxl_avatar_hunt_daofei;Hunt the Daofei;;;;;;;;;;;;;x
+atxl_avatar_hunt_daofei_desc;Track down and break the outlaw bands flourishing across the Earth Kingdom since a past Avatar left them unchecked. Takes six to twelve months and may fail.;;;;;;;;;;;;;x
+atxl_avatar_disavow_zealots;Disavow the Zealots;;;;;;;;;;;;;x
+atxl_avatar_disavow_zealots_desc;Publicly repudiate the self-appointed enforcers claiming to act in your past life's name. Takes six to twelve months and may fail.;;;;;;;;;;;;;x
+atxl_avatar_heal_divide;Heal the Divide;;;;;;;;;;;;;x
+atxl_avatar_heal_divide_desc;Travel between courts and towns to mend the bitter resentment left by a past Avatar's harsh peace. Takes six to twelve months and may fail.;;;;;;;;;;;;;x
+atxl_avatar_confront_champion;Confront the Champion of Ambition;;;;;;;;;;;;;x
+atxl_avatar_confront_champion_desc;Demand that this conqueror abandon their unchecked ambitions before the Four Nations are dragged into wider war.;;;;;;;;;;;;;x
+atxl_view_legacies;The Avatar's Legacy;;;;;;;;;;;;;x
+atxl_view_legacies_desc;Review the burdens left behind by past Avatars that still weigh upon the world.;;;;;;;;;;;;;x
+atxl_proclaim_earth_empire;Proclaim the Earth Empire;;;;;;;;;;;;;x
+atxl_proclaim_earth_empire_desc;With the Royal Earth Palace in your hands and the continent bending to your will, cast aside the old ways and proclaim a unified Earth Empire.;;;;;;;;;;;;;x
+# Custom Tooltips
+atxl_mission_cooldown_tt;Has not recently completed or failed a legacy mission (2-year cooldown).;;;;;;;;;;;;;x
+atxl_confront_cooldown_tt;Has not confronted a Champion of Ambition within the last 5 years.;;;;;;;;;;;;;x
+atxl_leg_spirits_tt;Active Burden - Restless Spirits: Neglected spirits are haunting provinces across the world.;;;;;;;;;;;;;x
+atxl_leg_lawless_tt;Active Burden - Daofei Country: Outlaw bands are spreading across the Earth Kingdom.;;;;;;;;;;;;;x
+atxl_leg_zealots_tt;Active Burden - Zealots of the Old Avatar: Self-appointed enforcers are meddling in realms across the world.;;;;;;;;;;;;;x
+atxl_leg_ambition_tt;Active Burden - Unchecked Ambition: A conqueror may rise (or has risen) to exploit the late Avatar's mercy.;;;;;;;;;;;;;x
+atxl_leg_ironpeace_tt;Active Burden - An Iron Peace: Vassals and provinces still chafe under resentment left by a harsh peace.;;;;;;;;;;;;;x
+atxl_champion_named_tt;Current Champion of Ambition: [atxl_champion.GetTitledName].;;;;;;;;;;;;;x
+# Events
+atxl.3.d_fire_strike;With the passing of a merciful Avatar, the balance of the world has shifted. The Fire Nation stands united, and the rich ports of the Earth Kingdom lie open across the sea. No Avatar is ready to stand in your way.;;;;;;;;;;;;;x
+atxl.3.d_fire_unify;With the passing of a merciful Avatar, the old restraints on the Fire Isles have fallen away. The divided islands cry out for a single Fire Lord to forge them into one realm by iron and flame.;;;;;;;;;;;;;x
+atxl.3.d_earth;With the passing of a merciful Avatar and Ba Sing Se grown weak, the fractured Earth Kingdom is ripe for a strong hand. If the old throne cannot hold the continent together, then you will.;;;;;;;;;;;;;x
+atxl.3.a;The world belongs to the bold.;;;;;;;;;;;;;x
+atxl.3.b;Now is not the time.;;;;;;;;;;;;;x
+atxl.4.d;As you come of age and take up the mantle of the Avatar, the elders speak solemnly of the unfinished business left by your past lives. Every Avatar solves one crisis and leaves another behind.;;;;;;;;;;;;;x
+atxl.4.a;I will shoulder what was left undone.;;;;;;;;;;;;;x
+atxl.5.d_spirits;The Avatar has passed from the world. Though mortals mourn, whispers spread that the spirits were long neglected in favor of worldly politics, and restless spirits have begun to trouble the land.;;;;;;;;;;;;;x
+atxl.5.d_lawless;The Avatar has passed from the world. Having departed too soon or stepped back from mortal strife, the late Avatar leaves behind lawless roads where daofei outlaws already grow bold.;;;;;;;;;;;;;x
+atxl.5.d_zealots;The Avatar has passed from the world. Across the nations, rigid disciples and self-appointed enforcers have begun invoking the late Avatar's name to dictate justice and meddle in the affairs of rulers.;;;;;;;;;;;;;x
+atxl.5.d_ambition;The Avatar has passed from the world. Because the late Avatar stayed their hand where firmness was needed, ambitious lords already eye their neighbors' borders with fresh hunger.;;;;;;;;;;;;;x
+atxl.5.d_ironpeace;The Avatar has passed from the world. The stern peace enforced by their heavy hand now gives way to bitter resentment among nobles and commoners alike.;;;;;;;;;;;;;x
+atxl.5.a;So turns the cycle.;;;;;;;;;;;;;x
+atxl.6.d_spirits;Word travels across the Four Nations that the Avatar has appeased the restless spirits. The hauntings subside and balance returns to the borderlands.;;;;;;;;;;;;;x
+atxl.6.d_lawless;Word travels across the Earth Kingdom that the Avatar has hunted down the great daofei bands. The roads grow safer once more.;;;;;;;;;;;;;x
+atxl.6.d_zealots;The Avatar has publicly disavowed the self-appointed zealots claiming to speak for their past life. Stripped of legitimacy, the purist bands disperse.;;;;;;;;;;;;;x
+atxl.6.d_ambition;Confronted by the Avatar, the Champion of Ambition has been brought to heel. The wave of unchecked conquest recedes.;;;;;;;;;;;;;x
+atxl.6.d_ironpeace;Through patient mediation, the Avatar has mended the resentments left by a past life's harsh peace. Courts and provinces grow calmer.;;;;;;;;;;;;;x
+atxl.6.a;Balance is restored, for now.;;;;;;;;;;;;;x
+atxl.7.d;Every Avatar leaves a mark upon the Four Nations - some in harmony, others in burdens that weigh on the world until the next Avatar lifts them or fifty years pass.;;;;;;;;;;;;;x
+atxl.7.a;Noted.;;;;;;;;;;;;;x
+atxl.8.d;The Avatar stands before your court and demands that you lay down your arms and abandon your conquests before the Four Nations are consumed by war.;;;;;;;;;;;;;x
+atxl.8.a;Stand down and bow to the Avatar.;;;;;;;;;;;;;x
+atxl.8.b;Defy the Avatar! No one dictates my destiny!;;;;;;;;;;;;;x
+atxl.9.d;The Champion of Ambition has openly defied your warning and presses onward with war. Defenders across the threatened borderlands look to you for aid.;;;;;;;;;;;;;x
+atxl.9.a;Then I will fight beside those they attack.;;;;;;;;;;;;;x
+atxl.9.b;Not yet - I must bide my time.;;;;;;;;;;;;;x
+atxl.10.d_fire_strike;Reports arrive from across the seas: [atxl_champion.GetTitledName] has embraced the Fire Nation's unchecked ambition and is preparing to strike the coasts of the Earth Kingdom.;;;;;;;;;;;;;x
+atxl.10.d_fire_unify;Reports arrive from the Fire Isles: [atxl_champion.GetTitledName] has taken up the banner of unchecked ambition, vowing to unite the islands by force.;;;;;;;;;;;;;x
+atxl.10.d_earth;Reports arrive across the continent: with Ba Sing Se weak, [atxl_champion.GetTitledName] has launched a campaign of Earth imperialism to unite the fractured realms by force.;;;;;;;;;;;;;x
+atxl.10.a;Dark clouds gather.;;;;;;;;;;;;;x
+atxl.11.d;Having seized Ba Sing Se and bent the Earth Kingdom to their will, [From.GetTitledName] has cast aside the old monarchy and proclaimed the Earth Empire!;;;;;;;;;;;;;x
+atxl.11.a;A new power reshapes the continent.;;;;;;;;;;;;;x
+atxl.12.d_won_spirits;After months of meditation and perilous negotiations at the spirit crossings, you have calmed the restless spirits and lifted your past life's burden.;;;;;;;;;;;;;x
+atxl.12.d_won_lawless;After months tracking outlaw strongholds across hills and valleys, you have broken the back of the daofei bands and lifted your past life's burden.;;;;;;;;;;;;;x
+atxl.12.d_won_zealots;Speaking with the undeniable authority of the Avatar, you have publicly disavowed the zealots claiming your past life's mantle. Their followers scatter, and the burden is lifted.;;;;;;;;;;;;;x
+atxl.12.d_won_ironpeace;After months of patient diplomacy among embittered lords and townsfolk, you have healed the divide left by your past life's harsh peace.;;;;;;;;;;;;;x
+atxl.12.d_lost;Despite months of effort, the burden left by your past life proves stubborn. You return weary, and murmurs of doubt follow in your wake.;;;;;;;;;;;;;x
+atxl.12.a;One burden lifted.;;;;;;;;;;;;;x
+atxl.12.b;I will try again when the time is right.;;;;;;;;;;;;;x
+atxl.13.d_spirits;Word spreads that Avatar [From.GetFirstName] has departed to calm the restless spirits troubling the borderlands.;;;;;;;;;;;;;x
+atxl.13.d_lawless;Word spreads that Avatar [From.GetFirstName] has set out into the Earth Kingdom to hunt down the daofei bands.;;;;;;;;;;;;;x
+atxl.13.d_zealots;Word spreads that Avatar [From.GetFirstName] has set out to confront and disavow the zealots acting in their past life's name.;;;;;;;;;;;;;x
+atxl.13.d_ironpeace;Word spreads that Avatar [From.GetFirstName] is travelling across the realms to heal the resentment left by an iron peace.;;;;;;;;;;;;;x
+atxl.13.a;May the Avatar succeed.;;;;;;;;;;;;;x
+atxl.14.d;A band of rigid zealots invoking the late Avatar's decrees has arrived in your capital, denouncing your magistrates and demanding concessions to enforce "true balance" in your lands. Your advisors await your order.;;;;;;;;;;;;;x
+atxl.14.a;Buy their quiet departure with coin.;;;;;;;;;;;;;x
+atxl.14.b;Make a public show of devotion to placate them.;;;;;;;;;;;;;x
+atxl.14.c;Drive them from court - I rule this realm, not ghosts!;;;;;;;;;;;;;x
