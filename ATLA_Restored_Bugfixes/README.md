@@ -73,7 +73,9 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
 - **Earth King & Rare Pet Events (`events/ATLA_earthking.txt`, `events/ATLA_pets_events.txt`)**:
   - Removed the `earth_kingdom_cultures` restriction on Option B of `earthking.66` so foreign conquerors holding the Earth Kingdom have a valid option.
   - Added a trigger to `PETS.5` requiring an active `searching_for_*` flag so rare-pet searches stop after giving up.
-- **Water Tribe Settlement Conversion (`decisions/settlement_decisions.txt`)**: Allowed `water_tribe_government` rulers to use `convert_tribal_to_castle`.
+- **Water Tribe Settlement Conversion & Call to Arms (`decisions/settlement_decisions.txt`, `common/governments/tribal_governments.txt`, Issue #125)**:
+  - Allowed `water_tribe_government` rulers to use `convert_tribal_to_castle`.
+  - Added `water_tribe_government` to `vassal_call_to_arms` inside `water_tribe_government` so Water Tribe vassals answer tribal calls to arms.
 - **Colonisation System (`decisions/ATLA_colony_decisions.txt`, `events/ATLA_colony_system.txt`, Issue #505)**:
   - Changed `colonize_province` filter from `owned` to `sub_realm_owned` and fixed inverted `is_liege_or_above = FROM` so rulers can colonize both direct and vassal counties (and never their liege's).
   - Fixed `ATLA.9000` ticking vassal colonies multiple times per year (`any_realm_province` -> `any_demesne_province`).
