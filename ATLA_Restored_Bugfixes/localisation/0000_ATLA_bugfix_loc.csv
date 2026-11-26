@@ -2,9 +2,11 @@
 # Issue #610: True Christian Knight vanilla leak
 true_christian_knight;True Honorable Warrior;;;;;;;;;;;;;x
 desc_true_christian_knight;This character is renowned throughout the realm as a paragon of martial honor, discipline, and virtue.;;;;;;;;;;;;;x
+true_christian_knight_desc;This character is renowned throughout the realm as a paragon of martial honor, discipline, and virtue.;;;;;;;;;;;;;x
 # Issue #609: Earth Monarchy (chinese_imperial_government) desc vanilla leak
 chinese_imperial_government_desc;The Earth Monarchy represents the ancient centralized throne of Ba Sing Se and the Earth Kingdom. The Earth Monarch rules through a vast bureaucracy and royal court, able to hold both castles and cities while commanding the loyalty of subordinate kings and governors across the realm.;;;;;;;;;;;;;x
 # Issue #597: Earth Kingdom Upkeep modifier missing description
+supporting_the_earth_kingdom_desc;The vast administrative apparatus of Ba Sing Se and the Royal Earth Palace requires substantial ongoing upkeep to maintain order and imperial authority across the Earth Kingdom.;;;;;;;;;;;;;x
 desc_supporting_the_earth_kingdom;The vast administrative apparatus of Ba Sing Se and the Royal Earth Palace requires substantial ongoing upkeep to maintain order and imperial authority across the Earth Kingdom.;;;;;;;;;;;;;x
 # Issue #559: Merchant from Hindustan vanilla event adapted to Ba Sing Se
 EVTDESC_RoI_215;A wealthy merchant caravan traveling from the grand markets of Ba Sing Se has arrived at your court, bearing exotic wares and curiosities from across the Earth Kingdom. Among his treasures is a breathtaking, flawlessly cut diamond of unusual brilliance, which he offers to sell you for a modest sum.;;;;;;;;;;;;;x

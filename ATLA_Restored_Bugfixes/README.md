@@ -36,8 +36,8 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
   - Fixed `ATLAE.69` ("Air Nomads survived") checking never-set `HYW_5`–`HYW_8` flags instead of actual Air Temple holders, and fixed `imperial_ambitions_22` ("Recruit the Barbarians") checking never-set `HYW_8`.
   - Fixed `ATLAE.118` / `ATLAE.132` ("Prince's Ambition") fallback `random_child` always overwriting Ozai, fixed `ATLAE.122`/`127`/`130` invalid `FROM = { wealth = ROOT }` after death, and removed `trigger = { ai = no }` on `ATLAE.129`'s sole option.
 - **"A New Era" Event Spam (`events/ATLA_imperial.txt` & `common/laws/a_atla_laws.txt`, Issue #567)**:
-  - Moved `ATLA_imperial.1` calls from law `effect` (which re-runs on load/recalculation) into `pass_effect`, guarded by `GLOBSTATE_age_of_imperialism`.
-  - Set `GLOBSTATE_age_of_imperialism` in `ATLA_imperial.1` `immediate` and added fallback desc/option in `ATLA_imperial.2` for rulers outside the Four Nations culture groups.
+  - Guarded the `ATLA_imperial.1` calls inside law `effect` with `NOT = { has_global_flag = GLOBSTATE_age_of_imperialism }` so 800–928 title-history starts still switch the Fire Lord to `fire_imperial_government` once while preventing repeat fires on reload/recalculation.
+  - Added `NOT = { has_global_flag = GLOBSTATE_age_of_imperialism }` to `ATLA_imperial.1`'s `trigger`, set `GLOBSTATE_age_of_imperialism` in `immediate`, and added fallback desc/option in `ATLA_imperial.2` for rulers outside the Four Nations culture groups.
 - **Crisis War, Air Nomad & Air Reclamation CBs (`common/cb_types/03_cb_types_ATLA.txt`, Issue #71)**:
   - Fixed `cb_shatter_realm` using non-existent `any_realm_title` (replaced with `any_demesne_title` + `any_realm_character = { any_demesne_title = ... }`) so defeated kingdom and empire titles are actually destroyed.
   - Fixed 5 invalid `realm = { has_law = ... }` scopes -> `primary_title = { has_law = ... }`.
@@ -78,7 +78,7 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
   - Changed `colonize_province` filter from `owned` to `sub_realm_owned` and fixed inverted `is_liege_or_above = FROM` so rulers can colonize both direct and vassal counties (and never their liege's).
   - Fixed `ATLA.9000` ticking vassal colonies multiple times per year (`any_realm_province` -> `any_demesne_province`).
   - Fixed inverted stewardship penalties in `ATLA.9001` (`> 10`/`> 4` -> `< 10`/`< 4`), swapped Fire Nation colonial cultures in `ATLA.9006`, and prevented double-firing `ATLA.9004` in `ATLA.9008`.
-- **Spiritual Journey (`decisions/ATLA_religious_decisions.txt`, Issue #50)**: Removed permanent `HYW_0` global flag block on `spiritual_journey`.
+- **Spiritual Journey (`decisions/ATLA_religious_decisions.txt`, Issue #50)**: Removed permanent `HYW_0` global flag block on `spiritual_journey` and added `religion = tui_and_la` (Northern Water Tribe).
 - **Religious Conversion & Secret Faith (`decisions/conversion_decisions.txt`, `decisions/mnm_secret_religious_societies_decisions.txt`, Issue #104)**:
   - Changed `convert_to_spouse_religion` filter from `home_court` to `spouse` so landed/foreign spouses are valid targets.
   - Allowed `convert_to_liege_religion` across non-modern religion groups, and added liege support to `secretly_convert_to_close_relations_religion`.
@@ -106,7 +106,7 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
 - **Vanilla Flavor Overrides & Missing Keys (`localisation/0000_ATLA_bugfix_loc.csv`)**:
   - Issue #610: Renamed `true_christian_knight` -> "True Honorable Warrior".
   - Issue #609: Added ATLA `chinese_imperial_government_desc` for Earth Monarchy.
-  - Issue #597: Added `desc_supporting_the_earth_kingdom` for Earth Kingdom Upkeep.
+  - Issue #597: Added `supporting_the_earth_kingdom_desc` (and `desc_supporting_the_earth_kingdom`) for Earth Kingdom Upkeep.
   - Issue #559: Adapted `EVTDESC_RoI_215`/`218` ("Merchant from Hindustan") to Ba Sing Se / komodo rhino.
   - Issue #312: Adapted `NEWBORN_PURPLE_SETUP`/`LOG` and `born_in_the_purple` to the Royal Earth Palace.
   - Issue #32: Fixed `tooltip_obj_see_the_realm_grow` scope (`[Root.realmSizeGoal.GetValue]` -> `[This.realmSizeGoal.GetValue]`).
