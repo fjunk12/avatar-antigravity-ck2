@@ -1,0 +1,171 @@
+# ATLA Ba Sing Se - decisions (prefix atxb_)
+# Players see the works behind one collapsible entry in the Intrigue tab ("Check Possible Works"); the AI always sees them.
+# A puppet Earth King (trait earthkingpuppet) cannot spend the treasury: the Grand Secretariat does (see atxb_secretariat_effect).
+decisions = {
+	atxb_menu_open = {
+		ai = no
+		potential = {
+			atxb_is_king_trigger = yes
+			NOT = { has_character_flag = atxb_menu_works }
+		}
+		allow = { always = yes }
+		effect = { set_character_flag = atxb_menu_works }
+		ai_will_do = { factor = 0 }
+	}
+	atxb_menu_close = {
+		ai = no
+		potential = {
+			atxb_is_king_trigger = yes
+			has_character_flag = atxb_menu_works
+		}
+		allow = { always = yes }
+		effect = { clr_character_flag = atxb_menu_works }
+		ai_will_do = { factor = 0 }
+	}
+	atxb_view_treasury = {
+		ai = no
+		potential = {
+			atxb_is_king_trigger = yes
+			atxb_menu_open_trigger = yes
+		}
+		allow = { always = yes }
+		effect = { character_event = { id = atxb.5 } }
+		ai_will_do = { factor = 0 }
+	}
+	atxb_work_roads = {
+		is_high_prio = yes
+		ai_check_interval = 12
+		potential = {
+			atxb_king_can_spend_trigger = yes
+			atxb_menu_open_trigger = yes
+			NOT = { has_global_flag = atxb_done_roads }
+			NOT = { check_variable = { which = global_atxb_w_roads_stage value = 1 } }
+		}
+		allow = {
+			check_variable = { which = global_atxb_treasury value = 100 }
+		}
+		effect = {
+			atxb_start_roads_effect = yes
+			custom_tooltip = { text = atxb_work_roads_tt }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	atxb_work_law = {
+		is_high_prio = yes
+		ai_check_interval = 12
+		potential = {
+			atxb_king_can_spend_trigger = yes
+			atxb_menu_open_trigger = yes
+			NOT = { has_global_flag = atxb_done_law }
+			NOT = { check_variable = { which = global_atxb_w_law_stage value = 1 } }
+		}
+		allow = {
+			check_variable = { which = global_atxb_treasury value = 200 }
+			k_earth_kingdom = {
+				OR = {
+					has_law = ek_unity_2
+					has_law = ek_unity_3
+				}
+			}
+		}
+		effect = {
+			atxb_start_law_effect = yes
+			custom_tooltip = { text = atxb_work_law_tt }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	atxb_work_granaries = {
+		is_high_prio = yes
+		ai_check_interval = 12
+		potential = {
+			atxb_king_can_spend_trigger = yes
+			atxb_menu_open_trigger = yes
+			NOT = { has_global_flag = atxb_done_granaries }
+			NOT = { check_variable = { which = global_atxb_w_granaries_stage value = 1 } }
+		}
+		allow = {
+			check_variable = { which = global_atxb_treasury value = 100 }
+		}
+		effect = {
+			atxb_start_granaries_effect = yes
+			custom_tooltip = { text = atxb_work_granaries_tt }
+		}
+		ai_will_do = { factor = 1 }
+	}
+	atxb_draw_on_treasury = {
+		ai_check_interval = 24
+		potential = {
+			atxb_king_can_spend_trigger = yes
+			atxb_menu_open_trigger = yes
+		}
+		allow = {
+			check_variable = { which = global_atxb_treasury value = 100 }
+			custom_tooltip = {
+				text = atxb_draw_cooldown_tt
+				OR = {
+					NOT = { has_character_flag = atxb_drew }
+					had_character_flag = { flag = atxb_drew days = 730 }
+				}
+			}
+		}
+		effect = {
+			change_variable = { which = global_atxb_treasury value = -100 }
+			wealth = 50
+			change_variable = { which = global_royalAuthority value = -5 }
+			atxb_clamp_authority_effect = yes
+			clr_character_flag = atxb_drew
+			set_character_flag = atxb_drew
+			custom_tooltip = { text = atxb_draw_tt }
+		}
+		ai_will_do = {
+			factor = 0.2
+			modifier = { factor = 5 trait = greedy }
+			modifier = { factor = 0 trait = charitable }
+			modifier = { factor = 3 NOT = { wealth = 0 } }
+		}
+	}
+
+	# Rival Earth realms and Way of Chin realms of the Earth Kingdom can pay to disrupt the crown's works
+	atxb_sabotage_works = {
+		ai_check_interval = 60
+		potential = {
+			is_ruler = yes
+			independent = yes
+			higher_tier_than = COUNT
+			atxb_is_king_trigger = no
+			atxb_any_work_running_trigger = yes
+			OR = {
+				culture_group = earth_kingdom_cultures
+				religion = way_of_chin
+			}
+			capital_scope = { region = world_greater_earth_kingdom }
+		}
+		allow = {
+			wealth = 25
+			custom_tooltip = {
+				text = atxb_sabotage_cooldown_tt
+				OR = {
+					NOT = { has_character_flag = atxb_sabotaged }
+					had_character_flag = { flag = atxb_sabotaged days = 1825 }
+				}
+			}
+		}
+		effect = {
+			wealth = -25
+			clr_character_flag = atxb_sabotaged
+			set_character_flag = atxb_sabotaged
+			custom_tooltip = { text = atxb_sabotage_tt }
+			character_event = { id = atxb.18 days = 30 }
+		}
+		ai_will_do = {
+			factor = 0.05
+			modifier = { factor = 4 religion = way_of_chin }
+			modifier = { factor = 3 trait = ambitious }
+			modifier = { factor = 2 trait = deceitful }
+			modifier = { factor = 0.2 trait = honest }
+			modifier = { factor = 0 NOT = { wealth = 100 } }
+		}
+	}
+}

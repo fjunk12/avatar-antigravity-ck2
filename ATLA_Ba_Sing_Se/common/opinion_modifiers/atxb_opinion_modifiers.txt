@@ -1,0 +1,19 @@
+# ATLA Ba Sing Se - opinion modifiers
+opinion_atxb_single_law = {
+	opinion = -10
+}
+opinion_atxb_saboteur = {
+	opinion = -30
+}
+opinion_atxb_aid_funded = {
+	opinion = 20
+}
+opinion_atxb_marched = {
+	opinion = 30
+}
+opinion_atxb_tribute_only = {
+	opinion = -10
+}
+opinion_atxb_refused = {
+	opinion = -20
+}

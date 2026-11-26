@@ -1,0 +1,11 @@
+# ATLA Ba Sing Se - province modifiers from finished works
+atxb_royal_road = {
+	icon = 24
+	supply_limit = 1
+	local_tax_modifier = 0.05
+}
+atxb_granaries = {
+	icon = 24
+	local_tax_modifier = 0.1
+	disease_defence = 0.2
+}

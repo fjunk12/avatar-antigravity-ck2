@@ -1,0 +1,548 @@
+# ATLA Ba Sing Se - events (namespace atxb)
+# atxb.1   yearly run, once a year for the whole world (on_yearly_pulse, hidden)
+# atxb.3   a foreign or Way of Chin ruler loots the treasury of Ba Sing Se
+# atxb.5   "The Treasury of Ba Sing Se" overview (decision)
+# atxb.6   the Grand Secretariat's report to a puppet Earth King (players)
+# atxb.10  a work completes a stage            atxb.11  a work stalls or is abandoned
+# atxb.15  a work is finished                   atxb.16  news to tributaries: A Single Law for the Kingdom
+# atxb.18  sabotage: what came of it (saboteur) atxb.19  sabotage: the agents were caught (king, FROM = saboteur)
+# atxb.20  a tributary breaks away (hidden, ROOT = tributary)
+# atxb.29  wartime petition check (hidden, ROOT = petitioner)
+# atxb.30  a realm pledges in peacetime (hidden, ROOT = pledger)
+# atxb.31  a realm at war petitions Ba Sing Se (king, FROM = petitioner)
+# atxb.32  the petitioner hears the answer
+namespace = atxb
+
+character_event = {
+	id = atxb.1
+	hide_window = yes
+	is_triggered_only = yes # on_yearly_pulse
+
+	only_rulers = yes
+
+	trigger = {
+		OR = {
+			NOT = { has_global_flag = atxb_tick }
+			had_global_flag = { flag = atxb_tick days = 330 }
+		}
+	}
+
+	immediate = {
+		clr_global_flag = atxb_tick
+		set_global_flag = atxb_tick # one character runs this each year
+		if = {
+			limit = { NOT = { has_global_flag = atxb_bss_started } }
+			set_global_flag = atxb_bss_started
+		}
+		set_variable = { which = global_atxb_breaks value = 0 }
+		set_variable = { which = global_atxb_pledges value = 0 }
+		set_variable = { which = global_atxb_petitions value = 0 }
+
+		# A foreign or Way of Chin ruler holding the Royal Palace loots the treasury
+		if = {
+			limit = {
+				check_variable = { which = global_atxb_treasury value = 1 }
+				c_royal_earth_palace = {
+					has_holder = yes
+					holder_scope = { top_liege = { atxb_valid_king_trigger = no } }
+				}
+			}
+			c_royal_earth_palace = {
+				holder_scope = {
+					top_liege = {
+						atxb_loot_treasury_effect = yes
+						log = "ATLA Ba Sing Se: [This.GetTitledName] looted the treasury"
+						character_event = { id = atxb.3 }
+					}
+				}
+			}
+		}
+
+		atxb_find_king_effect = yes
+		if = {
+			limit = { event_target:atxb_king = { always = yes } }
+			event_target:atxb_king = {
+				atxb_yearly_income_effect = yes
+				atxb_progress_all_works_effect = yes
+				if = {
+					limit = { trait = earthkingpuppet }
+					atxb_secretariat_effect = yes
+				}
+				log = "ATLA Ba Sing Se: [This.GetTitledName] crown [global_atxb_last_crown.GetValue], skim [global_atxb_last_skim.GetValue] from [global_atxb_tribs.GetValue] tributaries, treasury [global_atxb_treasury.GetValue], Royal Authority [global_royalAuthority.GetValue]"
+
+				# Living tributaries 1: AI tributaries of a weak crown break away (at most 2 a year)
+				any_tributary = {
+					limit = { atxb_breakaway_candidate_trigger = yes }
+					if = {
+						limit = { has_global_flag = atxb_done_law }
+						random = { chance = 10 character_event = { id = atxb.20 } }
+					}
+					else = {
+						random = { chance = 20 character_event = { id = atxb.20 } }
+					}
+				}
+			}
+
+			# Living tributaries 2: peacetime pledges (at most 2 a year, rarer the more tributaries the crown already has)
+			any_independent_ruler = {
+				limit = { atxb_peacetime_pledge_trigger = yes }
+				if = {
+					limit = { check_variable = { which = global_atxb_tribs value = 20 } }
+					random = { chance = 4 character_event = { id = atxb.30 } }
+				}
+				else_if = {
+					limit = { check_variable = { which = global_atxb_tribs value = 10 } }
+					random = { chance = 8 character_event = { id = atxb.30 } }
+				}
+				else = {
+					random = { chance = 15 character_event = { id = atxb.30 } }
+				}
+			}
+
+			# Living tributaries 3: realms at war with the Fire Nation or the Way of Chin petition Ba Sing Se
+			any_independent_ruler = {
+				limit = {
+					atxb_pledge_base_trigger = yes
+					war = yes
+				}
+				if = {
+					limit = { check_variable = { which = global_atxb_tribs value = 20 } }
+					random = { chance = 6 character_event = { id = atxb.29 } }
+				}
+				else_if = {
+					limit = { check_variable = { which = global_atxb_tribs value = 10 } }
+					random = { chance = 12 character_event = { id = atxb.29 } }
+				}
+				else = {
+					random = { chance = 25 character_event = { id = atxb.29 } }
+				}
+			}
+		}
+	}
+}
+
+# Looting
+character_event = {
+	id = atxb.3
+	desc = atxb.3.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	trigger = { ai = no }
+
+	option = { name = atxb.3.a }
+}
+
+# The Treasury of Ba Sing Se (overview)
+character_event = {
+	id = atxb.5
+	desc = {
+		trigger = { atxb_is_king_trigger = yes trait = earthkingpuppet }
+		text = atxb.5.d_puppet
+	}
+	desc = {
+		trigger = { NOT = { atxb_is_king_trigger = yes trait = earthkingpuppet } }
+		text = atxb.5.d
+	}
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.5.a
+		if = {
+			limit = { check_variable = { which = global_atxb_w_roads_stage value = 1 } }
+			custom_tooltip = { text = atxb_running_roads_tt }
+		}
+		if = {
+			limit = { check_variable = { which = global_atxb_w_law_stage value = 1 } }
+			custom_tooltip = { text = atxb_running_law_tt }
+		}
+		if = {
+			limit = { check_variable = { which = global_atxb_w_granaries_stage value = 1 } }
+			custom_tooltip = { text = atxb_running_granaries_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxb_done_roads }
+			custom_tooltip = { text = atxb_done_roads_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxb_done_law }
+			custom_tooltip = { text = atxb_done_law_tt }
+		}
+		if = {
+			limit = { has_global_flag = atxb_done_granaries }
+			custom_tooltip = { text = atxb_done_granaries_tt }
+		}
+	}
+}
+
+# The Grand Secretariat's report to a puppet Earth King
+character_event = {
+	id = atxb.6
+	desc = {
+		trigger = { has_character_flag = atxb_sec_started has_character_flag = atxb_sec_drew }
+		text = atxb.6.d_both
+	}
+	desc = {
+		trigger = { has_character_flag = atxb_sec_started NOT = { has_character_flag = atxb_sec_drew } }
+		text = atxb.6.d_started
+	}
+	desc = {
+		trigger = { has_character_flag = atxb_sec_drew NOT = { has_character_flag = atxb_sec_started } }
+		text = atxb.6.d_drew
+	}
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.6.a
+		clr_character_flag = atxb_sec_started
+		clr_character_flag = atxb_sec_drew
+	}
+}
+
+# A work completes a stage
+character_event = {
+	id = atxb.10
+	desc = { trigger = { has_character_flag = atxb_report_roads } text = atxb.10.d_roads }
+	desc = { trigger = { has_character_flag = atxb_report_law } text = atxb.10.d_law }
+	desc = { trigger = { has_character_flag = atxb_report_granaries } text = atxb.10.d_granaries }
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	trigger = { ai = no }
+
+	option = {
+		name = atxb.10.a
+	}
+	after = { # clear only the report this popup showed (the first match, same order as the descs)
+		if = {
+			limit = { has_character_flag = atxb_report_roads }
+			clr_character_flag = atxb_report_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_report_law }
+			clr_character_flag = atxb_report_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_report_granaries }
+			clr_character_flag = atxb_report_granaries
+		}
+	}
+}
+
+# A work stalls or is abandoned
+character_event = {
+	id = atxb.11
+	desc = { trigger = { has_character_flag = atxb_stall_roads } text = atxb.11.d_stall_roads }
+	desc = { trigger = { has_character_flag = atxb_abandon_roads } text = atxb.11.d_abandon_roads }
+	desc = { trigger = { has_character_flag = atxb_stall_law } text = atxb.11.d_stall_law }
+	desc = { trigger = { has_character_flag = atxb_abandon_law } text = atxb.11.d_abandon_law }
+	desc = { trigger = { has_character_flag = atxb_stall_granaries } text = atxb.11.d_stall_granaries }
+	desc = { trigger = { has_character_flag = atxb_abandon_granaries } text = atxb.11.d_abandon_granaries }
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	trigger = { ai = no }
+
+	option = {
+		name = atxb.11.a
+	}
+	after = { # clear only the report this popup showed (the first match, same order as the descs)
+		if = {
+			limit = { has_character_flag = atxb_stall_roads }
+			clr_character_flag = atxb_stall_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_abandon_roads }
+			clr_character_flag = atxb_abandon_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_stall_law }
+			clr_character_flag = atxb_stall_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_abandon_law }
+			clr_character_flag = atxb_abandon_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_stall_granaries }
+			clr_character_flag = atxb_stall_granaries
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_abandon_granaries }
+			clr_character_flag = atxb_abandon_granaries
+		}
+	}
+}
+
+# A work is finished
+character_event = {
+	id = atxb.15
+	desc = { trigger = { has_character_flag = atxb_done_roads } text = atxb.15.d_roads }
+	desc = { trigger = { has_character_flag = atxb_done_law } text = atxb.15.d_law }
+	desc = { trigger = { has_character_flag = atxb_done_granaries } text = atxb.15.d_granaries }
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.15.a
+	}
+	after = { # clear only the report this popup showed (the first match, same order as the descs)
+		if = {
+			limit = { has_character_flag = atxb_done_roads }
+			clr_character_flag = atxb_done_roads
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_done_law }
+			clr_character_flag = atxb_done_law
+		}
+		else_if = {
+			limit = { has_character_flag = atxb_done_granaries }
+			clr_character_flag = atxb_done_granaries
+		}
+	}
+}
+
+# News to tributaries: A Single Law for the Kingdom
+character_event = {
+	id = atxb.16
+	desc = atxb.16.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = { name = atxb.16.a }
+}
+
+# Sabotage: what came of it (ROOT = saboteur)
+character_event = {
+	id = atxb.18
+	desc = { trigger = { has_character_flag = atxb_sab_hit } text = atxb.18.d_hit }
+	desc = { trigger = { has_character_flag = atxb_sab_nothing } text = atxb.18.d_nothing }
+	desc = { trigger = { has_character_flag = atxb_sab_caught } text = atxb.18.d_caught }
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+	hide_window = no
+
+	immediate = {
+		atxb_find_king_effect = yes
+		random_list = {
+			45 = {
+				modifier = { factor = 0 atxb_any_work_running_trigger = no }
+				set_character_flag = atxb_sab_hit
+				atxb_sabotage_setback_effect = yes
+			}
+			30 = {
+				set_character_flag = atxb_sab_nothing
+			}
+			25 = {
+				modifier = { factor = 0.5 intrigue = 15 }
+				modifier = { factor = 1.5 event_target:atxb_king = { job_spymaster = { intrigue = 15 } } }
+				set_character_flag = atxb_sab_caught
+				prestige = -50
+				event_target:atxb_king = {
+					opinion = { who = ROOT modifier = opinion_atxb_saboteur years = 10 }
+					character_event = { id = atxb.19 days = 2 }
+				}
+			}
+		}
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] sabotaged the crown's works"
+	}
+
+	option = {
+		name = atxb.18.a
+	}
+	after = {
+		clr_character_flag = atxb_sab_hit
+		clr_character_flag = atxb_sab_nothing
+		clr_character_flag = atxb_sab_caught
+		clr_character_flag = atxb_sab_roads
+		clr_character_flag = atxb_sab_law
+		clr_character_flag = atxb_sab_granaries
+	}
+}
+
+# Sabotage: the agents were caught (ROOT = king, FROM = saboteur)
+character_event = {
+	id = atxb.19
+	desc = atxb.19.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.19.a
+	}
+}
+
+# A tributary breaks away (ROOT = tributary). The cap is counted here.
+character_event = {
+	id = atxb.20
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { check_variable = { which = global_atxb_breaks value = 2 } }
+		atxb_ek_tributary_trigger = yes
+	}
+
+	immediate = {
+		change_variable = { which = global_atxb_breaks value = 1 }
+		atxb_breakaway_effect = yes
+	}
+}
+
+# Wartime petition check (ROOT = an independent Earth realm at war). The cap is counted here.
+character_event = {
+	id = atxb.29
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { check_variable = { which = global_atxb_petitions value = 2 } }
+		is_tributary = no
+		OR = { # at most one petition every 5 years
+			NOT = { has_character_flag = atxb_petitioned }
+			had_character_flag = { flag = atxb_petitioned days = 1825 }
+		}
+		any_war = {
+			defender = { character = ROOT }
+			attacker = {
+				OR = {
+					culture_group = fire_nation_cultures
+					religion = way_of_chin
+				}
+			}
+		}
+	}
+
+	immediate = {
+		atxb_find_king_effect = yes
+		if = {
+			limit = {
+				event_target:atxb_king = { always = yes }
+				NOT = { war_with = event_target:atxb_king }
+			}
+			change_variable = { which = global_atxb_petitions value = 1 }
+			clr_character_flag = atxb_petitioned
+			set_character_flag = atxb_petitioned
+			event_target:atxb_king = { character_event = { id = atxb.31 } }
+		}
+	}
+}
+
+# A realm pledges in peacetime (ROOT = pledger). The cap is counted here.
+character_event = {
+	id = atxb.30
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { check_variable = { which = global_atxb_pledges value = 2 } }
+		is_tributary = no
+		war = no
+	}
+
+	immediate = {
+		atxb_find_king_effect = yes
+		if = {
+			limit = { event_target:atxb_king = { always = yes } }
+			change_variable = { which = global_atxb_pledges value = 1 }
+			log = "ATLA Ba Sing Se: [Root.GetTitledName] pledged to the Earth King"
+			clr_character_flag = atxb_recent_pledge
+			set_character_flag = atxb_recent_pledge
+			event_target:atxb_king = {
+				make_tributary = { who = ROOT percentage = 0.01 tributary_type = earth_kingdom_territory_tributary }
+				character_event = { id = ATLAE.212 }
+			}
+		}
+	}
+}
+
+# A realm at war petitions Ba Sing Se (ROOT = king, FROM = petitioner)
+character_event = {
+	id = atxb.31
+	desc = atxb.31.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	immediate = {
+		109 = { save_event_target_as = atxb_bss }
+	}
+
+	option = { # Fund Local Defense
+		name = atxb.31.a
+		trigger = { check_variable = { which = global_atxb_treasury value = 50 } }
+		atxb_accept_tributary_effect = yes
+		atxb_fund_local_defense_effect = yes
+		FROM = {
+			opinion = { who = ROOT modifier = opinion_atxb_aid_funded years = 10 }
+			set_character_flag = atxb_ans_funded
+			letter_event = { id = atxb.32 days = 5 }
+		}
+		ai_chance = {
+			factor = 60
+			modifier = { factor = 0 trait = earthkingpuppet }
+		}
+	}
+	option = { # March to Their Aid (only for realms near Ba Sing Se)
+		name = atxb.31.b
+		trigger = {
+			NOT = { trait = earthkingpuppet }
+			FROM = { capital_scope = { NOT = { distance = { where = event_target:atxb_bss value > 450 } } } }
+		}
+		atxb_accept_tributary_effect = yes
+		join_defender_wars = FROM
+		FROM = {
+			opinion = { who = ROOT modifier = opinion_atxb_marched years = 10 }
+			set_character_flag = atxb_ans_marched
+			letter_event = { id = atxb.32 days = 5 }
+		}
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 0.25 trait = craven }
+			modifier = { factor = 0.5 war = yes }
+		}
+	}
+	option = { # Accept Tribute Only
+		name = atxb.31.c
+		atxb_accept_tributary_effect = yes
+		FROM = {
+			opinion = { who = ROOT modifier = opinion_atxb_tribute_only years = 5 }
+			set_character_flag = atxb_ans_tribute_only
+			letter_event = { id = atxb.32 days = 5 }
+		}
+		ai_chance = {
+			factor = 20
+			modifier = { factor = 3 trait = earthkingpuppet }
+		}
+	}
+	option = { # Refuse
+		name = atxb.31.d
+		FROM = {
+			opinion = { who = ROOT modifier = opinion_atxb_refused years = 10 }
+			set_character_flag = atxb_ans_refused
+			letter_event = { id = atxb.32 days = 5 }
+		}
+		ai_chance = { factor = 5 }
+	}
+}
+
+# The petitioner hears the answer (ROOT = petitioner, FROM = king)
+letter_event = {
+	id = atxb.32
+	desc = { trigger = { has_character_flag = atxb_ans_funded } text = atxb.32.d_funded }
+	desc = { trigger = { has_character_flag = atxb_ans_marched } text = atxb.32.d_marched }
+	desc = { trigger = { has_character_flag = atxb_ans_tribute_only } text = atxb.32.d_tribute_only }
+	desc = { trigger = { has_character_flag = atxb_ans_refused } text = atxb.32.d_refused }
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.32.a
+	}
+	after = {
+		clr_character_flag = atxb_ans_funded
+		clr_character_flag = atxb_ans_marched
+		clr_character_flag = atxb_ans_tribute_only
+		clr_character_flag = atxb_ans_refused
+	}
+}
