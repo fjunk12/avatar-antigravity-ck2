@@ -1,0 +1,6 @@
+# ATLA Ba Sing Se
+on_yearly_pulse = {
+	events = {
+		atxb.1 # treasury, works, living tributaries (once a year for the whole world)
+	}
+}

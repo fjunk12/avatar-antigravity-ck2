@@ -1,0 +1,82 @@
+#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+atxb_menu_open;Check Possible Works;;;;;;;;;;;;;x
+atxb_menu_open_desc;Show the works the treasury of Ba Sing Se can pay for.;;;;;;;;;;;;;x
+atxb_menu_close;Return to Decisions;;;;;;;;;;;;;x
+atxb_menu_close_desc;Hide the works of Ba Sing Se again.;;;;;;;;;;;;;x
+atxb_view_treasury;The Treasury of Ba Sing Se;;;;;;;;;;;;;x
+atxb_view_treasury_desc;Review the crown's treasury, its income and the works in progress.;;;;;;;;;;;;;x
+atxb_work_roads;Build the Royal Roads;;;;;;;;;;;;;x
+atxb_work_roads_desc;Pave the old roads between the cities of the Earth Kingdom. 100 gold to begin, then 4 yearly stages of 125.;;;;;;;;;;;;;x
+atxb_work_roads_tt;When finished, every Earth Kingdom province outside the Si Wong Desert gets supply +1 and tax +5%. The roads serve invaders as well.;;;;;;;;;;;;;x
+atxb_work_law;A Single Law for the Kingdom;;;;;;;;;;;;;x
+atxb_work_law_desc;Write one law for every state that answers to Ba Sing Se. Needs the States or Monarchism unity law. 200 gold to begin, then 3 yearly stages of 200.;;;;;;;;;;;;;x
+atxb_work_law_tt;When finished: Royal Authority +5, tributaries break away half as often, the treasury's share of tribute grows by 25%, and every Earth Kingdom tributary thinks 10 less of the crown for 20 years.;;;;;;;;;;;;;x
+atxb_work_granaries;Fill the Royal Granaries;;;;;;;;;;;;;x
+atxb_work_granaries_desc;Build granaries across the Ba Sing Se region. 100 gold to begin, then 2 yearly stages of 100.;;;;;;;;;;;;;x
+atxb_work_granaries_tt;When finished, every province of the Ba Sing Se region gets tax +10% and disease defence +20%.;;;;;;;;;;;;;x
+atxb_draw_on_treasury;Draw on the Treasury;;;;;;;;;;;;;x
+atxb_draw_on_treasury_desc;Move gold from the treasury of Ba Sing Se into your own purse. Half of it is lost on the way, and the court will talk.;;;;;;;;;;;;;x
+atxb_draw_tt;Treasury -100, your gold +50, Royal Authority -5.;;;;;;;;;;;;;x
+atxb_draw_cooldown_tt;You drew on the treasury less than two years ago.;;;;;;;;;;;;;x
+atxb_sabotage_works;Sabotage the Crown's Works;;;;;;;;;;;;;x
+atxb_sabotage_works_desc;Pay agents to slow down Ba Sing Se's works. They may succeed, achieve nothing, or be caught.;;;;;;;;;;;;;x
+atxb_sabotage_tt;Costs 25 gold. About half the time a running work loses a year. If your agents are caught, you lose 50 prestige and the Earth King learns who sent them.;;;;;;;;;;;;;x
+atxb_sabotage_cooldown_tt;You sabotaged the crown's works less than five years ago.;;;;;;;;;;;;;x
+atxb_running_roads_tt;Royal Roads: stage [global_atxb_w_roads_stage.GetValue] of 4 next.;;;;;;;;;;;;;x
+atxb_running_law_tt;A Single Law for the Kingdom: stage [global_atxb_w_law_stage.GetValue] of 3 next.;;;;;;;;;;;;;x
+atxb_running_granaries_tt;Royal Granaries: stage [global_atxb_w_granaries_stage.GetValue] of 2 next.;;;;;;;;;;;;;x
+atxb_done_roads_tt;The Royal Roads are finished.;;;;;;;;;;;;;x
+atxb_done_law_tt;A Single Law for the Kingdom is in force.;;;;;;;;;;;;;x
+atxb_done_granaries_tt;The Royal Granaries are full.;;;;;;;;;;;;;x
+atxb_royal_road;Royal Road;;;;;;;;;;;;;x
+atxb_royal_road_desc;A paved royal road runs through this province.;;;;;;;;;;;;;x
+atxb_granaries;Royal Granaries;;;;;;;;;;;;;x
+atxb_granaries_desc;The crown's granaries keep this province fed through hard years.;;;;;;;;;;;;;x
+opinion_atxb_single_law;One Law Imposed;;;;;;;;;;;;;x
+opinion_atxb_saboteur;Sabotaged the Crown's Works;;;;;;;;;;;;;x
+opinion_atxb_aid_funded;Paid for Our Defence;;;;;;;;;;;;;x
+opinion_atxb_marched;Marched to Our Aid;;;;;;;;;;;;;x
+opinion_atxb_tribute_only;Took Tribute, Sent Nothing;;;;;;;;;;;;;x
+opinion_atxb_refused;Refused Us in Our Need;;;;;;;;;;;;;x
+atxb.3.d;The treasury of Ba Sing Se is ours. Whatever the Earth Kings saved for their roads and granaries now fills our coffers.;;;;;;;;;;;;;x
+atxb.3.a;To the victor.;;;;;;;;;;;;;x
+atxb.5.d;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] Earth Kingdom tributaries. The treasury takes at most 80 gold a year, never more than a quarter of the king's own purse, and nothing while the king has less than 25 gold.\n\nRoyal Authority stands at [global_royalAuthority.GetValue].;;;;;;;;;;;;;x
+atxb.5.d_puppet;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold, but it is not yours to spend. The Grand Secretariat decides what is built, and what is taken.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] tributaries. Royal Authority stands at [global_royalAuthority.GetValue].;;;;;;;;;;;;;x
+atxb.5.a;Close the ledgers.;;;;;;;;;;;;;x
+atxb.6.d_started;A memorandum from the Grand Secretariat informs Your Majesty that work has begun on a new project for the good of the kingdom. Your Majesty need not trouble yourself with the details.;;;;;;;;;;;;;x
+atxb.6.d_drew;The ledgers show that the Grand Secretariat has drawn 100 gold from the royal treasury for expenses of state. No further explanation was given.;;;;;;;;;;;;;x
+atxb.6.d_both;A memorandum from the Grand Secretariat informs Your Majesty that work has begun on a new project. The ledgers also show that 100 gold left the treasury for expenses of state. No further explanation was given.;;;;;;;;;;;;;x
+atxb.6.a;Of course.;;;;;;;;;;;;;x
+atxb.10.d_roads;Another stretch of the Royal Roads is finished. Masons and earthbenders move on to the next.;;;;;;;;;;;;;x
+atxb.10.d_law;The ministers report progress on the Single Law. Another set of provincial customs has been written into the code.;;;;;;;;;;;;;x
+atxb.10.d_granaries;The first granaries stand filled. The rest are being raised.;;;;;;;;;;;;;x
+atxb.10.a;Good.;;;;;;;;;;;;;x
+atxb.11.d_stall_roads;The treasury could not pay for this year's work on the Royal Roads. The crews wait.;;;;;;;;;;;;;x
+atxb.11.d_stall_law;The treasury could not pay for this year's work on the Single Law. The ministers wait.;;;;;;;;;;;;;x
+atxb.11.d_stall_granaries;The treasury could not pay for this year's work on the granaries. The builders wait.;;;;;;;;;;;;;x
+atxb.11.d_abandon_roads;Three years without pay. The work on the Royal Roads has been abandoned, and what was spent is lost.;;;;;;;;;;;;;x
+atxb.11.d_abandon_law;Three years without pay. The Single Law has been abandoned, and what was spent is lost.;;;;;;;;;;;;;x
+atxb.11.d_abandon_granaries;Three years without pay. The granaries have been abandoned, and what was spent is lost.;;;;;;;;;;;;;x
+atxb.11.a;Unfortunate.;;;;;;;;;;;;;x
+atxb.15.d_roads;The Royal Roads are finished. Merchants, messengers and soldiers move between the cities of the Earth Kingdom faster than ever before. So, of course, could an enemy.;;;;;;;;;;;;;x
+atxb.15.d_law;A Single Law for the Kingdom is in force. From the northern mountains to the southern islands, every state that answers to Ba Sing Se answers to the same code. Not all of them are pleased.;;;;;;;;;;;;;x
+atxb.15.d_granaries;The Royal Granaries are full. The Ba Sing Se region will not starve in a bad year.;;;;;;;;;;;;;x
+atxb.15.a;A work worthy of the crown.;;;;;;;;;;;;;x
+atxb.16.d;Ba Sing Se has finished its Single Law for the Kingdom. Our courts must now follow the crown's code instead of our own customs.;;;;;;;;;;;;;x
+atxb.16.a;We will remember this.;;;;;;;;;;;;;x
+atxb.18.d_hit;Our agents did their work. One of the crown's projects has lost a year.;;;;;;;;;;;;;x
+atxb.18.d_nothing;Our agents reached the works but found nothing they could damage without being seen. The gold is gone.;;;;;;;;;;;;;x
+atxb.18.d_caught;Our agents were caught, and they talked. The Earth King knows who sent them.;;;;;;;;;;;;;x
+atxb.18.a;So be it.;;;;;;;;;;;;;x
+atxb.19.d;Agents caught at the crown's works have confessed. They were sent by [From.GetTitledName].;;;;;;;;;;;;;x
+atxb.19.a;This will not be forgotten.;;;;;;;;;;;;;x
+atxb.31.d;An envoy from [From.GetTitledName] has come to Ba Sing Se. Their realm is under attack, and they offer to become a tributary of the crown in return for help.\n\nThe treasury holds [global_atxb_treasury.GetValue] gold. Ba Sing Se is far from most of the Earth Kingdom, and an army sent from here may arrive after the war is decided.;;;;;;;;;;;;;x
+atxb.31.a;Fund their defence (treasury -50).;;;;;;;;;;;;;x
+atxb.31.b;March to their aid.;;;;;;;;;;;;;x
+atxb.31.c;Accept their tribute, but send nothing.;;;;;;;;;;;;;x
+atxb.31.d;Refuse them.;;;;;;;;;;;;;x
+atxb.32.d_funded;Ba Sing Se has accepted us as a tributary and sent gold and a host of soldiers raised at our capital. They will fight until the war ends.;;;;;;;;;;;;;x
+atxb.32.d_marched;Ba Sing Se has accepted us as a tributary, and the Earth King's armies are marching to our side.;;;;;;;;;;;;;x
+atxb.32.d_tribute_only;Ba Sing Se has accepted our tribute. It has sent nothing else.;;;;;;;;;;;;;x
+atxb.32.d_refused;Ba Sing Se has refused us. We stand alone.;;;;;;;;;;;;;x
+atxb.32.a;So be it.;;;;;;;;;;;;;x

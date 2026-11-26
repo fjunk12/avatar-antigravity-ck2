@@ -1,0 +1,138 @@
+# ATLA Ba Sing Se - triggers (prefix atxb_)
+# Builds on the base mod's own Earth Kingdom tributaries (common/tributary_types/ATLA_tributary_types.txt),
+# Royal Authority (global_royalAuthority) and puppet Earth King (trait earthkingpuppet).
+
+# An Earth Kingdom ruler who may hold Ba Sing Se's crown (not a Way of Chin or foreign conqueror)
+atxb_valid_king_trigger = {
+	independent = yes
+	culture_group = earth_kingdom_cultures
+	religion_group = earth_religions
+	NOT = { religion = way_of_chin }
+}
+
+# This character is the ruler of Ba Sing Se (holder of e_earth_kingdom, or of k_earth_kingdom while the empire is vacant)
+atxb_is_king_trigger = {
+	atxb_valid_king_trigger = yes
+	OR = {
+		has_landed_title = e_earth_kingdom
+		AND = {
+			has_landed_title = k_earth_kingdom
+			NOT = { e_earth_kingdom = { has_holder = yes } }
+		}
+	}
+}
+
+# The ruler of Ba Sing Se may spend the treasury himself (a puppet king's treasury is spent by the Grand Secretariat)
+atxb_king_can_spend_trigger = {
+	atxb_is_king_trigger = yes
+	NOT = { trait = earthkingpuppet }
+}
+
+# One of the base mod's four Earth Kingdom tributary types (character scope, the tributary)
+atxb_ek_tributary_trigger = {
+	OR = {
+		is_tributary = { type = earth_kingdom_outpost_tributary }
+		is_tributary = { type = earth_kingdom_territory_tributary }
+		is_tributary = { type = earth_kingdom_province_tributary }
+		is_tributary = { type = earth_kingdom_state_tributary }
+	}
+}
+
+# A work is under construction
+atxb_any_work_running_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_w_roads_stage value = 1 }
+		check_variable = { which = global_atxb_w_law_stage value = 1 }
+		check_variable = { which = global_atxb_w_granaries_stage value = 1 }
+	}
+}
+
+# The "Check Possible Works" menu is open (the AI always sees the works)
+atxb_menu_open_trigger = {
+	OR = {
+		ai = yes
+		has_character_flag = atxb_menu_works
+	}
+}
+
+# The crown is weak enough for tributaries to break away (needs event_target:atxb_king)
+atxb_crown_weak_trigger = {
+	OR = {
+		event_target:atxb_king = { trait = earthkingpuppet }
+		NOT = { check_variable = { which = global_royalAuthority value = 30 } }
+		AND = {
+			event_target:atxb_king = { war = yes }
+			NOT = { check_variable = { which = global_royalAuthority value = 50 } }
+		}
+	}
+}
+
+# An AI tributary that may break away (character scope, the tributary; needs event_target:atxb_king)
+atxb_breakaway_candidate_trigger = {
+	ai = yes
+	higher_tier_than = COUNT
+	prisoner = no
+	atxb_ek_tributary_trigger = yes
+	# grace periods: 3 years after the campaign starts, 10 years after a fresh pledge
+	had_global_flag = { flag = atxb_bss_started days = 1095 }
+	OR = {
+		NOT = { has_character_flag = atxb_recent_pledge }
+		had_character_flag = { flag = atxb_recent_pledge days = 3650 }
+	}
+	NOT = { opinion = { who = event_target:atxb_king value = 0 } }
+	atxb_crown_weak_trigger = yes
+}
+
+# An independent Earth realm that could pledge to Ba Sing Se (character scope; needs event_target:atxb_king)
+atxb_pledge_base_trigger = {
+	ai = yes
+	is_ruler = yes
+	independent = yes
+	is_tributary = no
+	prisoner = no
+	higher_tier_than = COUNT
+	NOT = { tier = EMPEROR }
+	culture_group = earth_kingdom_cultures
+	religion_group = earth_religions
+	NOR = {
+		character = event_target:atxb_king
+		religion = way_of_chin
+		culture = sandbender_culture
+		has_landed_title = e_earth_kingdom
+		has_landed_title = k_earth_kingdom
+		mercenary = yes
+		holy_order = yes
+		rebel = yes
+		war_with = event_target:atxb_king
+	}
+	capital_scope = {
+		region = world_greater_earth_kingdom
+		NOT = { region = world_si_wong }
+	}
+	# someone who broke away waits 20 years before pledging again
+	OR = {
+		NOT = { has_character_flag = earth_kingdom_rebel }
+		had_character_flag = { flag = earth_kingdom_rebel days = 7300 }
+	}
+}
+
+# Peacetime pledging: a real threat next door, or a strong and trusted crown (not under Disunion)
+atxb_peacetime_pledge_trigger = {
+	atxb_pledge_base_trigger = yes
+	war = no
+	OR = {
+		any_neighbor_independent_ruler = {
+			NOT = { character = event_target:atxb_king }
+			OR = {
+				culture_group = fire_nation_cultures
+				religion = way_of_chin
+				relative_power = { who = PREV power = 2 }
+			}
+		}
+		AND = {
+			check_variable = { which = global_royalAuthority value = 60 }
+			opinion = { who = event_target:atxb_king value = 25 }
+			k_earth_kingdom = { NOT = { has_law = ek_unity_0 } }
+		}
+	}
+}
