@@ -12,6 +12,7 @@
 # atxb.31  Plea to Ba Sing Se: the king answers (ROOT = king, FROM = pleader)
 # atxb.32  the pleader hears the answer (letter)
 # atxb.33  memorandum to a puppet king: the Grand Secretariat answered a plea
+# atxb.34  hidden relay (ROOT = king, FROM = pleader): sends the Secretariat's answer letter in the king's name
 namespace = atxb
 
 character_event = {
@@ -623,5 +624,16 @@ character_event = {
 
 	option = {
 		name = atxb.33.a
+	}
+}
+
+# Hidden relay: the Secretariat's answer reaches the pleader as a letter from the king (ROOT = king, FROM = pleader)
+character_event = {
+	id = atxb.34
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { letter_event = { id = atxb.32 days = 10 } }
 	}
 }

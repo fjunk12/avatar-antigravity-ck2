@@ -21,7 +21,7 @@ The base mod already has four Earth Kingdom tributary types: outpost 10%, territ
 - **Odds:** 20% a year, 10% after A Single Law, and twice as likely for 10 years after the crown refused its plea. At most 2 a year.
 - **Grace periods:** the first 3 years of a campaign, 5 years after a unity-law change, and 10 years after the crown answered its plea.
 
-**Plea to Ba Sing Se.** An Earth realm (duke or above, not Way of Chin, not sandbenders) defending against a Fire Nation, Way of Chin or rebel attacker asks the crown for help. A realm can plead once every 5 years.
+**Plea to Ba Sing Se.** An Earth realm (duke or above, not Way of Chin, not sandbenders, not at war with the Earth King himself) defending against a Fire Nation, Way of Chin or rebel attacker asks the crown for help. A realm can plead once every 5 years.
 - **AI realms:** at most 2 pleas a year across the world.
 - **Players:** use the **Plea to Ba Sing Se** decision, which doesn't count toward that cap.
 - **Not a tributary deal:** a plea never makes anyone a tributary.
@@ -48,9 +48,9 @@ Tribute in CK2 goes to the Earth King's own purse. Each year a share of it moves
   - Nothing at all while the king has less than 25 gold.
 - **Reporting:** every year a line starting `ATLA Ba Sing Se:` goes to game.log. The treasury overview shows the same figures.
 - **Puppet king** (`trait = earthkingpuppet`): the king cannot spend the treasury. The **Grand Secretariat** does it: the holder of `d_dai_li`, or the chancellor before that title exists.
-  - It builds the Royal Granaries once, to keep the Lower Ring quiet.
+  - It first saves until the treasury covers the whole Royal Granaries (300), then builds them once, to keep the Lower Ring quiet.
   - It never builds the roads or the single law.
-  - Every year it takes a quarter of the treasury (at least 25, while the treasury has 50+) for itself.
+  - Once the Granaries stand, every year it takes a quarter of the treasury (at least 25, while the treasury has 50+) for itself.
   - A player puppet gets an "expenses of state" report.
 - **Looting:** a foreign or Way of Chin ruler holding the Royal Palace takes the whole treasury.
 

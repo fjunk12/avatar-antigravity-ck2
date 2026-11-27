@@ -128,22 +128,27 @@ atxb_progress_all_works_effect = {
 }
 
 # A puppet Earth King does not spend the treasury: the Grand Secretariat does, in its own interest.
-# It feeds the Lower Ring once (the Royal Granaries keep the city quiet), never builds the roads or the single law,
-# and otherwise takes a quarter of the treasury every year. The Secretariat is the holder of d_dai_li where that title
+# It first saves for the Royal Granaries and builds them once (they keep the Lower Ring quiet), never builds the roads or
+# the single law, and once the Granaries stand it takes a quarter of the treasury every year. The Secretariat is the holder of d_dai_li where that title
 # exists, otherwise the king's chancellor. Run in the king's scope, after income and work stages.
 atxb_secretariat_effect = {
 	atxb_find_secretariat_effect = yes
+	# Saves until the treasury covers the whole cost (100 + 2 x 100), so no stage ever stalls
 	if = {
 		limit = {
 			atxb_any_work_running_trigger = no
 			NOT = { has_global_flag = atxb_done_granaries }
-			check_variable = { which = global_atxb_treasury value = 100 }
+			check_variable = { which = global_atxb_treasury value = 300 }
 		}
 		atxb_start_granaries_effect = yes
 		set_character_flag = atxb_sec_started
 	}
+	# Skims only once the Granaries are built
 	if = {
-		limit = { check_variable = { which = global_atxb_treasury value = 50 } }
+		limit = {
+			has_global_flag = atxb_done_granaries
+			check_variable = { which = global_atxb_treasury value = 50 }
+		}
 		set_variable = { which = global_atxb_sec_take which = global_atxb_treasury }
 		multiply_variable = { which = global_atxb_sec_take value = 0.25 }
 		if = {
@@ -563,7 +568,10 @@ atxb_law_watch_effect = {
 atxb_send_plea_effect = {
 	atxb_find_king_effect = yes
 	if = {
-		limit = { event_target:atxb_king = { always = yes } }
+		limit = {
+			event_target:atxb_king = { always = yes }
+			NOT = { war_with = event_target:atxb_king }
+		}
 		clr_character_flag = atxb_pleaded
 		set_character_flag = atxb_pleaded
 		log = "ATLA Ba Sing Se: [Root.GetTitledName] pleaded with Ba Sing Se for help"
@@ -595,8 +603,8 @@ atxb_secretariat_answer_plea_effect = {
 			set_character_flag = atxb_helped_plea
 		}
 	}
-	letter_event = { id = atxb.32 days = 10 }
 	event_target:atxb_king = {
+		character_event = { id = atxb.34 } # sends atxb.32 to the pleader, so the letter comes from the king
 		if = {
 			limit = { ai = no }
 			character_event = { id = atxb.33 days = 8 }

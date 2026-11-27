@@ -125,8 +125,13 @@ atxb_plea_base_trigger = {
 	}
 }
 
-# ROOT is defending against a foreign (Fire Nation), Way of Chin or rebel attacker, and has not pleaded in the last 5 years
+# ROOT is defending against a foreign (Fire Nation), Way of Chin or rebel attacker, is not at war with the Earth King,
+# and has not pleaded in the last 5 years
 atxb_plea_war_trigger = {
+	NOR = {
+		e_earth_kingdom = { has_holder = yes holder_scope = { war_with = ROOT } }
+		k_earth_kingdom = { has_holder = yes holder_scope = { war_with = ROOT } }
+	}
 	any_war = {
 		defender = { character = ROOT }
 		attacker = {
