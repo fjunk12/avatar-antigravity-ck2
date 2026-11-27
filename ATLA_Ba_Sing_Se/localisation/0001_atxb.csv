@@ -7,10 +7,10 @@ atxb_view_treasury;The Treasury of Ba Sing Se;;;;;;;;;;;;;x
 atxb_view_treasury_desc;Review the crown's treasury, its income and the works in progress.;;;;;;;;;;;;;x
 atxb_work_roads;Build the Royal Roads;;;;;;;;;;;;;x
 atxb_work_roads_desc;Pave the old roads between the cities of the Earth Kingdom. 100 gold to begin, then 4 yearly stages of 125.;;;;;;;;;;;;;x
-atxb_work_roads_tt;When finished, every Earth Kingdom province outside the Si Wong Desert gets supply +1 and tax +5%. The roads serve invaders as well.;;;;;;;;;;;;;x
+atxb_work_roads_tt;When finished, every Earth Kingdom province outside the Si Wong Desert gets supply +1 and tax +5%, and the crown can rule 15 more provinces directly before it is overextended. The roads serve invaders as well.;;;;;;;;;;;;;x
 atxb_work_law;A Single Law for the Kingdom;;;;;;;;;;;;;x
 atxb_work_law_desc;Write one law for every state that answers to Ba Sing Se. Needs the States or Monarchism unity law. 200 gold to begin, then 3 yearly stages of 200.;;;;;;;;;;;;;x
-atxb_work_law_tt;When finished: Royal Authority +5, tributaries break away half as often, the treasury's share of tribute grows by 25%, and every Earth Kingdom tributary thinks 10 less of the crown for 20 years.;;;;;;;;;;;;;x
+atxb_work_law_tt;When finished: Royal Authority +5, tributaries break away half as often, the treasury's share of tribute grows by 25%, every Earth Kingdom tributary thinks 10 less of the crown for 20 years, and the crown can rule 15 more provinces directly before it is overextended.;;;;;;;;;;;;;x
 atxb_work_granaries;Fill the Royal Granaries;;;;;;;;;;;;;x
 atxb_work_granaries_desc;Build granaries across the Ba Sing Se region. 100 gold to begin, then 2 yearly stages of 100.;;;;;;;;;;;;;x
 atxb_work_granaries_tt;When finished, every province of the Ba Sing Se region gets tax +10% and disease defence +20%.;;;;;;;;;;;;;x
@@ -88,3 +88,11 @@ atxb.32.a;So be it.;;;;;;;;;;;;;x
 atxb.33.d_token;A memorandum from the Grand Secretariat: an envoy from [From.GetTitledName] came to the palace asking for help in a war. The Secretariat sent a small host on Your Majesty's behalf. Your Majesty need not trouble yourself with the details.;;;;;;;;;;;;;x
 atxb.33.d_refused;A memorandum from the Grand Secretariat: an envoy from [From.GetTitledName] came to the palace with petty complaints about a war. The Secretariat sent him home. Your Majesty need not trouble yourself with the details.;;;;;;;;;;;;;x
 atxb.33.a;I see.;;;;;;;;;;;;;x
+atxb_overextended_1;Overextended Crown;;;;;;;;;;;;;x
+atxb_overextended_1_desc;Ba Sing Se rules more of the Earth Kingdom directly than its officials can govern.;;;;;;;;;;;;;x
+atxb_overextended_2;Badly Overextended Crown;;;;;;;;;;;;;x
+atxb_overextended_2_desc;Ba Sing Se rules far more of the Earth Kingdom directly than its officials can govern. Distant lords ignore the crown's orders.;;;;;;;;;;;;;x
+atxb_overext_count_tt;Provinces ruled directly outside the walls of Ba Sing Se: [global_atxb_outside.GetValue]. The crown is overextended from [global_atxb_cap1.GetValue] and badly overextended from [global_atxb_cap2.GetValue]. The Royal Roads and A Single Law each raise both by 15.;;;;;;;;;;;;;x
+atxb_overext_1_tt;The crown is overextended: vassal opinion -10, tax -15%, revolt risk +2%.;;;;;;;;;;;;;x
+atxb_overext_2_tt;The crown is badly overextended: vassal opinion -20, tax -25%, revolt risk +4%.;;;;;;;;;;;;;x
+atxb_overext_lifted_tt;Under Monarchism, with the Royal Roads and A Single Law in place, the crown can rule the whole Earth Kingdom directly. It is never overextended.;;;;;;;;;;;;;x

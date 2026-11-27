@@ -15,7 +15,7 @@ atxd_cycle_authority_tt;Royal Authority moves to the next band: below 30 becomes
 atxd_add_treasury;Test: Treasury +200;;;;;;;;;;;;;x
 atxd_add_treasury_desc;Add 200 gold to the treasury of Ba Sing Se (it never holds more than 1,000).;;;;;;;;;;;;;x
 atxd_run_bss_tick;Test: Run Ba Sing Se Year;;;;;;;;;;;;;x
-atxd_run_bss_tick_desc;Run the yearly Ba Sing Se update now: income, works, the Grand Secretariat, the reach, breakaways and AI pleas. Check game.log for the result.;;;;;;;;;;;;;x
+atxd_run_bss_tick_desc;Run the yearly Ba Sing Se update now: income, works, the Grand Secretariat, the reach, the Overextended Crown count, breakaways and AI pleas. Check game.log for the result.;;;;;;;;;;;;;x
 atxd_check_reach;Test: Check the Reach;;;;;;;;;;;;;x
 atxd_check_reach_desc;Trace which tributaries are connected to Ba Sing Se. Every tributary is written to game.log as connected or out of reach.;;;;;;;;;;;;;x
 atxd_test_plea;Test: Receive a Plea;;;;;;;;;;;;;x

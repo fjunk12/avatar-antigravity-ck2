@@ -8,7 +8,7 @@ Open **Dev Test Menu** in the Intrigue tab (players only):
 
 | Button | Who | What it does |
 |---|---|---|
-| Test: Status | anyone | Royal Authority, unity law tier, treasury, last year's income, tributaries and how many are out of reach, puppet or restored, active burdens |
+| Test: Status | anyone | Royal Authority, unity law tier, treasury, last year's income, tributaries and how many are out of reach, provinces outside the walls and the overextension capacity, puppet or restored, active burdens |
 | Test: Strong Earth King | Earth King | Restored, non-puppet king under the States law. It sets `earthking_in_power` as the base restoration does, so the base `earthking.1` doesn't give the puppet trait back. It fires the base law event `earthking.61`, which makes Earth realms tributaries. A day later: Royal Authority 65, treasury +250 |
 | Test: Toggle Puppet | Earth King | Switches between puppet (the Grand Secretariat spends and answers pleas) and restored |
 | Test: Cycle Royal Authority | anyone | 20 → 45 → 70 → 20 (the three plea bands) |
@@ -24,3 +24,6 @@ Open **Dev Test Menu** in the Intrigue tab (players only):
 2. Check the Reach, and compare game.log with the map.
 3. Receive a Plea three times, with Cycle Royal Authority in between, to see all three bands.
 4. Toggle Puppet, then Receive a Plea (the Secretariat answers), and Run Ba Sing Se Year a few times to watch the Secretariat save for the Granaries, then skim.
+5. Overextended Crown: Run Ba Sing Se Year and check Status. A fresh start should show 0 provinces outside the walls, capacity 15 / 45.
+   - To see the penalty, open the console and give yourself land outside Ba Sing Se, e.g. `give_title k_dongfang <your character id>` (22 counties), then Run Ba Sing Se Year again. Status should show the new count and the Overextended Crown modifier should appear on your character.
+   - The count only moves if the land actually ends up in your realm, so check the number rather than the title.

@@ -37,6 +37,27 @@ The base mod already has four Earth Kingdom tributary types: outpost 10%, territ
 - **Refusing:** Royal Authority −1, −20 opinion, and twice the breakaway chance for 10 years.
 - **Puppet king:** the **Grand Secretariat** answers. It turns the envoy away 3 times in 4, otherwise it sends a token host of 300. A player puppet only gets a memorandum.
 
+## Overextended Crown
+
+In lore Ba Sing Se never ruled the Earth Kingdom directly: it was too vast. Conquest stays possible, but holding the land costs something.
+
+- **The count:** each year the crown counts the provinces in the king's realm **outside the Ba Sing Se region** (`world_ba_sing_se`), his vassals' included. Tributaries don't count. Every bookmark starts at 0: all 34 crown counties lie inside the region.
+- **Land counts however it was gained:** conquest, claims or the base mod's Annex Domain.
+- **Penalties** (a modifier on the Earth King, renewed every year):
+
+| Provinces outside the walls | Modifier | Vassal opinion | Tax | Revolt risk |
+|---|---|---|---|---|
+| 15+ | Overextended Crown | −10 | −15% | +2% |
+| 45+ | Badly Overextended Crown | −20 | −25% | +4% |
+
+- **Raising capacity:**
+  - The Royal Roads raise both thresholds by 15.
+  - A Single Law raises both by 15.
+  - So with both works the thresholds are 45 / 75.
+- **Lifting it:** under Monarchism (`ek_unity_3`) with both works finished, the crown is never overextended.
+- **Readout:** the treasury overview and game.log's yearly line show "outside the walls N (capacity X / Y)".
+- **This applies under Disunion too.** The base law makes conquest free; this submod makes *holding* the land cost something.
+
 ## The treasury of Ba Sing Se
 
 Tribute in CK2 goes to the Earth King's own purse. Each year a share of it moves into a crown treasury (`global_atxb_treasury`, at most 1,000):
@@ -58,8 +79,8 @@ For players, the works sit behind **Check Possible Works** in the Intrigue tab. 
 
 | Work | Cost | When finished |
 |---|---|---|
-| Royal Roads | 100, then 4 × 125 | Earth Kingdom provinces outside the Si Wong: supply +1, tax +5% |
-| A Single Law for the Kingdom (needs the States or Monarchism unity law) | 200, then 3 × 200 | Royal Authority +5, breakaway chance halved, treasury share +25%, Earth tributaries −10 opinion for 20 years |
+| Royal Roads | 100, then 4 × 125 | Earth Kingdom provinces outside the Si Wong: supply +1, tax +5%. Overextension thresholds +15 |
+| A Single Law for the Kingdom (needs the States or Monarchism unity law) | 200, then 3 × 200 | Royal Authority +5, breakaway chance halved, treasury share +25%, Earth tributaries −10 opinion for 20 years, overextension thresholds +15 |
 | Royal Granaries | 100, then 2 × 100 | Ba Sing Se region: tax +10%, disease defence +20% |
 
 **Rules for works:**
@@ -96,4 +117,5 @@ For players, the works sit behind **Check Possible Works** in the Intrigue tab. 
 5. **Pleas:** give a Fire Nation realm a war against an Earth realm. The Earth King should get the plea event, or a puppet king a memorandum.
    - As an attacked Earth realm, use the Plea to Ba Sing Se decision.
 6. **Reach:** game.log's yearly line shows how many tributaries are out of reach.
-7. **Check error.log** for anything mentioning `atxb`.
+7. **Overextended Crown:** game.log's yearly line shows the provinces outside the walls and the capacity. Once the king rules 15 or more provinces outside the walls, the modifier should appear on him.
+8. **Check error.log** for anything mentioning `atxb`.

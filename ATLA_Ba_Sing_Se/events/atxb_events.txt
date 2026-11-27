@@ -1,5 +1,5 @@
 # ATLA Ba Sing Se - events (namespace atxb)
-# atxb.1   yearly run, once a year for the whole world (on_yearly_pulse, hidden)
+# atxb.1   yearly run (incl. the Overextended Crown count), once a year for the whole world (on_yearly_pulse, hidden)
 # atxb.3   a foreign or Way of Chin ruler loots the treasury of Ba Sing Se
 # atxb.5   "The Treasury of Ba Sing Se" overview (decision)
 # atxb.6   the Grand Secretariat's report to a puppet Earth King (players)
@@ -72,7 +72,9 @@ character_event = {
 				}
 				# The reach of Ba Sing Se: which tributaries are connected to the capital
 				atxb_flood_fill_effect = yes
-				log = "ATLA Ba Sing Se: [This.GetTitledName] crown [global_atxb_last_crown.GetValue], skim [global_atxb_last_skim.GetValue] from [global_atxb_tribs.GetValue] tributaries ([global_atxb_unlinked.GetValue] out of reach), treasury [global_atxb_treasury.GetValue], Royal Authority [global_royalAuthority.GetValue]"
+				# Overextended Crown: provinces ruled directly outside the walls
+				atxb_overextension_effect = yes
+				log = "ATLA Ba Sing Se: [This.GetTitledName] crown [global_atxb_last_crown.GetValue], skim [global_atxb_last_skim.GetValue] from [global_atxb_tribs.GetValue] tributaries ([global_atxb_unlinked.GetValue] out of reach), treasury [global_atxb_treasury.GetValue], Royal Authority [global_royalAuthority.GetValue], outside the walls [global_atxb_outside.GetValue] (capacity [global_atxb_cap1.GetValue] / [global_atxb_cap2.GetValue])"
 
 				# Breakaways (at most 2 a year): twice as likely after the crown refused their plea, half as likely after A Single Law
 				any_tributary = {
@@ -166,6 +168,7 @@ character_event = {
 			limit = { has_global_flag = atxb_done_granaries }
 			custom_tooltip = { text = atxb_done_granaries_tt }
 		}
+		atxb_overext_tooltips = yes
 	}
 }
 

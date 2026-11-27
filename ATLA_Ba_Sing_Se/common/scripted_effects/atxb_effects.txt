@@ -757,3 +757,73 @@ atxb_crown_pays_135_effect = {
 		wealth = -135
 	}
 }
+
+# ---- Overextended Crown (character scope: the Earth King) ----
+# Counts the king's realm provinces outside the Ba Sing Se region and sets the matching modifier.
+# Capacity: 15 / 45, +15 to both for the Royal Roads, +15 to both for A Single Law.
+# Monarchism (ek_unity_3) with both works finished lifts it completely.
+# The modifier lasts 400 days and is renewed every year, so a former king loses it on his own.
+atxb_overextension_effect = {
+	set_variable = { which = global_atxb_outside value = 0 }
+	any_realm_province = {
+		limit = { NOT = { region = world_ba_sing_se } }
+		change_variable = { which = global_atxb_outside value = 1 }
+	}
+	set_variable = { which = global_atxb_cap1 value = 15 }
+	set_variable = { which = global_atxb_cap2 value = 45 }
+	if = {
+		limit = { has_global_flag = atxb_done_roads }
+		change_variable = { which = global_atxb_cap1 value = 15 }
+		change_variable = { which = global_atxb_cap2 value = 15 }
+	}
+	if = {
+		limit = { has_global_flag = atxb_done_law }
+		change_variable = { which = global_atxb_cap1 value = 15 }
+		change_variable = { which = global_atxb_cap2 value = 15 }
+	}
+	remove_character_modifier = atxb_overextended_1
+	remove_character_modifier = atxb_overextended_2
+	clr_global_flag = atxb_overext_lifted
+	clr_global_flag = atxb_overext_1
+	clr_global_flag = atxb_overext_2
+	if = {
+		limit = {
+			has_law = ek_unity_3
+			has_global_flag = atxb_done_roads
+			has_global_flag = atxb_done_law
+		}
+		set_global_flag = atxb_overext_lifted
+	}
+	else_if = {
+		limit = { check_variable = { which = global_atxb_outside which = global_atxb_cap2 } }
+		add_character_modifier = { name = atxb_overextended_2 duration = 400 }
+		set_global_flag = atxb_overext_2
+	}
+	else_if = {
+		limit = { check_variable = { which = global_atxb_outside which = global_atxb_cap1 } }
+		add_character_modifier = { name = atxb_overextended_1 duration = 400 }
+		set_global_flag = atxb_overext_1
+	}
+}
+
+# Overextended Crown readout (custom tooltips; values from the last yearly run). Used by atxb.5 and ATLA Dev Test.
+atxb_overext_tooltips = {
+	if = {
+		limit = { has_global_flag = atxb_bss_started }
+		if = {
+			limit = { has_global_flag = atxb_overext_lifted }
+			custom_tooltip = { text = atxb_overext_lifted_tt }
+		}
+		else = {
+			custom_tooltip = { text = atxb_overext_count_tt }
+			if = {
+				limit = { has_global_flag = atxb_overext_2 }
+				custom_tooltip = { text = atxb_overext_2_tt }
+			}
+			else_if = {
+				limit = { has_global_flag = atxb_overext_1 }
+				custom_tooltip = { text = atxb_overext_1_tt }
+			}
+		}
+	}
+}
