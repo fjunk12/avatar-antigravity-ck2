@@ -1,0 +1,108 @@
+# ATLA Dev Test - events (namespace atxd). TESTING ONLY.
+# atxd.1   status readout
+# atxd.2   reach check: traces the reach and logs each tributary (ROOT = Earth King)
+# atxd.3   strong-king follow-up: Royal Authority 65, treasury +250 (a day after the base law event)
+# atxd.10  test plea relay (ROOT = the pleading realm)
+# atxd.20  roll an Avatar's Legacy burden
+namespace = atxd
+
+character_event = {
+	id = atxd.1
+	desc = atxd.1.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = global_atxd_unity value = 0 }
+		if = { limit = { k_earth_kingdom = { has_law = ek_unity_1 } } set_variable = { which = global_atxd_unity value = 1 } }
+		if = { limit = { k_earth_kingdom = { has_law = ek_unity_2 } } set_variable = { which = global_atxd_unity value = 2 } }
+		if = { limit = { k_earth_kingdom = { has_law = ek_unity_3 } } set_variable = { which = global_atxd_unity value = 3 } }
+	}
+
+	option = {
+		name = atxd.1.a
+		if = {
+			limit = { k_earth_kingdom = { has_holder = yes holder_scope = { trait = earthkingpuppet } } }
+			custom_tooltip = { text = atxd_king_puppet_tt }
+		}
+		if = {
+			limit = { has_global_flag = earthking_in_power }
+			custom_tooltip = { text = atxd_king_in_power_tt }
+		}
+		if = { limit = { has_global_flag = atxl_leg_spirits } custom_tooltip = { text = atxd_leg_spirits_tt } }
+		if = { limit = { has_global_flag = atxl_leg_lawless } custom_tooltip = { text = atxd_leg_lawless_tt } }
+		if = { limit = { has_global_flag = atxl_leg_zealots } custom_tooltip = { text = atxd_leg_zealots_tt } }
+		if = { limit = { has_global_flag = atxl_leg_ambition } custom_tooltip = { text = atxd_leg_ambition_tt } }
+		if = { limit = { has_global_flag = atxl_leg_ironpeace } custom_tooltip = { text = atxd_leg_ironpeace_tt } }
+		if = { limit = { has_global_flag = atxl_champion_active } custom_tooltip = { text = atxd_champion_tt } }
+	}
+}
+
+character_event = {
+	id = atxd.2
+	desc = atxd.2.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	immediate = {
+		atxb_flood_fill_effect = yes
+		log = "ATLA Dev Test: reach check for [Root.GetTitledName]: [global_atxb_unlinked.GetValue] tributaries out of reach"
+		any_tributary = {
+			limit = { atxb_ek_tributary_trigger = yes has_character_flag = atxb_linked }
+			log = "ATLA Dev Test: connected [This.GetTitledName]"
+		}
+		any_tributary = {
+			limit = { atxb_ek_tributary_trigger = yes NOT = { has_character_flag = atxb_linked } }
+			log = "ATLA Dev Test: OUT OF REACH [This.GetTitledName]"
+		}
+		set_variable = { which = global_atxd_linked value = 0 }
+		any_tributary = {
+			limit = { atxb_ek_tributary_trigger = yes has_character_flag = atxb_linked }
+			change_variable = { which = global_atxd_linked value = 1 }
+		}
+	}
+
+	option = {
+		name = atxd.2.a
+		atxb_unlink_all_effect = yes
+	}
+}
+
+character_event = {
+	id = atxd.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = global_royalAuthority value = 65 }
+		change_variable = { which = global_atxb_treasury value = 250 }
+		atxb_clamp_treasury_effect = yes
+		log = "ATLA Dev Test: Royal Authority set to 65, treasury +250"
+	}
+}
+
+# Test plea (ROOT = the pleading realm): goes through the normal plea path, so a puppet king's Secretariat answers
+character_event = {
+	id = atxd.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		clr_character_flag = atxb_pleaded
+		atxb_send_plea_effect = yes
+	}
+}
+
+character_event = {
+	id = atxd.20
+	desc = atxd.20.desc
+	picture = GFX_evt_avatar_conflict
+	is_triggered_only = yes
+
+	option = { name = atxd.20.a atxl_set_legacy_spirits_effect = yes }
+	option = { name = atxd.20.b atxl_set_legacy_lawless_effect = yes }
+	option = { name = atxd.20.c atxl_set_legacy_zealots_effect = yes }
+	option = { name = atxd.20.d atxl_set_legacy_ambition_effect = yes }
+	option = { name = atxd.20.e atxl_set_legacy_ironpeace_effect = yes }
+	option = { name = atxd.20.f }
+}
