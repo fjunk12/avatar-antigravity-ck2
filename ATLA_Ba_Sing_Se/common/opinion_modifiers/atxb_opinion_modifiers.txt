@@ -5,14 +5,14 @@ opinion_atxb_single_law = {
 opinion_atxb_saboteur = {
 	opinion = -30
 }
-opinion_atxb_aid_funded = {
+opinion_atxb_helped = {
 	opinion = 20
 }
-opinion_atxb_marched = {
+opinion_atxb_helped_both = {
 	opinion = 30
 }
-opinion_atxb_tribute_only = {
-	opinion = -10
+opinion_atxb_token_help = {
+	opinion = 5
 }
 opinion_atxb_refused = {
 	opinion = -20
