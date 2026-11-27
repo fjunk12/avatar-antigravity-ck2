@@ -7,7 +7,7 @@ Standalone Crusader Kings II submods for **[Avatar - Four Nations Restored](http
 | Submod | `.mod` & Folder | Summary |
 |---|---|---|
 | **Bugfix Patch** | `ATLA_Restored_Bugfixes.mod` + `ATLA_Restored_Bugfixes/` | Unified bug-fix patch covering Avatar reincarnation/duels, Hundred Year War events, CBs, societies, colonisation, Water Tribe call-to-arms, portraits, encoding, and 138 localisation fixes. |
-| **Ba Sing Se** | `ATLA_Ba_Sing_Se.mod` + `ATLA_Ba_Sing_Se/` | 100% additive Earth Kingdom expansion (v2): **Plea to Ba Sing Se** (RA-scaled war aid & player plea decision), **connected tributaries** (out-of-reach tributaries slip away), and a slim Royal Treasury (*Royal Roads*, *A Single Law*, *Royal Granaries*, Grand Secretariat puppet skimming). |
+| **Ba Sing Se** | `ATLA_Ba_Sing_Se.mod` + `ATLA_Ba_Sing_Se/` | 100% additive Earth Kingdom expansion: **Plea to Ba Sing Se** (RA-scaled war aid & player plea decision), **connected tributaries** (out-of-reach tributaries slip away), **Overextended Crown** (direct-rule capacity raised by *Royal Roads*, *A Single Law*, and *Monarchism*), and a slim Royal Treasury (*Royal Roads*, *A Single Law*, *Royal Granaries*, Grand Secretariat puppet skimming). |
 | **Avatar's Legacy** | `ATLA_Avatars_Legacy.mod` + `ATLA_Avatars_Legacy/` | 100% additive Avatar cycle expansion: every dying Avatar leaves one of five universal burdens (*Restless Spirits*, *Daofei Country*, *Zealots of the Old Avatar*, *Unchecked Ambition*, *An Iron Peace*), with Avatar missions, Champions of Ambition, and landed/unlanded Avatar intervention. |
 
 ## Installation
