@@ -1,0 +1,47 @@
+#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+atxf_petition_fire_lord;Petition the Fire Lord;;;;;;;;;;;;;x
+atxf_petition_fire_lord_desc;Send a petition to the Fire Lord: ask for royal patronage, or ask the throne to rebuke a rival of your house.;;;;;;;;;;;;;x
+atxf_petition_tt;The Fire Lord may grant your petition or refuse it. Once every 5 years.;;;;;;;;;;;;;x
+atxf.2.d_peony;You wear the crown of the Fire Nation, but the throne of the Fire Lord has stood empty since the dispute began, and the court whispers that it is not truly yours. Your half-brother [atxf_camellia_champion.GetTitledName] holds the west with the Saowon behind him, and their stone camellia flies over more halls every season. Your mother's clan, the Keohso, rally to the winged peony.\n\nThe quarrel over Natsuo Island has become an excuse for both clans to arm. Every lord of the Fire Isles must now choose a flower.;;;;;;;;;;;;;x
+atxf.2.d_camellia;The throne of the Fire Lord stands empty, and the man who sits nearest to it, [atxf_peony_champion.GetTitledName], is no more fit for it than you. The Saowon, the richest clan of the Fire Isles, stand behind you and their stone camellia. The Keohso cling to the winged peony.\n\nThe quarrel over Natsuo Island has become an excuse for both clans to arm. Every lord of the Fire Isles must now choose a flower.;;;;;;;;;;;;;x
+atxf.2.a;Let the lords choose.;;;;;;;;;;;;;x
+atxf.3.d;The quarrel between [atxf_peony_champion.GetTitledName] and [atxf_camellia_champion.GetTitledName] has reached our hall. Envoys of both the Keohso and the Saowon have come, each with gifts, each with promises. The winged peony of the Keohso, or the stone camellia of the Saowon?\n\nThose who back a side will be loved by it and hated by the other. Independent lords who back a side will march when their champion goes to war against the other.;;;;;;;;;;;;;x
+atxf.3.a;The winged peony: we stand with [atxf_peony_champion.GetTitledName].;;;;;;;;;;;;;x
+atxf.3.b;The stone camellia: we stand with [atxf_camellia_champion.GetTitledName].;;;;;;;;;;;;;x
+atxf.3.c;This is not our quarrel.;;;;;;;;;;;;;x
+atxf.4.d;A letter has come from Avatar [atxf_avatar.GetFirstName]. The Avatar writes that the quarrel between the Keohso and the Saowon will drown the Fire Isles in blood, and that the spirits do not care which flower wins. The Avatar expects the Fire Nation to settle its succession without war, and is watching.;;;;;;;;;;;;;x
+atxf.4.a;We will heed the Avatar's warning.;;;;;;;;;;;;;x
+atxf.4.b;The Avatar has no say in the affairs of the Fire Nation.;;;;;;;;;;;;;x
+atxf.10.d_peony;An envoy of the Keohso has come with a chest of gold and the winged peony on his sleeve. [atxf_peony_champion.GetTitledName] would be grateful, he says, if our house stood with the Peony.;;;;;;;;;;;;;x
+atxf.10.d_camellia;An envoy of the Saowon has come with a chest of gold and the stone camellia on his sleeve. [atxf_camellia_champion.GetTitledName] would be grateful, he says, if our house stood with the Camellia.;;;;;;;;;;;;;x
+atxf.10.a;Accept the gold, and the flower.;;;;;;;;;;;;;x
+atxf.10.b;Send the envoy home.;;;;;;;;;;;;;x
+atxf.30.d;The Camellia-Peony dispute is over, and the Fire Isles answer to us. But the clans that fought it, the Keohso and the Saowon, are still rich, still armed, and still proud.\n\nWe can break them, as no Fire Lord has dared before: strip their privileges and make every subject loyal to the throne alone. Or we can bind them to us in a compact, and share the realm with those who helped win it.;;;;;;;;;;;;;x
+atxf.30.a;Break the clans. There will be one loyalty in the Fire Nation.;;;;;;;;;;;;;x
+atxf.30.b;Make a compact with the clans.;;;;;;;;;;;;;x
+atxf.40.d;What shall our petition to the Fire Lord ask for?;;;;;;;;;;;;;x
+atxf.40.a;Royal patronage for our house;;;;;;;;;;;;;x
+atxf.40.b;That the throne rebuke a rival of our house;;;;;;;;;;;;;x
+atxf.40.c;Perhaps another time.;;;;;;;;;;;;;x
+atxf.41.d_gold;[From.GetTitledName] has sent a petition to the throne, asking for royal patronage: 50 gold to set the affairs of the house in order.;;;;;;;;;;;;;x
+atxf.41.d_denounce;[From.GetTitledName] has sent a petition to the throne, asking you to rebuke [atxf_denounced.GetTitledName], a rival of their house. Granting it will please one house and anger the other.;;;;;;;;;;;;;x
+atxf.41.a;Grant 50 gold.;;;;;;;;;;;;;x
+atxf.41.b;Rebuke [atxf_denounced.GetTitledName].;;;;;;;;;;;;;x
+atxf.41.c;Refuse the petition.;;;;;;;;;;;;;x
+atxf.42.d_granted;The Fire Lord has granted our petition: 50 gold, and the favour of the throne.;;;;;;;;;;;;;x
+atxf.42.d_rebuked;The Fire Lord has granted our petition and rebuked our rival before the whole court.;;;;;;;;;;;;;x
+atxf.42.d_refused;The Fire Lord has refused our petition.;;;;;;;;;;;;;x
+atxf.42.a;So be it.;;;;;;;;;;;;;x
+opinion_atxf_clan_loyalty;Our flower;;;;;;;;;;;;;x
+opinion_atxf_clan_enmity;The other flower;;;;;;;;;;;;;x
+opinion_atxf_clans_broken;Broke the noble clans;;;;;;;;;;;;;x
+opinion_atxf_clan_compact;Compact with the clans;;;;;;;;;;;;;x
+opinion_atxf_patronage;Royal patronage;;;;;;;;;;;;;x
+opinion_atxf_petition_refused;Refused my petition;;;;;;;;;;;;;x
+opinion_atxf_rebuked;Rebuked me before the court;;;;;;;;;;;;;x
+atxf_clans_broken;The Clans Broken;;;;;;;;;;;;;x
+atxf_clans_broken_desc;The noble clans of the Fire Nation have been broken. Their wealth and levies answer to the throne, and their grudges to no one.;;;;;;;;;;;;;x
+desc_atxf_clans_broken;The noble clans of the Fire Nation have been broken. Their wealth and levies answer to the throne, and their grudges to no one.;;;;;;;;;;;;;x
+atxf_clan_compact;Compact with the Clans;;;;;;;;;;;;;x
+atxf_clan_compact_desc;The Fire Lord rules with the consent of the great clans, and shares the realm's wealth with them.;;;;;;;;;;;;;x
+desc_atxf_clan_compact;The Fire Lord rules with the consent of the great clans, and shares the realm's wealth with them.;;;;;;;;;;;;;x

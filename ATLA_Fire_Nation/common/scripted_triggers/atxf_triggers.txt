@@ -1,0 +1,100 @@
+# ATLA Fire Nation - triggers (prefix atxf_)
+
+# This character is the Fire Lord: the holder of e_fire_nation, or of k_fire_nation while the empire is vacant
+# (e_fire_nation is vacant in history from 545 to 643, the time of the Camellia-Peony dispute)
+atxf_is_fire_lord_trigger = {
+	OR = {
+		has_landed_title = e_fire_nation
+		AND = {
+			has_landed_title = k_fire_nation
+			NOT = { e_fire_nation = { has_holder = yes } }
+		}
+	}
+}
+
+# ---- The Camellia-Peony War (560) ----
+# The dispute can begin: the kingdoms of the Fire Nation and of the Western Fire Nation are held by rivals,
+# the Fire Lord's throne (e_fire_nation) is vacant, and the Saowon hold the west
+atxf_cpw_can_start_trigger = {
+	NOT = { year = 576 }
+	NOT = { has_global_flag = atxf_cpw }
+	NOT = { has_global_flag = atxf_cpw_done }
+	NOT = { e_fire_nation = { has_holder = yes } }
+	k_fire_nation = { has_holder = yes }
+	k_western_fire_nation = {
+		has_holder = yes
+		holder_scope = {
+			dynasty = 3995 # Saowon
+			any_rival = { has_landed_title = k_fire_nation }
+		}
+	}
+}
+
+# The dispute is decided: one ruler holds the Fire Lord's throne or both kingdoms, or one side has lost its kingdom
+atxf_cpw_decided_trigger = {
+	OR = {
+		e_fire_nation = { has_holder = yes }
+		k_fire_nation = { has_holder = no }
+		k_western_fire_nation = { has_holder = no }
+		k_fire_nation = { holder_scope = { has_landed_title = k_western_fire_nation } }
+	}
+}
+
+# A Fire Isles lord who may take a side (character scope)
+atxf_cpw_lord_trigger = {
+	is_ruler = yes
+	is_landed = yes
+	prisoner = no
+	higher_tier_than = BARON
+	culture_group = fire_nation_cultures
+	NOR = {
+		mercenary = yes
+		holy_order = yes
+		rebel = yes
+		has_landed_title = k_fire_nation
+		has_landed_title = k_western_fire_nation
+	}
+	capital_scope = { region = world_fire_isles }
+}
+
+atxf_cpw_aligned_trigger = {
+	OR = {
+		has_character_flag = atxf_peony
+		has_character_flag = atxf_camellia
+	}
+}
+
+# ---- Petition the Fire Lord ----
+# ROOT is a Fire Nation vassal of the Fire Lord who may petition him (works without event targets, so decisions can use it)
+atxf_petition_base_trigger = {
+	is_ruler = yes
+	is_landed = yes
+	independent = no
+	prisoner = no
+	higher_tier_than = BARON
+	culture_group = fire_nation_cultures
+	NOR = {
+		mercenary = yes
+		holy_order = yes
+		rebel = yes
+	}
+	top_liege = {
+		atxf_is_fire_lord_trigger = yes
+		NOT = { war_with = ROOT }
+	}
+	OR = {
+		NOT = { has_character_flag = atxf_petitioned }
+		had_character_flag = { flag = atxf_petitioned days = 1825 }
+	}
+}
+
+# ROOT has a rival in the Fire Lord's realm whom the Fire Lord could be asked to rebuke
+atxf_has_denounceable_rival_trigger = {
+	any_rival = {
+		is_ruler = yes
+		is_landed = yes
+		NOT = { character = ROOT }
+		top_liege = { atxf_is_fire_lord_trigger = yes }
+		NOT = { atxf_is_fire_lord_trigger = yes }
+	}
+}

@@ -1,0 +1,479 @@
+# ATLA Fire Nation - events (namespace atxf)
+# atxf.1   yearly run, once a year for the whole world (on_yearly_pulse, hidden)
+# atxf.2   the Camellia-Peony dispute begins (to both claimants)
+# atxf.3   a Fire Isles lord takes a side
+# atxf.4   the Avatar's warning (letter to both claimants)
+# atxf.10  an envoy courts a lord for the other side (capped)
+# atxf.30  the aftermath: the fate of the clans (to the winner)
+# atxf.40  Petition the Fire Lord: a player chooses what to ask (decision)
+# atxf.41  Petition the Fire Lord: the Fire Lord answers (ROOT = Fire Lord, FROM = petitioner)
+# atxf.42  Petition the Fire Lord: the answer letter (ROOT = petitioner, FROM = Fire Lord)
+# atxf.43  Petition the Fire Lord: an AI vassal petitions (hidden, at most 2 a year)
+namespace = atxf
+
+character_event = {
+	id = atxf.1
+	hide_window = yes
+	is_triggered_only = yes # on_yearly_pulse
+
+	only_rulers = yes
+
+	trigger = {
+		OR = {
+			NOT = { has_global_flag = atxf_tick }
+			had_global_flag = { flag = atxf_tick days = 364 } # once a year: rulers pulse every day, so this fires on day 365
+		}
+	}
+
+	immediate = {
+		clr_global_flag = atxf_tick
+		set_global_flag = atxf_tick
+		set_variable = { which = global_atxf_petitions value = 0 }
+		set_variable = { which = global_atxf_courts value = 0 }
+
+		# ---- The Camellia-Peony War ----
+		if = {
+			limit = { atxf_cpw_can_start_trigger = yes }
+			atxf_cpw_start_effect = yes
+		}
+		else_if = {
+			limit = { has_global_flag = atxf_cpw }
+			atxf_find_champions_effect = yes
+			if = {
+				limit = { atxf_cpw_decided_trigger = yes }
+				log = "ATLA Fire Nation: the Camellia-Peony dispute is decided"
+				atxf_cpw_cleanup_effect = yes
+				if = {
+					limit = { e_fire_nation = { has_holder = yes } }
+					e_fire_nation = { holder_scope = { character_event = { id = atxf.30 } } }
+				}
+				else_if = {
+					limit = { k_fire_nation = { has_holder = yes } }
+					k_fire_nation = { holder_scope = { character_event = { id = atxf.30 } } }
+				}
+				else = {
+					k_western_fire_nation = { holder_scope = { character_event = { id = atxf.30 } } }
+				}
+			}
+			else_if = {
+				limit = { year = 600 }
+				log = "ATLA Fire Nation: the Camellia-Peony dispute fades without a victor"
+				atxf_cpw_cleanup_effect = yes
+			}
+			else = {
+				atxf_call_of_the_clans_effect = yes
+				# Court intrigue: at most 2 envoys a year, at most one per lord every 2 years
+				random_character = {
+					limit = {
+						atxf_cpw_lord_trigger = yes
+						OR = {
+							NOT = { has_character_flag = atxf_courted }
+							had_character_flag = { flag = atxf_courted days = 730 }
+						}
+					}
+					character_event = { id = atxf.10 }
+				}
+				random = {
+					chance = 50
+					random_character = {
+						limit = {
+							atxf_cpw_lord_trigger = yes
+							OR = {
+								NOT = { has_character_flag = atxf_courted }
+								had_character_flag = { flag = atxf_courted days = 730 }
+							}
+						}
+						character_event = { id = atxf.10 }
+					}
+				}
+			}
+		}
+
+		# ---- Petition the Fire Lord: AI vassals (at most 2 a year, counted in atxf.43) ----
+		e_fire_nation = {
+			holder_scope = {
+				any_vassal = {
+					limit = { ai = yes atxf_petition_base_trigger = yes }
+					random = { chance = 5 character_event = { id = atxf.43 } }
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { e_fire_nation = { has_holder = yes } } }
+			k_fire_nation = {
+				holder_scope = {
+					any_vassal = {
+						limit = { ai = yes atxf_petition_base_trigger = yes }
+						random = { chance = 5 character_event = { id = atxf.43 } }
+					}
+				}
+			}
+		}
+	}
+}
+
+# The dispute begins (ROOT = a claimant)
+character_event = {
+	id = atxf.2
+	desc = {
+		trigger = { has_landed_title = k_fire_nation }
+		text = atxf.2.d_peony
+	}
+	desc = {
+		trigger = { NOT = { has_landed_title = k_fire_nation } }
+		text = atxf.2.d_camellia
+	}
+	picture = GFX_evt_night_fire_palace
+	is_triggered_only = yes
+
+	option = {
+		name = atxf.2.a
+	}
+}
+
+# A Fire Isles lord takes a side (ROOT = the lord)
+character_event = {
+	id = atxf.3
+	desc = atxf.3.d
+	picture = GFX_evt_courtiers_talking
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = atxf_cpw
+		atxf_cpw_lord_trigger = yes
+	}
+
+	immediate = { atxf_find_champions_effect = yes }
+
+	option = {
+		name = atxf.3.a # the Peony
+		atxf_join_peony_effect = yes
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 3 top_liege = { has_landed_title = k_fire_nation } }
+			modifier = { factor = 0.3 top_liege = { has_landed_title = k_western_fire_nation } }
+			modifier = { factor = 1.5 opinion = { who = event_target:atxf_peony_champion value = 25 } }
+		}
+	}
+	option = {
+		name = atxf.3.b # the Camellia
+		atxf_join_camellia_effect = yes
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 3 top_liege = { has_landed_title = k_western_fire_nation } }
+			modifier = { factor = 0.3 top_liege = { has_landed_title = k_fire_nation } }
+			modifier = { factor = 1.5 opinion = { who = event_target:atxf_camellia_champion value = 25 } }
+		}
+	}
+	option = {
+		name = atxf.3.c # neutral
+		atxf_join_neutral_effect = yes
+		ai_chance = {
+			factor = 20
+			modifier = { factor = 1.5 trait = content }
+			modifier = { factor = 0.5 trait = ambitious }
+		}
+	}
+}
+
+# The Avatar's warning (ROOT = a claimant)
+letter_event = {
+	id = atxf.4
+	desc = atxf.4.d
+	is_triggered_only = yes
+
+	option = {
+		name = atxf.4.a # heed
+		piety = 25
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 0.5 trait = proud }
+			modifier = { factor = 0.5 trait = ambitious }
+		}
+	}
+	option = {
+		name = atxf.4.b # dismiss
+		prestige = 25
+		ai_chance = { factor = 50 }
+	}
+}
+
+# An envoy of one side courts a lord (ROOT = the lord)
+character_event = {
+	id = atxf.10
+	desc = {
+		trigger = { has_character_flag = atxf_court_peony }
+		text = atxf.10.d_peony
+	}
+	desc = {
+		trigger = { has_character_flag = atxf_court_camellia }
+		text = atxf.10.d_camellia
+	}
+	picture = GFX_evt_courtiers_talking
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = atxf_cpw
+		NOT = { check_variable = { which = global_atxf_courts value = 2 } }
+	}
+
+	immediate = {
+		change_variable = { which = global_atxf_courts value = 1 }
+		clr_character_flag = atxf_courted
+		set_character_flag = atxf_courted
+		atxf_find_champions_effect = yes
+		# The other side does the courting; a neutral lord is courted by either
+		if = {
+			limit = { has_character_flag = atxf_peony }
+			set_character_flag = atxf_court_camellia
+		}
+		else_if = {
+			limit = { has_character_flag = atxf_camellia }
+			set_character_flag = atxf_court_peony
+		}
+		else = {
+			random_list = {
+				50 = { set_character_flag = atxf_court_peony }
+				50 = { set_character_flag = atxf_court_camellia }
+			}
+		}
+	}
+
+	option = {
+		name = atxf.10.a # accept the gifts and change sides
+		wealth = 25
+		if = {
+			limit = { has_character_flag = atxf_court_peony }
+			atxf_join_peony_effect = yes
+			event_target:atxf_peony_champion = { wealth = -25 }
+		}
+		else = {
+			atxf_join_camellia_effect = yes
+			event_target:atxf_camellia_champion = { wealth = -25 }
+		}
+		clr_character_flag = atxf_court_peony
+		clr_character_flag = atxf_court_camellia
+		log = "ATLA Fire Nation: [Root.GetTitledName] changed sides in the Camellia-Peony dispute"
+		ai_chance = {
+			factor = 30
+			modifier = { factor = 2 has_character_flag = atxf_neutral }
+			modifier = { factor = 1.5 trait = greedy }
+			modifier = { factor = 0.5 trait = honest }
+		}
+	}
+	option = {
+		name = atxf.10.b # refuse
+		if = {
+			limit = { atxf_cpw_aligned_trigger = yes }
+			prestige = 10
+		}
+		clr_character_flag = atxf_court_peony
+		clr_character_flag = atxf_court_camellia
+		ai_chance = { factor = 70 }
+	}
+}
+
+# The aftermath: the fate of the clans (ROOT = the winner)
+character_event = {
+	id = atxf.30
+	desc = atxf.30.d
+	picture = GFX_evt_throne_room
+	is_triggered_only = yes
+
+	trigger = { culture_group = fire_nation_cultures }
+
+	option = {
+		name = atxf.30.a # break the clans (canon: Zoryu)
+		add_character_modifier = { name = atxf_clans_broken years = 20 }
+		any_character = {
+			limit = {
+				OR = {
+					dynasty = 3994
+					dynasty = 3995
+				}
+				NOT = { character = ROOT }
+			}
+			opinion = { who = ROOT modifier = opinion_atxf_clans_broken years = 20 }
+		}
+		if = {
+			limit = { NOT = { trait = dishonourable } }
+			random = { chance = 50 add_trait = dishonourable }
+		}
+		log = "ATLA Fire Nation: [Root.GetTitledName] broke the noble clans"
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 2 trait = ambitious }
+			modifier = { factor = 1.5 trait = wroth }
+			modifier = { factor = 0.5 trait = kind }
+		}
+	}
+	option = {
+		name = atxf.30.b # power-sharing compact
+		add_character_modifier = { name = atxf_clan_compact years = 20 }
+		any_character = {
+			limit = {
+				OR = {
+					dynasty = 3994
+					dynasty = 3995
+				}
+				NOT = { character = ROOT }
+			}
+			opinion = { who = ROOT modifier = opinion_atxf_clan_compact years = 20 }
+		}
+		log = "ATLA Fire Nation: [Root.GetTitledName] made a compact with the noble clans"
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 2 trait = kind }
+			modifier = { factor = 1.5 trait = content }
+		}
+	}
+}
+
+# Petition the Fire Lord: the player chooses what to ask (ROOT = the petitioner)
+character_event = {
+	id = atxf.40
+	desc = atxf.40.d
+	picture = GFX_evt_night_fire_palace
+	is_triggered_only = yes
+
+	option = {
+		name = atxf.40.a # patronage
+		set_character_flag = atxf_pet_gold
+		atxf_send_petition_effect = yes
+	}
+	option = {
+		name = atxf.40.b # rebuke a rival
+		trigger = { atxf_has_denounceable_rival_trigger = yes }
+		random_rival = {
+			limit = {
+				is_ruler = yes
+				is_landed = yes
+				top_liege = { atxf_is_fire_lord_trigger = yes }
+				NOT = { atxf_is_fire_lord_trigger = yes }
+			}
+			save_global_event_target_as = atxf_denounced
+		}
+		set_character_flag = atxf_pet_denounce
+		atxf_send_petition_effect = yes
+	}
+	option = {
+		name = atxf.40.c # not now
+	}
+}
+
+# Petition the Fire Lord: an AI vassal petitions (ROOT = the petitioner). At most 2 a year.
+character_event = {
+	id = atxf.43
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { check_variable = { which = global_atxf_petitions value = 2 } }
+	}
+
+	immediate = {
+		change_variable = { which = global_atxf_petitions value = 1 }
+		if = {
+			limit = { atxf_has_denounceable_rival_trigger = yes }
+			random_rival = {
+				limit = {
+					is_ruler = yes
+					is_landed = yes
+					top_liege = { atxf_is_fire_lord_trigger = yes }
+					NOT = { atxf_is_fire_lord_trigger = yes }
+				}
+				save_global_event_target_as = atxf_denounced
+			}
+			set_character_flag = atxf_pet_denounce
+		}
+		else = {
+			set_character_flag = atxf_pet_gold
+		}
+		atxf_send_petition_effect = yes
+	}
+}
+
+# Petition the Fire Lord: the Fire Lord answers (ROOT = Fire Lord, FROM = petitioner)
+character_event = {
+	id = atxf.41
+	desc = {
+		trigger = { FROM = { has_character_flag = atxf_pet_gold } }
+		text = atxf.41.d_gold
+	}
+	desc = {
+		trigger = { FROM = { has_character_flag = atxf_pet_denounce } }
+		text = atxf.41.d_denounce
+	}
+	picture = GFX_evt_night_fire_palace
+	is_triggered_only = yes
+
+	option = {
+		name = atxf.41.a # grant 50
+		trigger = {
+			FROM = { has_character_flag = atxf_pet_gold }
+			wealth = 50
+		}
+		wealth = -50
+		FROM = {
+			wealth = 50
+			opinion = { who = ROOT modifier = opinion_atxf_patronage years = 10 }
+			set_character_flag = atxf_ans_granted
+			letter_event = { id = atxf.42 days = 5 }
+		}
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 2 trait = charitable }
+			modifier = { factor = 0.3 trait = greedy }
+			modifier = { factor = 0.5 NOT = { wealth = 200 } }
+		}
+	}
+	option = {
+		name = atxf.41.b # rebuke the rival
+		trigger = { FROM = { has_character_flag = atxf_pet_denounce } }
+		event_target:atxf_denounced = {
+			opinion = { who = ROOT modifier = opinion_atxf_rebuked years = 10 }
+		}
+		FROM = {
+			prestige = 25
+			opinion = { who = ROOT modifier = opinion_atxf_patronage years = 10 }
+			set_character_flag = atxf_ans_rebuked
+			letter_event = { id = atxf.42 days = 5 }
+		}
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 1.5 FROM = { opinion = { who = ROOT value = 25 } } }
+			modifier = { factor = 0.5 event_target:atxf_denounced = { opinion = { who = ROOT value = 25 } } }
+		}
+	}
+	option = {
+		name = atxf.41.c # refuse
+		FROM = {
+			opinion = { who = ROOT modifier = opinion_atxf_petition_refused years = 5 }
+			set_character_flag = atxf_ans_refused
+			letter_event = { id = atxf.42 days = 5 }
+		}
+		ai_chance = {
+			factor = 60
+			modifier = { factor = 2 trait = greedy }
+			modifier = { factor = 0.5 trait = charitable }
+		}
+	}
+}
+
+# Petition the Fire Lord: the answer letter (ROOT = petitioner, FROM = Fire Lord)
+letter_event = {
+	id = atxf.42
+	desc = { trigger = { has_character_flag = atxf_ans_granted } text = atxf.42.d_granted }
+	desc = { trigger = { has_character_flag = atxf_ans_rebuked } text = atxf.42.d_rebuked }
+	desc = { trigger = { has_character_flag = atxf_ans_refused } text = atxf.42.d_refused }
+	is_triggered_only = yes
+
+	option = {
+		name = atxf.42.a
+		clr_character_flag = atxf_pet_gold
+		clr_character_flag = atxf_pet_denounce
+		clr_character_flag = atxf_ans_granted
+		clr_character_flag = atxf_ans_rebuked
+		clr_character_flag = atxf_ans_refused
+	}
+}
