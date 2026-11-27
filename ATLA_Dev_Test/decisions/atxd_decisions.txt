@@ -1,0 +1,167 @@
+# ATLA Dev Test - test buttons for ATLA_Ba_Sing_Se and ATLA_Avatars_Legacy (prefix atxd_)
+# TESTING ONLY: players only (ai = no), behind one collapsible "Dev Test Menu" entry in the Intrigue tab.
+# Needs ATLA_Ba_Sing_Se and ATLA_Avatars_Legacy enabled (it calls their scripted effects). Not part of the release.
+decisions = {
+	atxd_menu_open = {
+		ai = no
+		potential = { ai = no NOT = { has_character_flag = atxd_menu } }
+		allow = { always = yes }
+		effect = { set_character_flag = atxd_menu }
+		ai_will_do = { factor = 0 }
+	}
+	atxd_menu_close = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu }
+		allow = { always = yes }
+		effect = { clr_character_flag = atxd_menu }
+		ai_will_do = { factor = 0 }
+	}
+
+	# Status readout (anyone)
+	atxd_status = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu }
+		allow = { always = yes }
+		effect = { character_event = { id = atxd.1 } }
+		ai_will_do = { factor = 0 }
+	}
+
+	# ---- Ba Sing Se (the Earth King only) ----
+	# Restored, non-puppet Earth King under the States law, as the base restoration chain leaves him:
+	# flag earthking_in_power stops earthking.1 from giving the puppet trait back. The base law-passed event
+	# (earthking.61) runs so the base mod turns Earth realms into tributaries. Royal Authority 65 and treasury +250
+	# are set a day later (atxd.3), after the base law event has taken its cost.
+	atxd_strong_king = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu atxb_is_king_trigger = yes }
+		allow = { always = yes }
+		effect = {
+			set_global_flag = earthking_in_power
+			remove_trait = earthkingpuppet
+			if = {
+				limit = { NOR = { trait = earthking trait = earthkingconstitution } }
+				add_trait = earthking
+			}
+			k_earth_kingdom = { add_law = ek_unity_2 }
+			if = {
+				limit = { e_earth_kingdom = { has_holder = yes } }
+				e_earth_kingdom = { add_law = ek_unity_2 }
+			}
+			character_event = { id = earthking.61 }
+			character_event = { id = atxd.3 days = 1 }
+			log = "ATLA Dev Test: strong Earth King set up for [Root.GetTitledName]"
+		}
+		ai_will_do = { factor = 0 }
+	}
+	atxd_toggle_puppet = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu atxb_is_king_trigger = yes }
+		allow = { always = yes }
+		effect = {
+			if = {
+				limit = { trait = earthkingpuppet }
+				set_global_flag = earthking_in_power
+				remove_trait = earthkingpuppet
+				add_trait = earthking
+			}
+			else = {
+				clr_global_flag = earthking_in_power
+				remove_trait = earthking
+				remove_trait = earthkingconstitution
+				add_trait = earthkingpuppet
+			}
+		}
+		ai_will_do = { factor = 0 }
+	}
+	# Royal Authority 20 (weak) -> 45 (steady) -> 70 (strong) -> 20 ...
+	atxd_cycle_authority = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu }
+		allow = { always = yes }
+		effect = {
+			if = {
+				limit = { NOT = { check_variable = { which = global_royalAuthority value = 30 } } }
+				set_variable = { which = global_royalAuthority value = 45 }
+			}
+			else_if = {
+				limit = { NOT = { check_variable = { which = global_royalAuthority value = 60 } } }
+				set_variable = { which = global_royalAuthority value = 70 }
+			}
+			else = {
+				set_variable = { which = global_royalAuthority value = 20 }
+			}
+			custom_tooltip = { text = atxd_cycle_authority_tt }
+		}
+		ai_will_do = { factor = 0 }
+	}
+	atxd_add_treasury = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu }
+		allow = { always = yes }
+		effect = {
+			change_variable = { which = global_atxb_treasury value = 200 }
+			atxb_clamp_treasury_effect = yes
+		}
+		ai_will_do = { factor = 0 }
+	}
+	# Runs the yearly Ba Sing Se update now (income, works, Secretariat, reach, breakaways, AI pleas)
+	atxd_run_bss_tick = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu is_ruler = yes }
+		allow = { always = yes }
+		effect = {
+			clr_global_flag = atxb_tick
+			character_event = { id = atxb.1 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+	# Traces the reach now and writes every Earth tributary, connected or not, to game.log
+	atxd_check_reach = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu atxb_is_king_trigger = yes }
+		allow = { always = yes }
+		effect = { character_event = { id = atxd.2 } }
+		ai_will_do = { factor = 0 }
+	}
+	# Sends the Earth King a plea from a random eligible Earth realm (no war needed)
+	atxd_test_plea = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu atxb_is_king_trigger = yes }
+		allow = {
+			any_independent_ruler = {
+				NOT = { character = ROOT }
+				atxb_plea_base_trigger = yes
+			}
+		}
+		effect = {
+			random_independent_ruler = {
+				limit = {
+					NOT = { character = ROOT }
+					atxb_plea_base_trigger = yes
+				}
+				character_event = { id = atxd.10 }
+			}
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	# ---- Avatar's Legacy (anyone) ----
+	atxd_roll_legacy = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu }
+		allow = { always = yes }
+		effect = { character_event = { id = atxd.20 } }
+		ai_will_do = { factor = 0 }
+	}
+	# Runs the yearly Avatar's Legacy pulse now (burdens act, champion search, AI Avatar confrontation)
+	atxd_run_legacy_tick = {
+		ai = no
+		potential = { ai = no has_character_flag = atxd_menu is_ruler = yes }
+		allow = { always = yes }
+		effect = {
+			clr_global_flag = atxl_leg_tick
+			character_event = { id = atxl.2 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+}
