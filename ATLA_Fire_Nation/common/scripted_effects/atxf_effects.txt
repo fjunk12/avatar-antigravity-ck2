@@ -1,0 +1,168 @@
+# ATLA Fire Nation - effects (prefix atxf_)
+
+# The two sides of the Camellia-Peony dispute, by title so that heirs carry on the quarrel:
+# the Peony (Keohso-backed Fire Lord) holds k_fire_nation, the Camellia (Saowon) holds k_western_fire_nation
+atxf_find_champions_effect = {
+	k_fire_nation = { holder_scope = { save_global_event_target_as = atxf_peony_champion } }
+	k_western_fire_nation = { holder_scope = { save_global_event_target_as = atxf_camellia_champion } }
+}
+
+# Remove a lord's ties to either side (character scope)
+atxf_clear_side_effect = {
+	clr_character_flag = atxf_peony
+	clr_character_flag = atxf_camellia
+	clr_character_flag = atxf_neutral
+	remove_opinion = { who = event_target:atxf_peony_champion modifier = opinion_atxf_clan_loyalty }
+	remove_opinion = { who = event_target:atxf_peony_champion modifier = opinion_atxf_clan_enmity }
+	remove_opinion = { who = event_target:atxf_camellia_champion modifier = opinion_atxf_clan_loyalty }
+	remove_opinion = { who = event_target:atxf_camellia_champion modifier = opinion_atxf_clan_enmity }
+}
+atxf_join_peony_effect = {
+	atxf_clear_side_effect = yes
+	set_character_flag = atxf_peony
+	opinion = { who = event_target:atxf_peony_champion modifier = opinion_atxf_clan_loyalty years = 15 }
+	opinion = { who = event_target:atxf_camellia_champion modifier = opinion_atxf_clan_enmity years = 15 }
+}
+atxf_join_camellia_effect = {
+	atxf_clear_side_effect = yes
+	set_character_flag = atxf_camellia
+	opinion = { who = event_target:atxf_camellia_champion modifier = opinion_atxf_clan_loyalty years = 15 }
+	opinion = { who = event_target:atxf_peony_champion modifier = opinion_atxf_clan_enmity years = 15 }
+}
+atxf_join_neutral_effect = {
+	atxf_clear_side_effect = yes
+	set_character_flag = atxf_neutral
+}
+
+# The dispute begins (any scope; called from the yearly run)
+atxf_cpw_start_effect = {
+	set_global_flag = atxf_cpw
+	atxf_find_champions_effect = yes
+	log = "ATLA Fire Nation: the Camellia-Peony dispute begins: [atxf_peony_champion.GetTitledName] (Peony) against [atxf_camellia_champion.GetTitledName] (Camellia)"
+	event_target:atxf_peony_champion = { set_character_flag = atxf_peony }
+	event_target:atxf_camellia_champion = { set_character_flag = atxf_camellia }
+	# The great clans take their sides at once: the Keohso for the Peony, the Saowon for the Camellia
+	any_character = {
+		limit = { atxf_cpw_lord_trigger = yes dynasty = 3994 }
+		atxf_join_peony_effect = yes
+	}
+	any_character = {
+		limit = { atxf_cpw_lord_trigger = yes dynasty = 3995 }
+		atxf_join_camellia_effect = yes
+	}
+	# Every other lord of the Fire Isles chooses
+	any_character = {
+		limit = {
+			atxf_cpw_lord_trigger = yes
+			NOT = { dynasty = 3994 }
+			NOT = { dynasty = 3995 }
+		}
+		character_event = { id = atxf.3 days = 7 }
+	}
+	event_target:atxf_peony_champion = { character_event = { id = atxf.2 } }
+	event_target:atxf_camellia_champion = { character_event = { id = atxf.2 } }
+	# A living Earth Avatar (Kyoshi in 560) warns both claimants
+	if = {
+		limit = {
+			any_character = {
+				trait = avatar
+				culture_group = earth_kingdom_cultures
+			}
+		}
+		random_character = {
+			limit = {
+				trait = avatar
+				culture_group = earth_kingdom_cultures
+			}
+			save_global_event_target_as = atxf_avatar
+			character_event = { id = atxf.5 } # relay: the letters come from the Avatar
+		}
+	}
+}
+
+# Call of the Clans: independent supporters join their champion's wars against the other champion (any scope)
+atxf_call_of_the_clans_effect = {
+	atxf_find_champions_effect = yes
+	if = {
+		limit = {
+			event_target:atxf_peony_champion = {
+				any_war = {
+					attacker = { character = event_target:atxf_peony_champion }
+					defender = { character = event_target:atxf_camellia_champion }
+				}
+			}
+		}
+		any_independent_ruler = {
+			limit = {
+				has_character_flag = atxf_peony
+				atxf_cpw_lord_trigger = yes
+				NOT = { war_with = event_target:atxf_camellia_champion }
+				NOT = { war_with = event_target:atxf_peony_champion }
+			}
+			join_attacker_wars = event_target:atxf_peony_champion
+		}
+		any_independent_ruler = {
+			limit = {
+				has_character_flag = atxf_camellia
+				atxf_cpw_lord_trigger = yes
+				NOT = { war_with = event_target:atxf_peony_champion }
+				NOT = { war_with = event_target:atxf_camellia_champion }
+			}
+			join_defender_wars = event_target:atxf_camellia_champion
+		}
+	}
+	if = {
+		limit = {
+			event_target:atxf_camellia_champion = {
+				any_war = {
+					attacker = { character = event_target:atxf_camellia_champion }
+					defender = { character = event_target:atxf_peony_champion }
+				}
+			}
+		}
+		any_independent_ruler = {
+			limit = {
+				has_character_flag = atxf_camellia
+				atxf_cpw_lord_trigger = yes
+				NOT = { war_with = event_target:atxf_peony_champion }
+				NOT = { war_with = event_target:atxf_camellia_champion }
+			}
+			join_attacker_wars = event_target:atxf_camellia_champion
+		}
+		any_independent_ruler = {
+			limit = {
+				has_character_flag = atxf_peony
+				atxf_cpw_lord_trigger = yes
+				NOT = { war_with = event_target:atxf_camellia_champion }
+				NOT = { war_with = event_target:atxf_peony_champion }
+			}
+			join_defender_wars = event_target:atxf_peony_champion
+		}
+	}
+}
+
+# The dispute is decided or has run out (any scope): clear every side and flag
+atxf_cpw_cleanup_effect = {
+	clr_global_flag = atxf_cpw
+	set_global_flag = atxf_cpw_done
+	any_character = {
+		limit = {
+			OR = {
+				has_character_flag = atxf_peony
+				has_character_flag = atxf_camellia
+				has_character_flag = atxf_neutral
+			}
+		}
+		clr_character_flag = atxf_peony
+		clr_character_flag = atxf_camellia
+		clr_character_flag = atxf_neutral
+	}
+}
+
+# ---- Petition the Fire Lord (ROOT = the petitioner; the type flag is set first) ----
+atxf_send_petition_effect = {
+	clr_character_flag = atxf_petitioned
+	set_character_flag = atxf_petitioned
+	log = "ATLA Fire Nation: [Root.GetTitledName] petitioned the Fire Lord"
+	top_liege = { character_event = { id = atxf.41 } }
+}

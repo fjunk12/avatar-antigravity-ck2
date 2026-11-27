@@ -1,0 +1,12 @@
+# ATLA Fire Nation - character modifiers from the end of the Camellia-Peony War
+atxf_clans_broken = {
+	icon = 13
+	global_tax_modifier = 0.1
+	global_levy_size = 0.1
+	vassal_opinion = -5
+}
+atxf_clan_compact = {
+	icon = 24
+	vassal_opinion = 10
+	global_tax_modifier = -0.05
+}

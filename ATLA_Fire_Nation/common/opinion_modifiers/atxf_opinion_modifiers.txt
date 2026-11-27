@@ -1,0 +1,22 @@
+# ATLA Fire Nation - opinion modifiers
+opinion_atxf_clan_loyalty = {
+	opinion = 20
+}
+opinion_atxf_clan_enmity = {
+	opinion = -20
+}
+opinion_atxf_clans_broken = {
+	opinion = -25
+}
+opinion_atxf_clan_compact = {
+	opinion = 15
+}
+opinion_atxf_patronage = {
+	opinion = 15
+}
+opinion_atxf_petition_refused = {
+	opinion = -10
+}
+opinion_atxf_rebuked = {
+	opinion = -20
+}

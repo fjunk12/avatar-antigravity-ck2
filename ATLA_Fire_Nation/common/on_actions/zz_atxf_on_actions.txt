@@ -1,0 +1,6 @@
+# ATLA Fire Nation
+on_yearly_pulse = {
+	events = {
+		atxf.1 # Camellia-Peony War and AI petitions (once a year for the whole world)
+	}
+}
