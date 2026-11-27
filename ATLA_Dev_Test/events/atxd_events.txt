@@ -29,6 +29,7 @@ character_event = {
 			limit = { has_global_flag = earthking_in_power }
 			custom_tooltip = { text = atxd_king_in_power_tt }
 		}
+		atxb_overext_tooltips = yes
 		if = { limit = { has_global_flag = atxl_leg_spirits } custom_tooltip = { text = atxd_leg_spirits_tt } }
 		if = { limit = { has_global_flag = atxl_leg_lawless } custom_tooltip = { text = atxd_leg_lawless_tt } }
 		if = { limit = { has_global_flag = atxl_leg_zealots } custom_tooltip = { text = atxd_leg_zealots_tt } }
