@@ -98,6 +98,24 @@ After each action the popup reopens with the new figures. The AI takes the same 
 - **Sabotage the Crown's Works:** any independent Earth or Way of Chin realm can spend 25 gold, every 5 years. The outcome is a 45% setback, 30% nothing, or 25% caught; being caught is likelier when the king's spymaster is good and less likely with a skilled saboteur.
   - The AI only sabotages if it dislikes the king, is his rival, or follows the Way of Chin.
 
+## Petition for a Royal Grant
+
+An Earth Kingdom tributary (duke or above, not Way of Chin) can ask the crown for gold from the treasury. It needs a treasury of 50 or more, and it can ask once every 5 years.
+
+- **Players:** the **Petition for a Royal Grant** decision.
+- **AI tributaries:** they ask through the yearly run, only if they have less than 50 gold and an opinion of the king of 25 or more. At most 2 a year across the world.
+
+The Earth King answers:
+
+| Answer | Cost to the treasury | Effect on the tributary |
+|---|---|---|
+| Grant 100 | −100 | +100 gold, +25 opinion for 10 years, won't break away for 10 years |
+| Grant 50 | −50 | +50 gold, +15 opinion for 10 years |
+| Refuse | — | −10 opinion for 5 years |
+
+- **AI king:** more generous when charitable or with a full treasury (400+); stingier when greedy.
+- **Puppet king:** the Grand Secretariat always refuses.
+
 ## Royal Arbitration
 
 The Earth King can order an Earth realm to stop a war against a fellow Earth realm. Use it from the **attacker's diplomacy screen**.
@@ -144,4 +162,5 @@ The base mod's other Royal Authority actions remain:
 7. **Treasury popup:** open The Treasury of Ba Sing Se, start a work, draw and call a corvée. The popup should reopen with the new figures.
 8. **Royal Arbitration:** find two Earth realms at war, open the attacker's diplomacy screen and use Royal Arbitration. With a player target, the target chooses.
 9. **Overextended Crown:** game.log's yearly line shows the provinces outside the walls and the capacity. Once the king rules 15 or more provinces outside the walls, the modifier should appear on him.
-10. **Check error.log** for anything mentioning `atxb`.
+10. **Royal Grant:** play an Earth tributary and use Petition for a Royal Grant, or watch game.log for `asked Ba Sing Se for a royal grant`.
+11. **Check error.log** for anything mentioning `atxb`.

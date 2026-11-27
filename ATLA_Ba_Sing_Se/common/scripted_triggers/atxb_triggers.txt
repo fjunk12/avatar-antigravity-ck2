@@ -328,3 +328,23 @@ atxb_arbitration_target_trigger = {
 		}
 	}
 }
+
+# ---- v4: Petition for a Royal Grant ----
+# ROOT is an Earth Kingdom tributary that may ask the crown for money (works without event targets, so decisions can use it)
+atxb_grant_base_trigger = {
+	is_ruler = yes
+	independent = yes
+	prisoner = no
+	higher_tier_than = COUNT
+	atxb_ek_tributary_trigger = yes
+	NOR = {
+		religion = way_of_chin
+		mercenary = yes
+		holy_order = yes
+		rebel = yes
+	}
+	OR = {
+		NOT = { has_character_flag = atxb_asked_grant }
+		had_character_flag = { flag = atxb_asked_grant days = 1825 }
+	}
+}

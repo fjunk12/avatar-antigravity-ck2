@@ -5,6 +5,11 @@
 # atxb.41  the works page of the treasury popup
 # atxb.42  Royal Arbitration: the Earth King demands peace (ROOT = the attacker)
 # atxb.43  Royal Arbitration: the answer, to the Earth King
+# atxb.50  Royal Grant: a player tributary asks (decision, hidden)
+# atxb.51  Royal Grant: the Earth King answers (ROOT = king, FROM = tributary)
+# atxb.52  Royal Grant: the answer letter (ROOT = tributary, FROM = king)
+# atxb.53  Royal Grant: hidden relay for the Grand Secretariat's refusal (ROOT = king, FROM = tributary)
+# atxb.54  Royal Grant: an AI tributary asks (hidden, at most 2 a year)
 # atxb.6   the Grand Secretariat's report to a puppet Earth King (players)
 # atxb.10  a work completes a stage            atxb.11  a work stalls or is abandoned
 # atxb.15  a work is finished                   atxb.16  news to tributaries: A Single Law for the Kingdom
@@ -41,6 +46,7 @@ character_event = {
 		}
 		set_variable = { which = global_atxb_breaks value = 0 }
 		set_variable = { which = global_atxb_pleas value = 0 }
+		set_variable = { which = global_atxb_grants value = 0 }
 
 		# A foreign or Way of Chin ruler holding the Royal Palace loots the treasury
 		if = {
@@ -104,6 +110,20 @@ character_event = {
 					}
 				}
 				atxb_unlink_all_effect = yes
+
+				# Royal Grants: short-of-gold AI tributaries that like the king ask for money (at most 2 a year, counted in atxb.54)
+				if = {
+					limit = { check_variable = { which = global_atxb_treasury value = 50 } }
+					any_tributary = {
+						limit = {
+							ai = yes
+							atxb_grant_base_trigger = yes
+							NOT = { wealth = 50 }
+							opinion = { who = event_target:atxb_king value = 25 }
+						}
+						random = { chance = 10 character_event = { id = atxb.54 } }
+					}
+				}
 			}
 
 			# Plea to Ba Sing Se: AI Earth realms under attack ask the crown for help (at most 2 a year, counted in atxb.29)
@@ -759,5 +779,131 @@ letter_event = {
 		name = atxb.43.a
 		clr_character_flag = atxb_arb_obeyed
 		clr_character_flag = atxb_arb_defied
+	}
+}
+
+# Royal Grant: a player tributary asks (from the decision)
+character_event = {
+	id = atxb.50
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		atxb_send_grant_effect = yes
+	}
+}
+
+# Royal Grant: an AI tributary asks (ROOT = tributary). At most 2 a year across the world.
+character_event = {
+	id = atxb.54
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { check_variable = { which = global_atxb_grants value = 2 } }
+		check_variable = { which = global_atxb_treasury value = 50 }
+	}
+
+	immediate = {
+		change_variable = { which = global_atxb_grants value = 1 }
+		atxb_send_grant_effect = yes
+	}
+}
+
+# Royal Grant: the Earth King answers (ROOT = king, FROM = tributary)
+character_event = {
+	id = atxb.51
+	desc = atxb.51.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.51.a # 100 gold
+		trigger = { check_variable = { which = global_atxb_treasury value = 100 } }
+		custom_tooltip = { text = atxb_grant_large_tt }
+		hidden_tooltip = {
+			change_variable = { which = global_atxb_treasury value = -100 }
+			atxb_clamp_treasury_effect = yes
+		}
+		FROM = {
+			wealth = 100
+			opinion = { who = ROOT modifier = opinion_atxb_grant_large years = 10 }
+			clr_character_flag = atxb_helped_plea
+			set_character_flag = atxb_helped_plea # the crown answered: 10 years' grace from breakaways
+			set_character_flag = atxb_gr_large
+			letter_event = { id = atxb.52 days = 5 }
+		}
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] granted [From.GetTitledName] 100 gold (treasury [global_atxb_treasury.GetValue])"
+		ai_chance = {
+			factor = 15
+			modifier = { factor = 2 check_variable = { which = global_atxb_treasury value = 400 } }
+			modifier = { factor = 2 trait = charitable }
+			modifier = { factor = 0.25 trait = greedy }
+		}
+	}
+	option = {
+		name = atxb.51.b # 50 gold
+		trigger = { check_variable = { which = global_atxb_treasury value = 50 } }
+		custom_tooltip = { text = atxb_grant_small_tt }
+		hidden_tooltip = {
+			change_variable = { which = global_atxb_treasury value = -50 }
+			atxb_clamp_treasury_effect = yes
+		}
+		FROM = {
+			wealth = 50
+			opinion = { who = ROOT modifier = opinion_atxb_grant_small years = 10 }
+			set_character_flag = atxb_gr_small
+			letter_event = { id = atxb.52 days = 5 }
+		}
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] granted [From.GetTitledName] 50 gold (treasury [global_atxb_treasury.GetValue])"
+		ai_chance = {
+			factor = 35
+			modifier = { factor = 1.5 trait = charitable }
+			modifier = { factor = 0.5 trait = greedy }
+		}
+	}
+	option = {
+		name = atxb.51.c # refuse
+		FROM = {
+			opinion = { who = ROOT modifier = opinion_atxb_grant_refused years = 5 }
+			set_character_flag = atxb_gr_refused
+			letter_event = { id = atxb.52 days = 5 }
+		}
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] refused [From.GetTitledName] a royal grant"
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 2 trait = greedy }
+			modifier = { factor = 0.5 trait = charitable }
+			modifier = { factor = 0.5 FROM = { opinion = { who = ROOT value = 50 } } }
+		}
+	}
+}
+
+# Royal Grant: the answer reaches the tributary (ROOT = tributary, FROM = king)
+letter_event = {
+	id = atxb.52
+	desc = { trigger = { has_character_flag = atxb_gr_large } text = atxb.52.d_large }
+	desc = { trigger = { has_character_flag = atxb_gr_small } text = atxb.52.d_small }
+	desc = { trigger = { has_character_flag = atxb_gr_refused } text = atxb.52.d_refused }
+	desc = { trigger = { has_character_flag = atxb_gr_sec_refused } text = atxb.52.d_sec_refused }
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.52.a
+		clr_character_flag = atxb_gr_large
+		clr_character_flag = atxb_gr_small
+		clr_character_flag = atxb_gr_refused
+		clr_character_flag = atxb_gr_sec_refused
+	}
+}
+
+# Royal Grant: the Grand Secretariat refused; the letter goes out in the king's name (ROOT = king, FROM = tributary)
+character_event = {
+	id = atxb.53
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { letter_event = { id = atxb.52 days = 5 } }
 	}
 }
