@@ -140,3 +140,14 @@ atxb.52.a;So be it.;;;;;;;;;;;;;x
 opinion_atxb_grant_small;Granted gold by Ba Sing Se;;;;;;;;;;;;;x
 opinion_atxb_grant_large;Granted much gold by Ba Sing Se;;;;;;;;;;;;;x
 opinion_atxb_grant_refused;Refused a royal grant;;;;;;;;;;;;;x
+atxb.60.d;Daofei have been seen in [atxb_daofei_prov.GetName]. The outlaw brotherhoods rob travellers on the roads, sell protection to the markets, and answer to no one but their own sworn elders. They grow bolder whenever Ba Sing Se looks weak.\n\nWe can send soldiers after them, come to a quiet understanding, or, while we are at war, put their swords to use.;;;;;;;;;;;;;x
+atxb.60.a;Root them out (25 gold).;;;;;;;;;;;;;x
+atxb.60.b;A quiet understanding: they keep to themselves, and pay for the privilege.;;;;;;;;;;;;;x
+atxb.60.c;Hire them (25 gold): 500 irregulars until the war ends.;;;;;;;;;;;;;x
+atxb_daofei_presence;Daofei;;;;;;;;;;;;;x
+atxb_daofei_presence_desc;Outlaw brotherhoods operate here: they skim the markets and stir up trouble.;;;;;;;;;;;;;x
+desc_atxb_daofei_presence;Outlaw brotherhoods operate here: they skim the markets and stir up trouble.;;;;;;;;;;;;;x
+atxb_hire_daofei;Hire Daofei Irregulars;;;;;;;;;;;;;x
+atxb_hire_daofei_desc;Buy the swords of the outlaw brotherhoods for this war. They fight cheaply and leave when the war is over, but they don't leave the land entirely.;;;;;;;;;;;;;x
+atxb_hire_daofei_tt;500 irregulars (light infantry and archers) at your capital until the war ends. If no daofei operate in your realm yet, they settle at your capital for 5 years (tax -15%, revolt risk +2%).;;;;;;;;;;;;;x
+atxb_daofei_cooldown_tt;You have not hired daofei in the last 3 years;;;;;;;;;;;;;x

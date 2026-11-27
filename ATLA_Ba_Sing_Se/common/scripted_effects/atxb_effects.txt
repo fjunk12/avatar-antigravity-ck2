@@ -892,3 +892,34 @@ atxb_send_grant_effect = {
 		}
 	}
 }
+
+# ---- v5: the Daofei Underworld (character scope: the Earth lord) ----
+# Daofei settle in the province saved as event_target:atxb_daofei_prov for 5 years
+atxb_daofei_settle_effect = {
+	event_target:atxb_daofei_prov = {
+		remove_province_modifier = atxb_daofei_presence
+		add_province_modifier = { name = atxb_daofei_presence duration = 1825 }
+	}
+}
+# Clear every daofei presence in the lord's realm
+atxb_daofei_clear_effect = {
+	any_realm_province = {
+		limit = { has_province_modifier = atxb_daofei_presence }
+		remove_province_modifier = atxb_daofei_presence
+	}
+}
+# A band of daofei irregulars at the lord's capital: 500 men, normal upkeep, gone at peace
+atxb_daofei_irregulars_effect = {
+	capital_scope = { save_event_target_as = atxb_daofei_capital }
+	spawn_unit = {
+		province = event_target:atxb_daofei_capital
+		home = event_target:atxb_daofei_capital
+		owner = THIS
+		troops = {
+			light_infantry = { 350 350 }
+			archers = { 150 150 }
+		}
+		attrition = 1.0
+		disband_on_peace = yes
+	}
+}
