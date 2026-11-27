@@ -1,0 +1,45 @@
+#CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
+atxd_menu_open;Dev Test Menu;;;;;;;;;;;;;x
+atxd_menu_open_desc;TESTING ONLY. Show the ATLA Dev Test buttons.;;;;;;;;;;;;;x
+atxd_menu_close;Close Dev Test Menu;;;;;;;;;;;;;x
+atxd_menu_close_desc;Hide the ATLA Dev Test buttons.;;;;;;;;;;;;;x
+atxd_status;Test: Status;;;;;;;;;;;;;x
+atxd_status_desc;Show Royal Authority, the treasury, tributaries, the unity law and the active Avatar burdens.;;;;;;;;;;;;;x
+atxd_strong_king;Test: Strong Earth King;;;;;;;;;;;;;x
+atxd_strong_king_desc;Make yourself a restored, non-puppet Earth King under the States law, as the base restoration chain would. The base law event then makes Earth realms tributaries. A day later Royal Authority is set to 65 and the treasury gains 250.;;;;;;;;;;;;;x
+atxd_toggle_puppet;Test: Toggle Puppet;;;;;;;;;;;;;x
+atxd_toggle_puppet_desc;Switch between a puppet Earth King (the Grand Secretariat spends the treasury and answers pleas) and a restored one.;;;;;;;;;;;;;x
+atxd_cycle_authority;Test: Cycle Royal Authority;;;;;;;;;;;;;x
+atxd_cycle_authority_desc;Set Royal Authority to the next plea band: 20 (weak), 45 (steady), 70 (strong).;;;;;;;;;;;;;x
+atxd_cycle_authority_tt;Royal Authority moves to the next band: below 30 becomes 45, 30 to 59 becomes 70, 60 or more becomes 20.;;;;;;;;;;;;;x
+atxd_add_treasury;Test: Treasury +200;;;;;;;;;;;;;x
+atxd_add_treasury_desc;Add 200 gold to the treasury of Ba Sing Se (it never holds more than 1,000).;;;;;;;;;;;;;x
+atxd_run_bss_tick;Test: Run Ba Sing Se Year;;;;;;;;;;;;;x
+atxd_run_bss_tick_desc;Run the yearly Ba Sing Se update now: income, works, the Grand Secretariat, the reach, the Overextended Crown count, breakaways and AI pleas. Check game.log for the result.;;;;;;;;;;;;;x
+atxd_check_reach;Test: Check the Reach;;;;;;;;;;;;;x
+atxd_check_reach_desc;Trace which tributaries are connected to Ba Sing Se. Every tributary is written to game.log as connected or out of reach.;;;;;;;;;;;;;x
+atxd_test_plea;Test: Receive a Plea;;;;;;;;;;;;;x
+atxd_test_plea_desc;A random Earth realm pleads with Ba Sing Se now, without needing a war. A puppet king's Grand Secretariat answers in his place.;;;;;;;;;;;;;x
+atxd_roll_legacy;Test: Roll an Avatar Burden;;;;;;;;;;;;;x
+atxd_roll_legacy_desc;Give the world one of the five Avatar's Legacy burdens now.;;;;;;;;;;;;;x
+atxd_run_legacy_tick;Test: Run Legacy Year;;;;;;;;;;;;;x
+atxd_run_legacy_tick_desc;Run the yearly Avatar's Legacy pulse now: burdens act on the world, the champion search, the AI Avatar's confrontation.;;;;;;;;;;;;;x
+atxd.1.d;Royal Authority: [global_royalAuthority.GetValue]. Unity law tier: [global_atxd_unity.GetValue] (0 Disunion, 1 Territories, 2 States, 3 Monarchism).\n\nTreasury of Ba Sing Se: [global_atxb_treasury.GetValue]. Last year: crown lands [global_atxb_last_crown.GetValue], share of tribute [global_atxb_last_skim.GetValue] from [global_atxb_tribs.GetValue] tributaries, [global_atxb_unlinked.GetValue] of them out of reach.\n\nThe lines below list the Earth King's status and the active Avatar burdens.;;;;;;;;;;;;;x
+atxd.1.a;Close;;;;;;;;;;;;;x
+atxd_king_puppet_tt;The Earth King is a puppet (earthkingpuppet).;;;;;;;;;;;;;x
+atxd_king_in_power_tt;The Earth King has been restored to power (earthking_in_power).;;;;;;;;;;;;;x
+atxd_leg_spirits_tt;Burden: Restless Spirits;;;;;;;;;;;;;x
+atxd_leg_lawless_tt;Burden: Daofei Country;;;;;;;;;;;;;x
+atxd_leg_zealots_tt;Burden: Zealots of the Old Avatar;;;;;;;;;;;;;x
+atxd_leg_ambition_tt;Burden: Unchecked Ambition;;;;;;;;;;;;;x
+atxd_leg_ironpeace_tt;Burden: An Iron Peace;;;;;;;;;;;;;x
+atxd_champion_tt;A champion of Unchecked Ambition is active.;;;;;;;;;;;;;x
+atxd.2.d;Reach check: [global_atxd_linked.GetValue] Earth tributaries are connected to Ba Sing Se and [global_atxb_unlinked.GetValue] are out of reach. game.log lists every one of them by name.;;;;;;;;;;;;;x
+atxd.2.a;Close;;;;;;;;;;;;;x
+atxd.20.desc;Which burden should the world carry? It applies as if an Avatar of your culture had just died.;;;;;;;;;;;;;x
+atxd.20.a;Restless Spirits;;;;;;;;;;;;;x
+atxd.20.b;Daofei Country;;;;;;;;;;;;;x
+atxd.20.c;Zealots of the Old Avatar;;;;;;;;;;;;;x
+atxd.20.d;Unchecked Ambition;;;;;;;;;;;;;x
+atxd.20.e;An Iron Peace;;;;;;;;;;;;;x
+atxd.20.f;None;;;;;;;;;;;;;x
