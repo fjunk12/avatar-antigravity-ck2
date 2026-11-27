@@ -20,3 +20,12 @@ opinion_atxb_refused = {
 opinion_atxb_forced_peace = {
 	opinion = -10
 }
+opinion_atxb_grant_small = {
+	opinion = 15
+}
+opinion_atxb_grant_large = {
+	opinion = 25
+}
+opinion_atxb_grant_refused = {
+	opinion = -10
+}

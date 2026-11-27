@@ -122,3 +122,21 @@ atxb.43.d_obeyed;[atxb_arb_target.GetTitledName] has obeyed your command and mad
 atxb.43.d_defied;[atxb_arb_target.GetTitledName] has sent your envoy home. Your command was ignored, and the whole court knows it.;;;;;;;;;;;;;x
 atxb.43.a;So be it.;;;;;;;;;;;;;x
 opinion_atxb_forced_peace;Forced to make peace;;;;;;;;;;;;;x
+atxb_request_royal_grant;Petition for a Royal Grant;;;;;;;;;;;;;x
+atxb_request_royal_grant_desc;Ask the Earth King for gold from the treasury of Ba Sing Se. A generous king earns loyalty, and a refusal is remembered.;;;;;;;;;;;;;x
+atxb_grant_treasury_tt;The treasury of Ba Sing Se holds at least 50 gold;;;;;;;;;;;;;x
+atxb_grant_tt;The Earth King may grant 100 gold, grant 50, or refuse. Once every 5 years.;;;;;;;;;;;;;x
+atxb_grant_large_tt;Treasury -100. They receive 100 gold, think 25 better of you for 10 years, and won't break away for 10 years.;;;;;;;;;;;;;x
+atxb_grant_small_tt;Treasury -50. They receive 50 gold and think 15 better of you for 10 years.;;;;;;;;;;;;;x
+atxb.51.d;An envoy from [From.GetTitledName] has come to the palace. [From.GetFirstName] asks the crown for a grant from the treasury of Ba Sing Se, to set the realm's affairs in order.\n\nThe treasury holds [global_atxb_treasury.GetValue] gold.;;;;;;;;;;;;;x
+atxb.51.a;Grant 100 gold;;;;;;;;;;;;;x
+atxb.51.b;Grant 50 gold;;;;;;;;;;;;;x
+atxb.51.c;The treasury has other uses.;;;;;;;;;;;;;x
+atxb.52.d_large;The Earth King has answered our petition generously: 100 gold from the treasury of Ba Sing Se.;;;;;;;;;;;;;x
+atxb.52.d_small;The Earth King has answered our petition with 50 gold from the treasury of Ba Sing Se.;;;;;;;;;;;;;x
+atxb.52.d_refused;The Earth King has refused our petition. The treasury of Ba Sing Se, we are told, has other uses.;;;;;;;;;;;;;x
+atxb.52.d_sec_refused;Our envoy never saw the Earth King. An official of the Grand Secretariat told him that the treasury is fully committed, and sent him home.;;;;;;;;;;;;;x
+atxb.52.a;So be it.;;;;;;;;;;;;;x
+opinion_atxb_grant_small;Granted gold by Ba Sing Se;;;;;;;;;;;;;x
+opinion_atxb_grant_large;Granted much gold by Ba Sing Se;;;;;;;;;;;;;x
+opinion_atxb_grant_refused;Refused a royal grant;;;;;;;;;;;;;x

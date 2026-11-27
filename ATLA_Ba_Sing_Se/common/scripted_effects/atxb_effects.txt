@@ -868,3 +868,27 @@ atxb_arb_end_wars_effect = {
 	}
 	set_pacified = { years = 2 }
 }
+
+# ---- v4: Petition for a Royal Grant (ROOT = the tributary asking) ----
+atxb_send_grant_effect = {
+	atxb_find_king_effect = yes
+	if = {
+		limit = {
+			event_target:atxb_king = { always = yes }
+			NOT = { war_with = event_target:atxb_king }
+		}
+		clr_character_flag = atxb_asked_grant
+		set_character_flag = atxb_asked_grant
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] asked Ba Sing Se for a royal grant"
+		if = {
+			limit = { event_target:atxb_king = { trait = earthkingpuppet } }
+			# The Grand Secretariat keeps the gold for itself
+			set_character_flag = atxb_gr_sec_refused
+			opinion = { who = event_target:atxb_king modifier = opinion_atxb_grant_refused years = 5 }
+			event_target:atxb_king = { character_event = { id = atxb.53 } } # sends the answer in the king's name
+		}
+		else = {
+			event_target:atxb_king = { character_event = { id = atxb.51 } }
+		}
+	}
+}

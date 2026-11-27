@@ -148,6 +148,26 @@ decisions = {
 		}
 		ai_will_do = { factor = 0 }
 	}
+
+	# Petition for a Royal Grant (players): an Earth Kingdom tributary asks the crown for gold from the treasury of Ba Sing Se.
+	# AI tributaries ask through the yearly run (at most 2 a year).
+	atxb_request_royal_grant = {
+		ai = no
+		potential = {
+			atxb_grant_base_trigger = yes
+		}
+		allow = {
+			custom_tooltip = {
+				text = atxb_grant_treasury_tt
+				check_variable = { which = global_atxb_treasury value = 50 }
+			}
+		}
+		effect = {
+			custom_tooltip = { text = atxb_grant_tt }
+			character_event = { id = atxb.50 }
+		}
+		ai_will_do = { factor = 0 }
+	}
 }
 
 # Royal Arbitration: the Earth King orders an Earth realm to end its war against another Earth realm (diplomacy screen of the attacker)
