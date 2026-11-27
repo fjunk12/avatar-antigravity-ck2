@@ -248,10 +248,30 @@ atxb_can_start_law_trigger = {
 	NOT = { has_global_flag = atxb_done_law }
 	NOT = { check_variable = { which = global_atxb_w_law_stage value = 1 } }
 	check_variable = { which = global_atxb_treasury value = 200 }
-	k_earth_kingdom = {
-		OR = {
-			has_law = ek_unity_2
-			has_law = ek_unity_3
+	atxb_law_unity_ok_trigger = yes
+}
+# A Single Law needs the States or Monarchism unity law (on the empire or the kingdom)
+atxb_law_unity_ok_trigger = {
+	OR = {
+		e_earth_kingdom = { OR = { has_law = ek_unity_2 has_law = ek_unity_3 } }
+		k_earth_kingdom = { OR = { has_law = ek_unity_2 has_law = ek_unity_3 } }
+	}
+}
+# A work is neither finished nor under construction (the works page is worth showing)
+atxb_any_work_open_trigger = {
+	atxb_king_can_spend_trigger = yes
+	OR = {
+		AND = {
+			NOT = { has_global_flag = atxb_done_roads }
+			NOT = { check_variable = { which = global_atxb_w_roads_stage value = 1 } }
+		}
+		AND = {
+			NOT = { has_global_flag = atxb_done_law }
+			NOT = { check_variable = { which = global_atxb_w_law_stage value = 1 } }
+		}
+		AND = {
+			NOT = { has_global_flag = atxb_done_granaries }
+			NOT = { check_variable = { which = global_atxb_w_granaries_stage value = 1 } }
 		}
 	}
 }
@@ -260,13 +280,6 @@ atxb_can_start_granaries_trigger = {
 	NOT = { has_global_flag = atxb_done_granaries }
 	NOT = { check_variable = { which = global_atxb_w_granaries_stage value = 1 } }
 	check_variable = { which = global_atxb_treasury value = 100 }
-}
-atxb_can_start_any_work_trigger = {
-	OR = {
-		atxb_can_start_roads_trigger = yes
-		atxb_can_start_law_trigger = yes
-		atxb_can_start_granaries_trigger = yes
-	}
 }
 # Draw on the Treasury: 100 out, every 2 years
 atxb_can_draw_trigger = {
@@ -297,6 +310,7 @@ atxb_arbitration_target_trigger = {
 	higher_tier_than = COUNT
 	culture_group = earth_kingdom_cultures
 	NOR = {
+		character = FROM
 		religion = way_of_chin
 		mercenary = yes
 		holy_order = yes
@@ -308,6 +322,7 @@ atxb_arbitration_target_trigger = {
 		attacker = { character = ROOT }
 		defender = {
 			culture_group = earth_kingdom_cultures
+			rebel = no
 			NOT = { religion = way_of_chin }
 			NOT = { character = FROM }
 		}

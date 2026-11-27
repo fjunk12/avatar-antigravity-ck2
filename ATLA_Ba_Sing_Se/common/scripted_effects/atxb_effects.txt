@@ -860,6 +860,7 @@ atxb_arb_end_wars_effect = {
 			attacker = { character = ROOT }
 			defender = {
 				culture_group = earth_kingdom_cultures
+				rebel = no
 				NOT = { religion = way_of_chin }
 			}
 		}

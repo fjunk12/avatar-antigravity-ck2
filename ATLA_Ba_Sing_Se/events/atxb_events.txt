@@ -147,7 +147,7 @@ character_event = {
 
 	option = {
 		name = atxb.5.works
-		trigger = { atxb_can_start_any_work_trigger = yes }
+		trigger = { atxb_any_work_open_trigger = yes }
 		character_event = { id = atxb.41 }
 	}
 	option = {
