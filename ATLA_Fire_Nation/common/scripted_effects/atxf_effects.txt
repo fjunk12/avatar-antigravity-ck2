@@ -75,9 +75,8 @@ atxf_cpw_start_effect = {
 				culture_group = earth_kingdom_cultures
 			}
 			save_global_event_target_as = atxf_avatar
+			character_event = { id = atxf.5 } # relay: the letters come from the Avatar
 		}
-		event_target:atxf_peony_champion = { letter_event = { id = atxf.4 days = 30 } }
-		event_target:atxf_camellia_champion = { letter_event = { id = atxf.4 days = 30 } }
 	}
 }
 
@@ -98,6 +97,7 @@ atxf_call_of_the_clans_effect = {
 				has_character_flag = atxf_peony
 				atxf_cpw_lord_trigger = yes
 				NOT = { war_with = event_target:atxf_camellia_champion }
+				NOT = { war_with = event_target:atxf_peony_champion }
 			}
 			join_attacker_wars = event_target:atxf_peony_champion
 		}
@@ -106,6 +106,7 @@ atxf_call_of_the_clans_effect = {
 				has_character_flag = atxf_camellia
 				atxf_cpw_lord_trigger = yes
 				NOT = { war_with = event_target:atxf_peony_champion }
+				NOT = { war_with = event_target:atxf_camellia_champion }
 			}
 			join_defender_wars = event_target:atxf_camellia_champion
 		}
@@ -124,6 +125,7 @@ atxf_call_of_the_clans_effect = {
 				has_character_flag = atxf_camellia
 				atxf_cpw_lord_trigger = yes
 				NOT = { war_with = event_target:atxf_peony_champion }
+				NOT = { war_with = event_target:atxf_camellia_champion }
 			}
 			join_attacker_wars = event_target:atxf_camellia_champion
 		}
@@ -132,6 +134,7 @@ atxf_call_of_the_clans_effect = {
 				has_character_flag = atxf_peony
 				atxf_cpw_lord_trigger = yes
 				NOT = { war_with = event_target:atxf_camellia_champion }
+				NOT = { war_with = event_target:atxf_peony_champion }
 			}
 			join_defender_wars = event_target:atxf_peony_champion
 		}

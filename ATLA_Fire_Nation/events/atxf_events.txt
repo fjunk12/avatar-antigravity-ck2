@@ -3,6 +3,7 @@
 # atxf.2   the Camellia-Peony dispute begins (to both claimants)
 # atxf.3   a Fire Isles lord takes a side
 # atxf.4   the Avatar's warning (letter to both claimants)
+# atxf.5   hidden relay on the Avatar: sends atxf.4 to both claimants, so the letter comes from the Avatar
 # atxf.10  an envoy courts a lord for the other side (capped)
 # atxf.30  the aftermath: the fate of the clans (to the winner)
 # atxf.40  Petition the Fire Lord: a player chooses what to ask (decision)
@@ -66,6 +67,8 @@ character_event = {
 				random_character = {
 					limit = {
 						atxf_cpw_lord_trigger = yes
+						NOT = { dynasty = 3994 }
+						NOT = { dynasty = 3995 }
 						OR = {
 							NOT = { has_character_flag = atxf_courted }
 							had_character_flag = { flag = atxf_courted days = 730 }
@@ -78,6 +81,8 @@ character_event = {
 					random_character = {
 						limit = {
 							atxf_cpw_lord_trigger = yes
+							NOT = { dynasty = 3994 }
+							NOT = { dynasty = 3995 }
 							OR = {
 								NOT = { has_character_flag = atxf_courted }
 								had_character_flag = { flag = atxf_courted days = 730 }
@@ -94,7 +99,7 @@ character_event = {
 			holder_scope = {
 				any_vassal = {
 					limit = { ai = yes atxf_petition_base_trigger = yes }
-					random = { chance = 5 character_event = { id = atxf.43 } }
+					random = { chance = 5 character_event = { id = atxf.43 days = 10 random = 60 } }
 				}
 			}
 		}
@@ -104,7 +109,7 @@ character_event = {
 				holder_scope = {
 					any_vassal = {
 						limit = { ai = yes atxf_petition_base_trigger = yes }
-						random = { chance = 5 character_event = { id = atxf.43 } }
+						random = { chance = 5 character_event = { id = atxf.43 days = 10 random = 60 } }
 					}
 				}
 			}
@@ -198,6 +203,18 @@ letter_event = {
 	}
 }
 
+# Hidden relay (ROOT = the Avatar): the warning letters go out in the Avatar's name
+character_event = {
+	id = atxf.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		event_target:atxf_peony_champion = { letter_event = { id = atxf.4 days = 30 } }
+		event_target:atxf_camellia_champion = { letter_event = { id = atxf.4 days = 30 } }
+	}
+}
+
 # An envoy of one side courts a lord (ROOT = the lord)
 character_event = {
 	id = atxf.10
@@ -245,11 +262,15 @@ character_event = {
 		if = {
 			limit = { has_character_flag = atxf_court_peony }
 			atxf_join_peony_effect = yes
-			event_target:atxf_peony_champion = { wealth = -25 }
+			event_target:atxf_peony_champion = {
+				if = { limit = { wealth = 25 } wealth = -25 }
+			}
 		}
 		else = {
 			atxf_join_camellia_effect = yes
-			event_target:atxf_camellia_champion = { wealth = -25 }
+			event_target:atxf_camellia_champion = {
+				if = { limit = { wealth = 25 } wealth = -25 }
+			}
 		}
 		clr_character_flag = atxf_court_peony
 		clr_character_flag = atxf_court_camellia
@@ -336,6 +357,11 @@ character_event = {
 	picture = GFX_evt_night_fire_palace
 	is_triggered_only = yes
 
+	immediate = {
+		clr_character_flag = atxf_pet_gold
+		clr_character_flag = atxf_pet_denounce
+	}
+
 	option = {
 		name = atxf.40.a # patronage
 		set_character_flag = atxf_pet_gold
@@ -351,7 +377,7 @@ character_event = {
 				top_liege = { atxf_is_fire_lord_trigger = yes }
 				NOT = { atxf_is_fire_lord_trigger = yes }
 			}
-			save_global_event_target_as = atxf_denounced
+			save_event_target_as = atxf_denounced # chain-scoped: each petition keeps its own rival
 		}
 		set_character_flag = atxf_pet_denounce
 		atxf_send_petition_effect = yes
@@ -373,6 +399,8 @@ character_event = {
 
 	immediate = {
 		change_variable = { which = global_atxf_petitions value = 1 }
+		clr_character_flag = atxf_pet_gold
+		clr_character_flag = atxf_pet_denounce
 		if = {
 			limit = { atxf_has_denounceable_rival_trigger = yes }
 			random_rival = {
@@ -382,7 +410,7 @@ character_event = {
 					top_liege = { atxf_is_fire_lord_trigger = yes }
 					NOT = { atxf_is_fire_lord_trigger = yes }
 				}
-				save_global_event_target_as = atxf_denounced
+				save_event_target_as = atxf_denounced # chain-scoped: each petition keeps its own rival
 			}
 			set_character_flag = atxf_pet_denounce
 		}
