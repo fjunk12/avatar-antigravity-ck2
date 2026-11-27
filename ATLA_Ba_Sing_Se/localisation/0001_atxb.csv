@@ -1,10 +1,6 @@
 #CODE;ENGLISH;FRENCH;GERMAN;;SPANISH;;;;;;;;;x
-atxb_menu_open;Check Possible Works;;;;;;;;;;;;;x
-atxb_menu_open_desc;Show the works the treasury of Ba Sing Se can pay for.;;;;;;;;;;;;;x
-atxb_menu_close;Return to Decisions;;;;;;;;;;;;;x
-atxb_menu_close_desc;Hide the works of Ba Sing Se again.;;;;;;;;;;;;;x
 atxb_view_treasury;The Treasury of Ba Sing Se;;;;;;;;;;;;;x
-atxb_view_treasury_desc;Review the crown's treasury, its income and the works in progress.;;;;;;;;;;;;;x
+atxb_view_treasury_desc;Open the treasury of Ba Sing Se: its income, the works, and what the crown can do with its gold and authority.;;;;;;;;;;;;;x
 atxb_work_roads;Build the Royal Roads;;;;;;;;;;;;;x
 atxb_work_roads_desc;Pave the old roads between the cities of the Earth Kingdom. 100 gold to begin, then 4 yearly stages of 125.;;;;;;;;;;;;;x
 atxb_work_roads_tt;When finished, every Earth Kingdom province outside the Si Wong Desert gets supply +1 and tax +5%, and the crown can rule 15 more provinces directly before it is overextended. The roads serve invaders as well.;;;;;;;;;;;;;x
@@ -17,7 +13,6 @@ atxb_work_granaries_tt;When finished, every province of the Ba Sing Se region ge
 atxb_draw_on_treasury;Draw on the Treasury;;;;;;;;;;;;;x
 atxb_draw_on_treasury_desc;Move gold from the treasury of Ba Sing Se into your own purse. Half of it is lost on the way, and the court will talk.;;;;;;;;;;;;;x
 atxb_draw_tt;Treasury -100, your gold +50, Royal Authority -5.;;;;;;;;;;;;;x
-atxb_draw_cooldown_tt;You drew on the treasury less than two years ago.;;;;;;;;;;;;;x
 atxb_sabotage_works;Sabotage the Crown's Works;;;;;;;;;;;;;x
 atxb_sabotage_works_desc;Pay agents to slow down Ba Sing Se's works. They may succeed, achieve nothing, or be caught.;;;;;;;;;;;;;x
 atxb_sabotage_tt;Costs 25 gold. About half the time a running work loses a year. If your agents are caught, you lose 50 prestige and the Earth King learns who sent them.;;;;;;;;;;;;;x
@@ -36,8 +31,11 @@ opinion_atxb_single_law;One Law Imposed;;;;;;;;;;;;;x
 opinion_atxb_saboteur;Sabotaged the Crown's Works;;;;;;;;;;;;;x
 atxb.3.d;The treasury of Ba Sing Se is ours. Whatever the Earth Kings saved for their roads and granaries now fills our coffers.;;;;;;;;;;;;;x
 atxb.3.a;To the victor.;;;;;;;;;;;;;x
-atxb.5.d;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] Earth Kingdom tributaries, [global_atxb_unlinked.GetValue] of them out of the crown's reach (no chain of loyal realms to Ba Sing Se). The treasury takes at most 80 gold a year, never more than a quarter of the king's own purse, and nothing while the king has less than 25 gold.\n\nRoyal Authority stands at [global_royalAuthority.GetValue].;;;;;;;;;;;;;x
+atxb.5.d;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] Earth Kingdom tributaries, [global_atxb_unlinked.GetValue] of them out of the crown's reach (no chain of loyal realms to Ba Sing Se). The treasury takes at most 80 gold a year, never more than a quarter of the king's own purse, and nothing while the king has less than 25 gold.\n\nRoyal Authority stands at [global_royalAuthority.GetValue]. To order two warring Earth realms to make peace, open the attacker's diplomacy screen (Royal Arbitration).;;;;;;;;;;;;;x
 atxb.5.d_puppet;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold, but it is not yours to spend. The Grand Secretariat decides what is built, and what is taken.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] tributaries. Royal Authority stands at [global_royalAuthority.GetValue].;;;;;;;;;;;;;x
+atxb.5.works;Check possible works...;;;;;;;;;;;;;x
+atxb.5.draw;Draw on the Treasury (treasury -100, your gold +50, Royal Authority -5);;;;;;;;;;;;;x
+atxb.5.corvee;Call a corvée (Royal Authority -15, treasury +100);;;;;;;;;;;;;x
 atxb.5.a;Close the ledgers.;;;;;;;;;;;;;x
 atxb.6.a;Of course.;;;;;;;;;;;;;x
 atxb.10.d_roads;Another stretch of the Royal Roads is finished. Masons and earthbenders move on to the next.;;;;;;;;;;;;;x
@@ -98,3 +96,29 @@ atxb_overext_count_tt;Provinces ruled directly outside the walls of Ba Sing Se: 
 atxb_overext_1_tt;The crown is overextended: vassal opinion -10, tax -15%, revolt risk +2%.;;;;;;;;;;;;;x
 atxb_overext_2_tt;The crown is badly overextended: vassal opinion -20, tax -25%, revolt risk +4%.;;;;;;;;;;;;;x
 atxb_overext_lifted_tt;Under Monarchism, with the Royal Roads and A Single Law in place, the crown can rule the whole Earth Kingdom directly. It is never overextended.;;;;;;;;;;;;;x
+atxb.41.d;The treasury holds [global_atxb_treasury.GetValue] gold. A work takes its first payment when it starts and one stage a year after that. Only the works the treasury can afford now are offered below.\n\nRoyal Roads: 100, then 4 stages of 125.\nA Single Law for the Kingdom: 200, then 3 stages of 200. Needs the States or Monarchism unity law.\nRoyal Granaries: 100, then 2 stages of 100.;;;;;;;;;;;;;x
+atxb.41.roads;Build the Royal Roads (100, then 4 stages of 125);;;;;;;;;;;;;x
+atxb.41.law;A Single Law for the Kingdom (200, then 3 stages of 200);;;;;;;;;;;;;x
+atxb.41.granaries;Fill the Royal Granaries (100, then 2 stages of 100);;;;;;;;;;;;;x
+atxb.41.back;Back to the treasury;;;;;;;;;;;;;x
+atxb_corvee;Call a Corvée;;;;;;;;;;;;;x
+atxb_corvee_desc;Summon the people of the Earth Kingdom to labour on the crown's works. It costs the crown authority, but saves its gold.;;;;;;;;;;;;;x
+atxb_corvee_tt;Royal Authority -15, treasury +100. Only while a work is under construction, once a year.;;;;;;;;;;;;;x
+atxb_royal_arbitration;Royal Arbitration;;;;;;;;;;;;;x
+atxb_royal_arbitration_desc;As Earth King, order this realm to end its war against a fellow Earth realm. Earth realms that defy the crown cost it face.;;;;;;;;;;;;;x
+atxb_arb_cooldown_tt;You have not arbitrated a war in the last year;;;;;;;;;;;;;x
+atxb_arb_cost_10_tt;Royal Authority of at least 10;;;;;;;;;;;;;x
+atxb_arb_cost_15_tt;Royal Authority of at least 15;;;;;;;;;;;;;x
+atxb_arb_cost_25_tt;Royal Authority of at least 25;;;;;;;;;;;;;x
+atxb_arb_spend_10_tt;Royal Authority -10;;;;;;;;;;;;;x
+atxb_arb_spend_15_tt;Royal Authority -15;;;;;;;;;;;;;x
+atxb_arb_spend_25_tt;Royal Authority -25;;;;;;;;;;;;;x
+atxb_arbitration_tt;If they obey, every war they wage against a fellow Earth realm ends in a white peace, and they may not declare war for 2 years. If they defy you, the crown loses another 5 Royal Authority and you lose 25 prestige. A strong crown, a loyal tributary and good opinion make obedience likelier.;;;;;;;;;;;;;x
+atxb_arb_defy_tt;The Earth King loses 5 Royal Authority and 25 prestige.;;;;;;;;;;;;;x
+atxb.42.d;An envoy of Earth [atxb_arbiter.GetKingQueen] [atxb_arbiter.GetFirstName] has arrived with a royal command: our war against our fellow Earth realm must end. Ba Sing Se will not watch the Earth Kingdom bleed itself while its enemies gather.;;;;;;;;;;;;;x
+atxb.42.a;We will obey the Earth [atxb_arbiter.GetKingQueen].;;;;;;;;;;;;;x
+atxb.42.b;Ba Sing Se has no say in this.;;;;;;;;;;;;;x
+atxb.43.d_obeyed;[atxb_arb_target.GetTitledName] has obeyed your command and made peace. The Earth Kingdom will remember who ended the war.;;;;;;;;;;;;;x
+atxb.43.d_defied;[atxb_arb_target.GetTitledName] has sent your envoy home. Your command was ignored, and the whole court knows it.;;;;;;;;;;;;;x
+atxb.43.a;So be it.;;;;;;;;;;;;;x
+opinion_atxb_forced_peace;Forced to make peace;;;;;;;;;;;;;x

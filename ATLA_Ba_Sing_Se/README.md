@@ -67,7 +67,7 @@ Tribute in CK2 goes to the Earth King's own purse. Each year a share of it moves
   - Never more than 25% of the king's gold.
   - Never more than 80 a year together with the crown lands.
   - Nothing at all while the king has less than 25 gold.
-- **Reporting:** every year a line starting `ATLA Ba Sing Se:` goes to game.log. The treasury overview shows the same figures.
+- **Reporting:** every year (365 days; v2 ran every 333 days by mistake) a line starting `ATLA Ba Sing Se:` goes to game.log. The treasury overview shows the same figures.
 - **Puppet king** (`trait = earthkingpuppet`): the king cannot spend the treasury. The **Grand Secretariat** does it: the holder of `d_dai_li`, or the chancellor before that title exists.
   - It first saves until the treasury covers the whole Royal Granaries (300), then builds them once, to keep the Lower Ring quiet.
   - It never builds the roads or the single law.
@@ -75,7 +75,12 @@ Tribute in CK2 goes to the Earth King's own purse. Each year a share of it moves
   - A player puppet gets an "expenses of state" report.
 - **Looting:** a foreign or Way of Chin ruler holding the Royal Palace takes the whole treasury.
 
-For players, the works sit behind **Check Possible Works** in the Intrigue tab. **Return to Decisions** hides them again. The AI always sees them.
+**For players, everything sits in one place:** **The Treasury of Ba Sing Se**, a high-priority entry in the Intrigue tab. It opens a popup with the ledger and only the actions you can take right now:
+- Start a royal work (a second page lists the works you can afford).
+- Draw on the Treasury.
+- Call a corvée.
+
+After each action the popup reopens with the new figures. The AI takes the same actions as ordinary decisions. Base-mod and vanilla decisions stay in the Intrigue tab: a submod can't hide them without overriding their files.
 
 | Work | Cost | When finished |
 |---|---|---|
@@ -89,8 +94,27 @@ For players, the works sit behind **Check Possible Works** in the Intrigue tab. 
 
 **Also:**
 - **Draw on the Treasury:** 100 out, 50 to your purse, Royal Authority −5, every 2 years.
+- **Call a corvée:** Royal Authority −15, treasury +100, once a year, only while a work is under construction. The AI only does this while Royal Authority is 50 or more.
 - **Sabotage the Crown's Works:** any independent Earth or Way of Chin realm can spend 25 gold, every 5 years. The outcome is a 45% setback, 30% nothing, or 25% caught; being caught is likelier when the king's spymaster is good and less likely with a skilled saboteur.
   - The AI only sabotages if it dislikes the king, is his rival, or follows the Way of Chin.
+
+## Royal Arbitration
+
+The Earth King can order an Earth realm to stop a war against a fellow Earth realm. Use it from the **attacker's diplomacy screen**.
+
+- **Who:** the attacker must be an independent Earth realm (duke or above, not Way of Chin) attacking a non-Chin Earth realm. You must not be at war with it.
+- **Cost:** Royal Authority 10 (duke), 15 (king) or 25 (emperor). Once a year. Not for a puppet king.
+- **Obey:**
+  - Every war it wages against a fellow Earth realm ends in a white peace. A war against the Fire Nation never ends this way.
+  - It can't declare war for 2 years.
+  - It thinks 10 less of the king for 5 years.
+- **Defy:** the crown loses another 5 Royal Authority, and the king loses 25 prestige.
+- **AI odds:** obeying is likelier with a strong crown (Royal Authority 60+), as the king's tributary, or with good opinion of the king. It is less likely with a weak crown, bad opinion, or an ambitious or proud ruler. A player target chooses.
+- **AI kings:** they don't use it yet.
+
+The base mod's other Royal Authority actions remain:
+- Recognise Noble, Annex Subject, Demand Reverence and Loyalty Campaign (targeted decisions on tributaries).
+- Sell Titles, the unity laws and the reconquest war.
 
 ## Cut from the old ATLA Expanded (duplicated the base mod or added micro)
 
@@ -117,5 +141,7 @@ For players, the works sit behind **Check Possible Works** in the Intrigue tab. 
 5. **Pleas:** give a Fire Nation realm a war against an Earth realm. The Earth King should get the plea event, or a puppet king a memorandum.
    - As an attacked Earth realm, use the Plea to Ba Sing Se decision.
 6. **Reach:** game.log's yearly line shows how many tributaries are out of reach.
-7. **Overextended Crown:** game.log's yearly line shows the provinces outside the walls and the capacity. Once the king rules 15 or more provinces outside the walls, the modifier should appear on him.
-8. **Check error.log** for anything mentioning `atxb`.
+7. **Treasury popup:** open The Treasury of Ba Sing Se, start a work, draw and call a corvée. The popup should reopen with the new figures.
+8. **Royal Arbitration:** find two Earth realms at war, open the attacker's diplomacy screen and use Royal Arbitration. With a player target, the target chooses.
+9. **Overextended Crown:** game.log's yearly line shows the provinces outside the walls and the capacity. Once the king rules 15 or more provinces outside the walls, the modifier should appear on him.
+10. **Check error.log** for anything mentioning `atxb`.

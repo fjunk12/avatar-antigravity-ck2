@@ -17,3 +17,6 @@ opinion_atxb_token_help = {
 opinion_atxb_refused = {
 	opinion = -20
 }
+opinion_atxb_forced_peace = {
+	opinion = -10
+}

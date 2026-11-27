@@ -827,3 +827,44 @@ atxb_overext_tooltips = {
 		}
 	}
 }
+
+# ---- v3: the Treasury of Ba Sing Se (character scope: the Earth King) ----
+# Draw on the Treasury: 100 out, 50 to the king's purse, Royal Authority -5
+atxb_draw_effect = {
+	change_variable = { which = global_atxb_treasury value = -100 }
+	atxb_clamp_treasury_effect = yes
+	wealth = 50
+	change_variable = { which = global_royalAuthority value = -5 }
+	atxb_clamp_authority_effect = yes
+	clr_character_flag = atxb_drew
+	set_character_flag = atxb_drew
+	custom_tooltip = { text = atxb_draw_tt }
+}
+# Corvee: the people of the Earth Kingdom labour on the crown's works. Royal Authority -15, treasury +100.
+atxb_corvee_effect = {
+	change_variable = { which = global_royalAuthority value = -15 }
+	atxb_clamp_authority_effect = yes
+	change_variable = { which = global_atxb_treasury value = 100 }
+	atxb_clamp_treasury_effect = yes
+	clr_character_flag = atxb_corvee
+	set_character_flag = atxb_corvee
+	custom_tooltip = { text = atxb_corvee_tt }
+	log = "ATLA Ba Sing Se: [This.GetTitledName] called a corvee (treasury [global_atxb_treasury.GetValue], Royal Authority [global_royalAuthority.GetValue])"
+}
+
+# ---- v3: Royal Arbitration (ROOT = the attacker, event_target:atxb_arbiter = the Earth King) ----
+# Ends every war in which ROOT attacks a non-Chin Earth realm (never a war against the Fire Nation), and ROOT may not declare war for 2 years
+atxb_arb_end_wars_effect = {
+	any_war = {
+		limit = {
+			attacker = { character = ROOT }
+			defender = {
+				culture_group = earth_kingdom_cultures
+				rebel = no
+				NOT = { religion = way_of_chin }
+			}
+		}
+		end_war = whitepeace
+	}
+	set_pacified = { years = 2 }
+}
