@@ -34,18 +34,11 @@ atxb_granaries;Royal Granaries;;;;;;;;;;;;;x
 atxb_granaries_desc;The crown's granaries keep this province fed through hard years.;;;;;;;;;;;;;x
 opinion_atxb_single_law;One Law Imposed;;;;;;;;;;;;;x
 opinion_atxb_saboteur;Sabotaged the Crown's Works;;;;;;;;;;;;;x
-opinion_atxb_aid_funded;Paid for Our Defence;;;;;;;;;;;;;x
-opinion_atxb_marched;Marched to Our Aid;;;;;;;;;;;;;x
-opinion_atxb_tribute_only;Took Tribute, Sent Nothing;;;;;;;;;;;;;x
-opinion_atxb_refused;Refused Us in Our Need;;;;;;;;;;;;;x
 atxb.3.d;The treasury of Ba Sing Se is ours. Whatever the Earth Kings saved for their roads and granaries now fills our coffers.;;;;;;;;;;;;;x
 atxb.3.a;To the victor.;;;;;;;;;;;;;x
-atxb.5.d;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] Earth Kingdom tributaries. The treasury takes at most 80 gold a year, never more than a quarter of the king's own purse, and nothing while the king has less than 25 gold.\n\nRoyal Authority stands at [global_royalAuthority.GetValue].;;;;;;;;;;;;;x
+atxb.5.d;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] Earth Kingdom tributaries, [global_atxb_unlinked.GetValue] of them out of the crown's reach (no chain of loyal realms to Ba Sing Se). The treasury takes at most 80 gold a year, never more than a quarter of the king's own purse, and nothing while the king has less than 25 gold.\n\nRoyal Authority stands at [global_royalAuthority.GetValue].;;;;;;;;;;;;;x
 atxb.5.d_puppet;The treasury of Ba Sing Se holds [global_atxb_treasury.GetValue] gold, but it is not yours to spend. The Grand Secretariat decides what is built, and what is taken.\n\nLast year the crown lands paid in [global_atxb_last_crown.GetValue] gold, and [global_atxb_last_skim.GetValue] gold came from the tribute of [global_atxb_tribs.GetValue] tributaries. Royal Authority stands at [global_royalAuthority.GetValue].;;;;;;;;;;;;;x
 atxb.5.a;Close the ledgers.;;;;;;;;;;;;;x
-atxb.6.d_started;A memorandum from the Grand Secretariat informs Your Majesty that work has begun on a new project for the good of the kingdom. Your Majesty need not trouble yourself with the details.;;;;;;;;;;;;;x
-atxb.6.d_drew;The ledgers show that the Grand Secretariat has drawn 100 gold from the royal treasury for expenses of state. No further explanation was given.;;;;;;;;;;;;;x
-atxb.6.d_both;A memorandum from the Grand Secretariat informs Your Majesty that work has begun on a new project. The ledgers also show that 100 gold left the treasury for expenses of state. No further explanation was given.;;;;;;;;;;;;;x
 atxb.6.a;Of course.;;;;;;;;;;;;;x
 atxb.10.d_roads;Another stretch of the Royal Roads is finished. Masons and earthbenders move on to the next.;;;;;;;;;;;;;x
 atxb.10.d_law;The ministers report progress on the Single Law. Another set of provincial customs has been written into the code.;;;;;;;;;;;;;x
@@ -70,13 +63,28 @@ atxb.18.d_caught;Our agents were caught, and they talked. The Earth King knows w
 atxb.18.a;So be it.;;;;;;;;;;;;;x
 atxb.19.d;Agents caught at the crown's works have confessed. They were sent by [From.GetTitledName].;;;;;;;;;;;;;x
 atxb.19.a;This will not be forgotten.;;;;;;;;;;;;;x
-atxb.31.d;An envoy from [From.GetTitledName] has come to Ba Sing Se. Their realm is under attack, and they offer to become a tributary of the crown in return for help.\n\nThe treasury holds [global_atxb_treasury.GetValue] gold. Ba Sing Se is far from most of the Earth Kingdom, and an army sent from here may arrive after the war is decided.;;;;;;;;;;;;;x
-atxb.31.a;Fund their defence (treasury -50).;;;;;;;;;;;;;x
-atxb.31.b;March to their aid.;;;;;;;;;;;;;x
-atxb.31.c;Accept their tribute, but send nothing.;;;;;;;;;;;;;x
+opinion_atxb_helped;Ba Sing Se Came to Our Aid;;;;;;;;;;;;;x
+opinion_atxb_helped_both;Ba Sing Se Spared Nothing for Us;;;;;;;;;;;;;x
+opinion_atxb_token_help;A Token Host from Ba Sing Se;;;;;;;;;;;;;x
+opinion_atxb_refused;Ba Sing Se Turned Us Away;;;;;;;;;;;;;x
+atxb.6.d_started;A memorandum from the Grand Secretariat informs Your Majesty that work has begun on the Royal Granaries, so that the Lower Ring may be fed. Your Majesty need not trouble yourself with the details.;;;;;;;;;;;;;x
+atxb.6.d_drew;The ledgers show that [global_atxb_sec_take.GetValue] gold left the royal treasury this year for expenses of state. No further explanation was given.;;;;;;;;;;;;;x
+atxb.6.d_both;A memorandum from the Grand Secretariat informs Your Majesty that work has begun on the Royal Granaries. The ledgers also show that [global_atxb_sec_take.GetValue] gold left the treasury for expenses of state. No further explanation was given.;;;;;;;;;;;;;x
+atxb_plea_to_ba_sing_se;Plea to Ba Sing Se;;;;;;;;;;;;;x
+atxb_plea_to_ba_sing_se_desc;Our realm is under attack. Send an envoy to Ba Sing Se and ask the Earth King for gold and soldiers. How much the crown can send depends on its authority, and the crown may refuse. Once every five years.;;;;;;;;;;;;;x
+atxb_plea_tt;The Earth King will answer. Under a puppet king, the Grand Secretariat answers instead.;;;;;;;;;;;;;x
+atxb.31.desc;An envoy from [From.GetTitledName] has come to Ba Sing Se. Their realm is under attack, and they ask the crown for help.\n\nThe treasury holds [global_atxb_treasury.GetValue] gold, and Royal Authority stands at [global_royalAuthority.GetValue]. The stronger the crown, the more it can send: below 30 authority, 25 gold or 300 men. From 30, 40 gold or 600 men. From 60, 60 gold or 1,000 men. The men are raised at their capital, cost them nothing and go home at peace. Whatever the treasury cannot cover comes from your own purse.\n\nHelping raises your authority. Refusing lowers it, and if they are a tributary, they will remember.;;;;;;;;;;;;;x
+atxb.31.a;Send them gold.;;;;;;;;;;;;;x
+atxb.31.b;Raise a host at their capital.;;;;;;;;;;;;;x
+atxb.31.c;Send gold and raise a host.;;;;;;;;;;;;;x
 atxb.31.d;Refuse them.;;;;;;;;;;;;;x
-atxb.32.d_funded;Ba Sing Se has accepted us as a tributary and sent gold and a host of soldiers raised at our capital. They will fight until the war ends.;;;;;;;;;;;;;x
-atxb.32.d_marched;Ba Sing Se has accepted us as a tributary, and the Earth King's armies are marching to our side.;;;;;;;;;;;;;x
-atxb.32.d_tribute_only;Ba Sing Se has accepted our tribute. It has sent nothing else.;;;;;;;;;;;;;x
-atxb.32.d_refused;Ba Sing Se has refused us. We stand alone.;;;;;;;;;;;;;x
+atxb.32.d_gold;Ba Sing Se has answered our plea. The Earth King has sent gold to pay for our defence.;;;;;;;;;;;;;x
+atxb.32.d_host;Ba Sing Se has answered our plea. On the Earth King's orders, a host has been raised at our capital to fight beside us until the war is over.;;;;;;;;;;;;;x
+atxb.32.d_both;Ba Sing Se has answered our plea with gold and a host raised at our capital. The Earth King has not forgotten us.;;;;;;;;;;;;;x
+atxb.32.d_refused;Ba Sing Se has refused our plea. We stand alone.;;;;;;;;;;;;;x
+atxb.32.d_sec_token;Our envoy never saw the Earth King. An official of the Grand Secretariat received him, and a small host was raised at our capital. It is less than we asked for.;;;;;;;;;;;;;x
+atxb.32.d_sec_refused;Our envoy never saw the Earth King. An official of the Grand Secretariat told him that the king does not concern himself with such matters, and sent him home.;;;;;;;;;;;;;x
 atxb.32.a;So be it.;;;;;;;;;;;;;x
+atxb.33.d_token;A memorandum from the Grand Secretariat: an envoy from [From.GetTitledName] came to the palace asking for help in a war. The Secretariat sent a small host on Your Majesty's behalf. Your Majesty need not trouble yourself with the details.;;;;;;;;;;;;;x
+atxb.33.d_refused;A memorandum from the Grand Secretariat: an envoy from [From.GetTitledName] came to the palace with petty complaints about a war. The Secretariat sent him home. Your Majesty need not trouble yourself with the details.;;;;;;;;;;;;;x
+atxb.33.a;I see.;;;;;;;;;;;;;x

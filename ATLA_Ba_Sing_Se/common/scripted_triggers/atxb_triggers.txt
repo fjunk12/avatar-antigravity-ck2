@@ -68,34 +68,45 @@ atxb_crown_weak_trigger = {
 }
 
 # An AI tributary that may break away (character scope, the tributary; needs event_target:atxb_king)
+# An AI tributary that may break away (character scope, the tributary; needs event_target:atxb_king).
+# Close to Ba Sing Se it takes a weak crown and a tributary that dislikes the king.
+# Out of reach (no chain of tributaries to Ba Sing Se, flag atxb_linked missing) it only takes opinion below 25.
 atxb_breakaway_candidate_trigger = {
 	ai = yes
 	higher_tier_than = COUNT
 	prisoner = no
 	atxb_ek_tributary_trigger = yes
-	# grace periods: 3 years after the campaign starts, 10 years after a fresh pledge
+	# grace periods: 3 years after the campaign starts, 5 after a unity-law change, 10 after a plea the crown answered
 	had_global_flag = { flag = atxb_bss_started days = 1095 }
 	OR = {
-		NOT = { has_character_flag = atxb_recent_pledge }
-		had_character_flag = { flag = atxb_recent_pledge days = 3650 }
+		NOT = { has_global_flag = atxb_law_changed }
+		had_global_flag = { flag = atxb_law_changed days = 1825 }
 	}
-	NOT = { opinion = { who = event_target:atxb_king value = 0 } }
-	atxb_crown_weak_trigger = yes
+	OR = {
+		NOT = { has_character_flag = atxb_helped_plea }
+		had_character_flag = { flag = atxb_helped_plea days = 3650 }
+	}
+	OR = {
+		AND = {
+			NOT = { opinion = { who = event_target:atxb_king value = 0 } }
+			atxb_crown_weak_trigger = yes
+		}
+		AND = {
+			NOT = { has_character_flag = atxb_linked }
+			NOT = { opinion = { who = event_target:atxb_king value = 25 } }
+		}
+	}
 }
 
-# An independent Earth realm that could pledge to Ba Sing Se (character scope; needs event_target:atxb_king)
-atxb_pledge_base_trigger = {
-	ai = yes
+# An Earth realm that may plead with Ba Sing Se (character scope). Works without event targets, so decisions can use it.
+atxb_plea_base_trigger = {
 	is_ruler = yes
 	independent = yes
-	is_tributary = no
 	prisoner = no
 	higher_tier_than = COUNT
-	NOT = { tier = EMPEROR }
 	culture_group = earth_kingdom_cultures
 	religion_group = earth_religions
 	NOR = {
-		character = event_target:atxb_king
 		religion = way_of_chin
 		culture = sandbender_culture
 		has_landed_title = e_earth_kingdom
@@ -103,36 +114,125 @@ atxb_pledge_base_trigger = {
 		mercenary = yes
 		holy_order = yes
 		rebel = yes
-		war_with = event_target:atxb_king
 	}
 	capital_scope = {
 		region = world_greater_earth_kingdom
 		NOT = { region = world_si_wong }
 	}
-	# someone who broke away waits 20 years before pledging again
 	OR = {
-		NOT = { has_character_flag = earth_kingdom_rebel }
-		had_character_flag = { flag = earth_kingdom_rebel days = 7300 }
+		e_earth_kingdom = { has_holder = yes holder_scope = { atxb_is_king_trigger = yes } }
+		k_earth_kingdom = { has_holder = yes holder_scope = { atxb_is_king_trigger = yes } }
 	}
 }
 
-# Peacetime pledging: a real threat next door, or a strong and trusted crown (not under Disunion)
-atxb_peacetime_pledge_trigger = {
-	atxb_pledge_base_trigger = yes
-	war = no
-	OR = {
-		any_neighbor_independent_ruler = {
-			NOT = { character = event_target:atxb_king }
+# ROOT is defending against a foreign (Fire Nation), Way of Chin or rebel attacker, and has not pleaded in the last 5 years
+atxb_plea_war_trigger = {
+	any_war = {
+		defender = { character = ROOT }
+		attacker = {
 			OR = {
 				culture_group = fire_nation_cultures
 				religion = way_of_chin
-				relative_power = { who = PREV power = 2 }
+				rebel = yes
 			}
 		}
-		AND = {
-			check_variable = { which = global_royalAuthority value = 60 }
-			opinion = { who = event_target:atxb_king value = 25 }
-			k_earth_kingdom = { NOT = { has_law = ek_unity_0 } }
+	}
+	OR = {
+		NOT = { has_character_flag = atxb_pleaded }
+		had_character_flag = { flag = atxb_pleaded days = 1825 }
+	}
+}
+
+# ROOT dislikes the crown or is the king's rival (gate for AI sabotage)
+atxb_hostile_to_crown_trigger = {
+	OR = {
+		religion = way_of_chin
+		e_earth_kingdom = {
+			has_holder = yes
+			holder_scope = {
+				atxb_is_king_trigger = yes
+				OR = {
+					is_rival = ROOT
+					ROOT = { NOT = { opinion = { who = PREV value = 0 } } }
+				}
+			}
 		}
+		k_earth_kingdom = {
+			has_holder = yes
+			holder_scope = {
+				atxb_is_king_trigger = yes
+				OR = {
+					is_rival = ROOT
+					ROOT = { NOT = { opinion = { who = PREV value = 0 } } }
+				}
+			}
+		}
+	}
+}
+
+
+# ---- v2: the crown's strength for pleas (Royal Authority bands) ----
+atxb_band_weak_trigger = {
+	NOT = { check_variable = { which = global_royalAuthority value = 30 } }
+}
+atxb_band_steady_trigger = {
+	check_variable = { which = global_royalAuthority value = 30 }
+	NOT = { check_variable = { which = global_royalAuthority value = 60 } }
+}
+atxb_band_strong_trigger = {
+	check_variable = { which = global_royalAuthority value = 60 }
+}
+atxb_crown_can_pay_25_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 25 }
+		wealth = 25
+	}
+}
+atxb_crown_can_pay_30_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 30 }
+		wealth = 30
+	}
+}
+atxb_crown_can_pay_40_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 40 }
+		wealth = 40
+	}
+}
+atxb_crown_can_pay_50_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 50 }
+		wealth = 50
+	}
+}
+atxb_crown_can_pay_55_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 55 }
+		wealth = 55
+	}
+}
+atxb_crown_can_pay_60_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 60 }
+		wealth = 60
+	}
+}
+atxb_crown_can_pay_75_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 75 }
+		wealth = 75
+	}
+}
+atxb_crown_can_pay_90_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 90 }
+		wealth = 90
+	}
+}
+atxb_crown_can_pay_135_trigger = {
+	OR = {
+		check_variable = { which = global_atxb_treasury value = 135 }
+		wealth = 135
 	}
 }
