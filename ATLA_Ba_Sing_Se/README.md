@@ -118,6 +118,21 @@ The Earth King answers:
 - **AI king:** more generous when charitable or with a full treasury (400+); stingier when greedy.
 - **Puppet king:** the Grand Secretariat always refuses.
 
+## The Daofei Underworld (Earth realms outside Ba Sing Se)
+
+Daofei are the outlaw brotherhoods of the Earth Kingdom.
+- **Who:** any Earth lord (duke or above, independent or a vassal, not the Earth King and not Way of Chin) whose capital lies in the Earth Kingdom outside the Ba Sing Se region. Nothing is tied to one title.
+- **How often:** each year an eligible lord has a 3% chance. That doubles while the crown is weak (Royal Authority below 30) and is ×1.5 at war. At most 3 lords a year worldwide, and each lord at most once every 5 years.
+
+| Choice | Cost | Result |
+|---|---|---|
+| **Root them out** | 25 gold | 70%: +20 prestige and every daofei presence in the realm is cleared (better odds with martial 12+, worse at war). 30%: −10 prestige and they settle in |
+| **A quiet understanding** | — | +30 gold, they settle in |
+| **Hire them** (only at war) | 25 gold | 500 irregulars at your capital until peace, and they settle in |
+
+- **Daofei presence** (`atxb_daofei_presence`): a province modifier lasting 5 years, with tax −15% and revolt risk +2%.
+- **Hire Daofei Irregulars** (decision, at war, every 3 years): 50 gold for 500 irregulars (light infantry and archers, normal upkeep) until peace. If no daofei are in your realm yet, they settle at your capital.
+
 ## Royal Arbitration
 
 The Earth King can order an Earth realm to stop a war against a fellow Earth realm. Use it from the **attacker's diplomacy screen**.
@@ -165,4 +180,5 @@ The base mod's other Royal Authority actions remain:
 8. **Royal Arbitration:** find two Earth realms at war, open the attacker's diplomacy screen and use Royal Arbitration. With a player target, the target chooses.
 9. **Overextended Crown:** game.log's yearly line shows the provinces outside the walls and the capacity. Once the king rules 15 or more provinces outside the walls, the modifier should appear on him.
 10. **Royal Grant:** play an Earth tributary and use Petition for a Royal Grant, or watch game.log for `asked Ba Sing Se for a royal grant`.
-11. **Check error.log** for anything mentioning `atxb`.
+11. **Daofei:** play an Earth lord outside Ba Sing Se. game.log shows `daofei appeared in`. At war, try Hire Daofei Irregulars.
+12. **Check error.log** for anything mentioning `atxb`.

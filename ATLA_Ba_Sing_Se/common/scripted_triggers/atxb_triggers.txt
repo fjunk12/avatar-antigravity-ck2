@@ -348,3 +348,28 @@ atxb_grant_base_trigger = {
 		had_character_flag = { flag = atxb_asked_grant days = 1825 }
 	}
 }
+
+# ---- v5: the Daofei Underworld (Earth realms outside Ba Sing Se) ----
+# ROOT is an Earth lord (duke or above, independent or not) ruling outside the Ba Sing Se region, and not the Earth King
+atxb_daofei_ruler_trigger = {
+	is_ruler = yes
+	is_landed = yes
+	prisoner = no
+	higher_tier_than = COUNT
+	culture_group = earth_kingdom_cultures
+	atxb_is_king_trigger = no
+	NOR = {
+		religion = way_of_chin
+		mercenary = yes
+		holy_order = yes
+		rebel = yes
+	}
+	capital_scope = {
+		region = world_greater_earth_kingdom
+		NOT = { region = world_ba_sing_se }
+	}
+}
+# ROOT has daofei operating somewhere in its realm
+atxb_has_daofei_trigger = {
+	any_realm_province = { has_province_modifier = atxb_daofei_presence }
+}
