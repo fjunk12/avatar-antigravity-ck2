@@ -4,10 +4,11 @@ Standalone Crusader Kings II submods for **[Avatar - Four Nations Restored](http
 
 ## Included Submods
 
-| Submod | `.mod` & Folder | Summary |
+| Launcher Name | `.mod` & Folder | Summary |
 |---|---|---|
-| **Bugfix Patch** | `ATLA_Restored_Bugfixes.mod` + `ATLA_Restored_Bugfixes/` | Unified bug-fix patch covering Avatar reincarnation/duels, Hundred Year War events, CBs, societies, colonisation, Water Tribe call-to-arms, portraits, encoding, and 138 localisation fixes. |
-| **Ba Sing Se** | `ATLA_Ba_Sing_Se.mod` + `ATLA_Ba_Sing_Se/` | 100% additive Earth Kingdom expansion: **Plea to Ba Sing Se** (RA-scaled war aid & player plea decision), **connected tributaries** (out-of-reach tributaries slip away), **Overextended Crown** (direct-rule capacity raised by *Royal Roads*, *A Single Law*, and *Monarchism*), and a slim Royal Treasury (*Royal Roads*, *A Single Law*, *Royal Granaries*, Grand Secretariat puppet skimming). |
+| **ATLA Restored Bugfixes** | `ATLA_Restored_Bugfixes.mod` + `ATLA_Restored_Bugfixes/` | Unified bug-fix patch covering Avatar reincarnation/duels, Hundred Year War events, `earthking.61` Disunion law check, CBs, societies, colonisation, Water Tribe call-to-arms, portraits, encoding, and 138 localisation fixes. |
+| **Avatar - Earth Kingdom** | `ATLA_Ba_Sing_Se.mod` + `ATLA_Ba_Sing_Se/` | 100% additive Earth Kingdom expansion (formerly *ATLA Ba Sing Se*; folder & `atxb_` prefix kept for save compatibility): high-priority **Treasury of Ba Sing Se** event hub (*Royal Roads*, *A Single Law*, *Royal Granaries*, *Draw on the Treasury*, *Royal Corvée*), **Royal Arbitration** (spend RA to demand white peace between warring Earth realms), **Plea to Ba Sing Se** & **Petition for a Royal Grant**, **Connected Tributaries**, **Overextended Crown**, and the **Daofei Underworld** for non-Ba Sing Se Earth lords. |
+| **Avatar - Fire Nation** | `ATLA_Fire_Nation.mod` + `ATLA_Fire_Nation/` | 100% additive Fire Nation expansion: the **560 Camellia-Peony War** (Zoryu / Keohso Winged Peony vs. Chaejin / Saowon Stone Camellia, clan alignment & call-ins, Natsuo Island intrigue, Avatar warning, *Break the Clans* vs. *Compact* aftermath) plus **Petition the Fire Lord** for Fire vassals across all bookmarks. |
 | **Avatar's Legacy** | `ATLA_Avatars_Legacy.mod` + `ATLA_Avatars_Legacy/` | 100% additive Avatar cycle expansion: every dying Avatar leaves one of five universal burdens (*Restless Spirits*, *Daofei Country*, *Zealots of the Old Avatar*, *Unchecked Ambition*, *An Iron Peace*), with Avatar missions, Champions of Ambition, and landed/unlanded Avatar intervention. |
 
 ## Installation

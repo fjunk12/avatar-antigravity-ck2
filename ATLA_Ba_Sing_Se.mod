@@ -1,4 +1,4 @@
-name = "ATLA Ba Sing Se"
+name = "Avatar - Earth Kingdom"
 path = "mod/ATLA_Ba_Sing_Se"
 dependencies = { "Avatar - Four Nations Restored" }
 user_dir = "Avatar - Four Nations Restored"

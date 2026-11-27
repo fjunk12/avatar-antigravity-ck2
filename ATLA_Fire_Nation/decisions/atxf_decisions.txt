@@ -1,0 +1,17 @@
+# ATLA Fire Nation - decisions (prefix atxf_)
+decisions = {
+	# Petition the Fire Lord (players): a Fire Nation vassal asks the Fire Lord for patronage, or to rebuke a rival.
+	# AI vassals petition through the yearly run (at most 2 a year).
+	atxf_petition_fire_lord = {
+		ai = no
+		potential = {
+			atxf_petition_base_trigger = yes
+		}
+		allow = { always = yes }
+		effect = {
+			custom_tooltip = { text = atxf_petition_tt }
+			character_event = { id = atxf.40 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+}

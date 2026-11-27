@@ -2616,7 +2616,7 @@ character_event = { # Law Change - Event Server
 						has_law = ek_unity_0
 						NOT = { has_title_flag = ek_ra_set_unity_0 }
 					}
-					e_earth_kingdom = {
+					k_earth_kingdom = { # ATLA fix: was e_earth_kingdom twice
 						has_law = ek_unity_0
 						NOT = { has_title_flag = ek_ra_set_unity_0 }
 					}
