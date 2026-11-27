@@ -72,6 +72,7 @@ The submod declares `dependencies={ "Avatar - Four Nations Restored" }` so CK2 a
   - Fixed `ATLAE.4007` calling `long_character_event` `ATLAE.4004` via `narrative_event`.
 - **Earth King & Rare Pet Events (`events/ATLA_earthking.txt`, `events/ATLA_pets_events.txt`)**:
   - Removed the `earth_kingdom_cultures` restriction on Option B of `earthking.66` so foreign conquerors holding the Earth Kingdom have a valid option.
+  - `earthking.61` checked `e_earth_kingdom` twice for the Disunion law (`ek_unity_0`); the second check is now `k_earth_kingdom`, so a king who holds only `k_earth_kingdom` gets `earthking.60` when Disunion passes, like the Territories/States/Monarchism branches.
   - Added a trigger to `PETS.5` requiring an active `searching_for_*` flag so rare-pet searches stop after giving up.
 - **Water Tribe Settlement Conversion & Call to Arms (`decisions/settlement_decisions.txt`, `common/governments/tribal_governments.txt`, Issue #125)**:
   - Allowed `water_tribe_government` rulers to use `convert_tribal_to_castle`.

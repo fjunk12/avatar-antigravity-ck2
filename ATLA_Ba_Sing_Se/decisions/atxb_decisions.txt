@@ -1,93 +1,51 @@
 # ATLA Ba Sing Se - decisions (prefix atxb_)
-# Players see the works behind one collapsible entry in the Intrigue tab ("Check Possible Works"); the AI always sees them.
+# Players open the Treasury of Ba Sing Se (one high-priority entry in the Intrigue tab); the AI takes the works, the draw and the corvee as decisions.
 # A puppet Earth King (trait earthkingpuppet) cannot spend the treasury: the Grand Secretariat does (see atxb_secretariat_effect).
 decisions = {
-	atxb_menu_open = {
-		ai = no
-		potential = {
-			atxb_is_king_trigger = yes
-			NOT = { has_character_flag = atxb_menu_works }
-		}
-		allow = { always = yes }
-		effect = { set_character_flag = atxb_menu_works }
-		ai_will_do = { factor = 0 }
-	}
-	atxb_menu_close = {
-		ai = no
-		potential = {
-			atxb_is_king_trigger = yes
-			has_character_flag = atxb_menu_works
-		}
-		allow = { always = yes }
-		effect = { clr_character_flag = atxb_menu_works }
-		ai_will_do = { factor = 0 }
-	}
+	# Players: one entry in the Intrigue tab opens the treasury popup (atxb.5), where the works, Draw on the Treasury and the corvee live.
 	atxb_view_treasury = {
 		ai = no
-		potential = {
-			atxb_is_king_trigger = yes
-			atxb_menu_open_trigger = yes
-		}
+		is_high_prio = yes
+		potential = { atxb_is_king_trigger = yes }
 		allow = { always = yes }
 		effect = { character_event = { id = atxb.5 } }
 		ai_will_do = { factor = 0 }
 	}
+
+	# The AI uses these decisions; players use the popup
 	atxb_work_roads = {
-		is_high_prio = yes
 		ai_check_interval = 12
 		potential = {
-			atxb_king_can_spend_trigger = yes
-			atxb_menu_open_trigger = yes
-			NOT = { has_global_flag = atxb_done_roads }
-			NOT = { check_variable = { which = global_atxb_w_roads_stage value = 1 } }
+			ai = yes
+			atxb_can_start_roads_trigger = yes
 		}
-		allow = {
-			check_variable = { which = global_atxb_treasury value = 100 }
-		}
+		allow = { always = yes }
 		effect = {
 			atxb_start_roads_effect = yes
 			custom_tooltip = { text = atxb_work_roads_tt }
 		}
 		ai_will_do = { factor = 1 }
 	}
-
 	atxb_work_law = {
-		is_high_prio = yes
 		ai_check_interval = 12
 		potential = {
-			atxb_king_can_spend_trigger = yes
-			atxb_menu_open_trigger = yes
-			NOT = { has_global_flag = atxb_done_law }
-			NOT = { check_variable = { which = global_atxb_w_law_stage value = 1 } }
+			ai = yes
+			atxb_can_start_law_trigger = yes
 		}
-		allow = {
-			check_variable = { which = global_atxb_treasury value = 200 }
-			k_earth_kingdom = {
-				OR = {
-					has_law = ek_unity_2
-					has_law = ek_unity_3
-				}
-			}
-		}
+		allow = { always = yes }
 		effect = {
 			atxb_start_law_effect = yes
 			custom_tooltip = { text = atxb_work_law_tt }
 		}
 		ai_will_do = { factor = 1 }
 	}
-
 	atxb_work_granaries = {
-		is_high_prio = yes
 		ai_check_interval = 12
 		potential = {
-			atxb_king_can_spend_trigger = yes
-			atxb_menu_open_trigger = yes
-			NOT = { has_global_flag = atxb_done_granaries }
-			NOT = { check_variable = { which = global_atxb_w_granaries_stage value = 1 } }
+			ai = yes
+			atxb_can_start_granaries_trigger = yes
 		}
-		allow = {
-			check_variable = { which = global_atxb_treasury value = 100 }
-		}
+		allow = { always = yes }
 		effect = {
 			atxb_start_granaries_effect = yes
 			custom_tooltip = { text = atxb_work_granaries_tt }
@@ -97,33 +55,30 @@ decisions = {
 	atxb_draw_on_treasury = {
 		ai_check_interval = 24
 		potential = {
-			atxb_king_can_spend_trigger = yes
-			atxb_menu_open_trigger = yes
+			ai = yes
+			atxb_can_draw_trigger = yes
 		}
-		allow = {
-			check_variable = { which = global_atxb_treasury value = 100 }
-			custom_tooltip = {
-				text = atxb_draw_cooldown_tt
-				OR = {
-					NOT = { has_character_flag = atxb_drew }
-					had_character_flag = { flag = atxb_drew days = 730 }
-				}
-			}
-		}
-		effect = {
-			change_variable = { which = global_atxb_treasury value = -100 }
-			wealth = 50
-			change_variable = { which = global_royalAuthority value = -5 }
-			atxb_clamp_authority_effect = yes
-			clr_character_flag = atxb_drew
-			set_character_flag = atxb_drew
-			custom_tooltip = { text = atxb_draw_tt }
-		}
+		allow = { always = yes }
+		effect = { atxb_draw_effect = yes }
 		ai_will_do = {
 			factor = 0.2
 			modifier = { factor = 5 trait = greedy }
 			modifier = { factor = 0 trait = charitable }
 			modifier = { factor = 3 NOT = { wealth = 0 } }
+		}
+	}
+	atxb_corvee = {
+		ai_check_interval = 12
+		potential = {
+			ai = yes
+			atxb_can_corvee_trigger = yes
+		}
+		allow = { always = yes }
+		effect = { atxb_corvee_effect = yes }
+		ai_will_do = {
+			factor = 0.5
+			modifier = { factor = 0 NOT = { check_variable = { which = global_royalAuthority value = 50 } } } # keeps a reserve
+			modifier = { factor = 2 check_variable = { which = global_royalAuthority value = 90 } }
 		}
 	}
 
@@ -190,6 +145,87 @@ decisions = {
 		effect = {
 			custom_tooltip = { text = atxb_plea_tt }
 			character_event = { id = atxb.28 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+}
+
+# Royal Arbitration: the Earth King orders an Earth realm to end its war against another Earth realm (diplomacy screen of the attacker)
+targetted_decisions = {
+	atxb_royal_arbitration = {
+		ai = no
+		filter = independent_rulers
+		ai_target_filter = independent_rulers
+		from_potential = {
+			atxb_king_can_spend_trigger = yes
+		}
+		potential = {
+			atxb_arbitration_target_trigger = yes
+		}
+		allow = {
+			FROM = {
+				custom_tooltip = {
+					text = atxb_arb_cooldown_tt
+					OR = {
+						NOT = { has_character_flag = atxb_arbitrated }
+						had_character_flag = { flag = atxb_arbitrated days = 365 }
+					}
+				}
+			}
+			conditional_tooltip = {
+				trigger = { tier = DUKE }
+				custom_tooltip = {
+					text = atxb_arb_cost_10_tt
+					hidden_tooltip = { check_variable = { which = global_royalAuthority value = 10 } }
+				}
+			}
+			conditional_tooltip = {
+				trigger = { tier = KING }
+				custom_tooltip = {
+					text = atxb_arb_cost_15_tt
+					hidden_tooltip = { check_variable = { which = global_royalAuthority value = 15 } }
+				}
+			}
+			conditional_tooltip = {
+				trigger = { tier = EMPEROR }
+				custom_tooltip = {
+					text = atxb_arb_cost_25_tt
+					hidden_tooltip = { check_variable = { which = global_royalAuthority value = 25 } }
+				}
+			}
+		}
+		effect = {
+			FROM = {
+				if = {
+					limit = { ROOT = { tier = DUKE } }
+					custom_tooltip = {
+						text = atxb_arb_spend_10_tt
+						hidden_tooltip = { change_variable = { which = global_royalAuthority value = -10 } }
+					}
+				}
+				if = {
+					limit = { ROOT = { tier = KING } }
+					custom_tooltip = {
+						text = atxb_arb_spend_15_tt
+						hidden_tooltip = { change_variable = { which = global_royalAuthority value = -15 } }
+					}
+				}
+				if = {
+					limit = { ROOT = { tier = EMPEROR } }
+					custom_tooltip = {
+						text = atxb_arb_spend_25_tt
+						hidden_tooltip = { change_variable = { which = global_royalAuthority value = -25 } }
+					}
+				}
+				atxb_clamp_authority_effect = yes
+				clr_character_flag = atxb_arbitrated
+				set_character_flag = atxb_arbitrated
+				save_global_event_target_as = atxb_arbiter
+			}
+			save_global_event_target_as = atxb_arb_target
+			custom_tooltip = { text = atxb_arbitration_tt }
+			log = "ATLA Ba Sing Se: [From.GetTitledName] demanded that [Root.GetTitledName] make peace"
+			character_event = { id = atxb.42 }
 		}
 		ai_will_do = { factor = 0 }
 	}

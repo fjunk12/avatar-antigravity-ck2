@@ -47,14 +47,6 @@ atxb_any_work_running_trigger = {
 	}
 }
 
-# The "Check Possible Works" menu is open (the AI always sees the works)
-atxb_menu_open_trigger = {
-	OR = {
-		ai = yes
-		has_character_flag = atxb_menu_works
-	}
-}
-
 # The crown is weak enough for tributaries to break away (needs event_target:atxb_king)
 atxb_crown_weak_trigger = {
 	OR = {
@@ -239,5 +231,85 @@ atxb_crown_can_pay_135_trigger = {
 	OR = {
 		check_variable = { which = global_atxb_treasury value = 135 }
 		wealth = 135
+	}
+}
+
+
+# ---- v3: the Treasury of Ba Sing Se (one popup for players, decisions for the AI) ----
+# The king may start a work now (also checks the cost)
+atxb_can_start_roads_trigger = {
+	atxb_king_can_spend_trigger = yes
+	NOT = { has_global_flag = atxb_done_roads }
+	NOT = { check_variable = { which = global_atxb_w_roads_stage value = 1 } }
+	check_variable = { which = global_atxb_treasury value = 100 }
+}
+atxb_can_start_law_trigger = {
+	atxb_king_can_spend_trigger = yes
+	NOT = { has_global_flag = atxb_done_law }
+	NOT = { check_variable = { which = global_atxb_w_law_stage value = 1 } }
+	check_variable = { which = global_atxb_treasury value = 200 }
+	k_earth_kingdom = {
+		OR = {
+			has_law = ek_unity_2
+			has_law = ek_unity_3
+		}
+	}
+}
+atxb_can_start_granaries_trigger = {
+	atxb_king_can_spend_trigger = yes
+	NOT = { has_global_flag = atxb_done_granaries }
+	NOT = { check_variable = { which = global_atxb_w_granaries_stage value = 1 } }
+	check_variable = { which = global_atxb_treasury value = 100 }
+}
+atxb_can_start_any_work_trigger = {
+	OR = {
+		atxb_can_start_roads_trigger = yes
+		atxb_can_start_law_trigger = yes
+		atxb_can_start_granaries_trigger = yes
+	}
+}
+# Draw on the Treasury: 100 out, every 2 years
+atxb_can_draw_trigger = {
+	atxb_king_can_spend_trigger = yes
+	check_variable = { which = global_atxb_treasury value = 100 }
+	OR = {
+		NOT = { has_character_flag = atxb_drew }
+		had_character_flag = { flag = atxb_drew days = 730 }
+	}
+}
+# Corvee: Royal Authority 15 for treasury +100, while a work is running, once a year
+atxb_can_corvee_trigger = {
+	atxb_king_can_spend_trigger = yes
+	atxb_any_work_running_trigger = yes
+	check_variable = { which = global_royalAuthority value = 15 }
+	OR = {
+		NOT = { has_character_flag = atxb_corvee }
+		had_character_flag = { flag = atxb_corvee days = 365 }
+	}
+}
+
+# ---- v3: Royal Arbitration ----
+# ROOT is an Earth realm attacking another Earth realm, and FROM (the Earth King) is in neither side of it
+atxb_arbitration_target_trigger = {
+	is_ruler = yes
+	independent = yes
+	prisoner = no
+	higher_tier_than = COUNT
+	culture_group = earth_kingdom_cultures
+	NOR = {
+		religion = way_of_chin
+		mercenary = yes
+		holy_order = yes
+		rebel = yes
+		war_with = FROM
+	}
+	capital_scope = { region = world_greater_earth_kingdom }
+	any_war = {
+		attacker = { character = ROOT }
+		defender = {
+			culture_group = earth_kingdom_cultures
+			NOT = { religion = way_of_chin }
+			NOT = { character = FROM }
+		}
 	}
 }

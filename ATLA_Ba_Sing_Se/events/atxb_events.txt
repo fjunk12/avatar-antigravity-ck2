@@ -1,7 +1,10 @@
 # ATLA Ba Sing Se - events (namespace atxb)
 # atxb.1   yearly run (incl. the Overextended Crown count), once a year for the whole world (on_yearly_pulse, hidden)
 # atxb.3   a foreign or Way of Chin ruler loots the treasury of Ba Sing Se
-# atxb.5   "The Treasury of Ba Sing Se" overview (decision)
+# atxb.5   "The Treasury of Ba Sing Se": the treasury popup (decision); start a work, draw, corvee
+# atxb.41  the works page of the treasury popup
+# atxb.42  Royal Arbitration: the Earth King demands peace (ROOT = the attacker)
+# atxb.43  Royal Arbitration: the answer, to the Earth King
 # atxb.6   the Grand Secretariat's report to a puppet Earth King (players)
 # atxb.10  a work completes a stage            atxb.11  a work stalls or is abandoned
 # atxb.15  a work is finished                   atxb.16  news to tributaries: A Single Law for the Kingdom
@@ -25,7 +28,7 @@ character_event = {
 	trigger = {
 		OR = {
 			NOT = { has_global_flag = atxb_tick }
-			had_global_flag = { flag = atxb_tick days = 330 }
+			had_global_flag = { flag = atxb_tick days = 364 } # once a year: rulers pulse every day, so this fires on day 365
 		}
 	}
 
@@ -142,6 +145,23 @@ character_event = {
 	picture = GFX_evt_ba_sing_se
 	is_triggered_only = yes
 
+	option = {
+		name = atxb.5.works
+		trigger = { atxb_can_start_any_work_trigger = yes }
+		character_event = { id = atxb.41 }
+	}
+	option = {
+		name = atxb.5.draw
+		trigger = { atxb_can_draw_trigger = yes }
+		atxb_draw_effect = yes
+		character_event = { id = atxb.5 }
+	}
+	option = {
+		name = atxb.5.corvee
+		trigger = { atxb_can_corvee_trigger = yes }
+		atxb_corvee_effect = yes
+		character_event = { id = atxb.5 }
+	}
 	option = {
 		name = atxb.5.a
 		if = {
@@ -638,5 +658,106 @@ character_event = {
 
 	immediate = {
 		FROM = { letter_event = { id = atxb.32 days = 10 } }
+	}
+}
+
+# The works page of the treasury popup
+character_event = {
+	id = atxb.41
+	desc = atxb.41.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.41.roads
+		trigger = { atxb_can_start_roads_trigger = yes }
+		atxb_start_roads_effect = yes
+		custom_tooltip = { text = atxb_work_roads_tt }
+		character_event = { id = atxb.5 }
+	}
+	option = {
+		name = atxb.41.law
+		trigger = { atxb_can_start_law_trigger = yes }
+		atxb_start_law_effect = yes
+		custom_tooltip = { text = atxb_work_law_tt }
+		character_event = { id = atxb.5 }
+	}
+	option = {
+		name = atxb.41.granaries
+		trigger = { atxb_can_start_granaries_trigger = yes }
+		atxb_start_granaries_effect = yes
+		custom_tooltip = { text = atxb_work_granaries_tt }
+		character_event = { id = atxb.5 }
+	}
+	option = {
+		name = atxb.41.back
+		character_event = { id = atxb.5 }
+	}
+}
+
+# Royal Arbitration: the Earth King orders ROOT to end its war against a fellow Earth realm
+character_event = {
+	id = atxb.42
+	desc = atxb.42.d
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.42.a # obey
+		atxb_arb_end_wars_effect = yes
+		opinion = { modifier = opinion_atxb_forced_peace who = event_target:atxb_arbiter years = 5 }
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] obeyed the Earth King and made peace"
+		event_target:atxb_arbiter = {
+			set_character_flag = atxb_arb_obeyed
+			letter_event = { id = atxb.43 days = 3 }
+		}
+		ai_chance = {
+			factor = 60
+			modifier = { factor = 1.5 atxb_band_strong_trigger = yes }
+			modifier = { factor = 0.5 atxb_band_weak_trigger = yes }
+			modifier = { factor = 1.5 pays_tribute_to = event_target:atxb_arbiter }
+			modifier = { factor = 1.25 opinion = { who = event_target:atxb_arbiter value = 25 } }
+			modifier = { factor = 0.5 NOT = { opinion = { who = event_target:atxb_arbiter value = 0 } } }
+			modifier = { factor = 0.75 trait = ambitious }
+		}
+	}
+	option = {
+		name = atxb.42.b # defy
+		custom_tooltip = { text = atxb_arb_defy_tt }
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] defied the Earth King"
+		event_target:atxb_arbiter = {
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -5 }
+				atxb_clamp_authority_effect = yes
+				prestige = -25
+			}
+			set_character_flag = atxb_arb_defied
+			letter_event = { id = atxb.43 days = 3 }
+		}
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 1.5 trait = ambitious }
+			modifier = { factor = 1.5 trait = proud }
+		}
+	}
+}
+
+# Royal Arbitration: the answer reaches the Earth King
+letter_event = {
+	id = atxb.43
+	desc = {
+		trigger = { has_character_flag = atxb_arb_obeyed }
+		text = atxb.43.d_obeyed
+	}
+	desc = {
+		trigger = { has_character_flag = atxb_arb_defied }
+		text = atxb.43.d_defied
+	}
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.43.a
+		clr_character_flag = atxb_arb_obeyed
+		clr_character_flag = atxb_arb_defied
 	}
 }
