@@ -134,7 +134,7 @@ character_event = {
 		text = atxb.5.d_puppet
 	}
 	desc = {
-		trigger = { NOT = { atxb_is_king_trigger = yes trait = earthkingpuppet } }
+		trigger = { NOT = { trait = earthkingpuppet } }
 		text = atxb.5.d
 	}
 	picture = GFX_evt_ba_sing_se

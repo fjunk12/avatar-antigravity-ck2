@@ -131,11 +131,17 @@ decisions = {
 	atxb_sabotage_works = {
 		ai_check_interval = 60
 		potential = {
+			is_landed = yes
 			is_ruler = yes
 			independent = yes
 			higher_tier_than = COUNT
 			atxb_is_king_trigger = no
 			atxb_any_work_running_trigger = yes
+			NOR = {
+				mercenary = yes
+				holy_order = yes
+				rebel = yes
+			}
 			OR = {
 				culture_group = earth_kingdom_cultures
 				religion = way_of_chin
