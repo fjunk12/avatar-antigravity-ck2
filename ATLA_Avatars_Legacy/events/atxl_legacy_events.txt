@@ -555,9 +555,11 @@ character_event = {
 		# An unlanded Avatar moves to a defender's court and rallies a modest war-only Volunteer Host
 		if = {
 			limit = { is_ruler = no }
+			clr_global_flag = atxl_host_picked
 			event_target:atxl_champion = {
-				random_war = {
+				any_war = {
 					limit = {
+						NOT = { has_global_flag = atxl_host_picked }
 						attacker = { character = event_target:atxl_champion }
 						OR = {
 							using_cb = atxl_cb_fire_strike
@@ -565,9 +567,11 @@ character_event = {
 							using_cb = atxl_cb_earth_unification
 						}
 					}
+					set_global_flag = atxl_host_picked
 					defender = { save_event_target_as = atxl_avatar_host }
 				}
 			}
+			clr_global_flag = atxl_host_picked
 			if = {
 				limit = { event_target:atxl_avatar_host = { is_alive = yes } }
 				move_character = event_target:atxl_avatar_host
