@@ -28,14 +28,15 @@ atxb_clamp_treasury_effect = {
 	}
 }
 
+# Keeps Royal Authority in the base mod's range of -100 to 100 (earthking.56 uses the same bounds)
 atxb_clamp_authority_effect = {
 	if = {
 		limit = { check_variable = { which = global_royalAuthority value = 100 } }
 		set_variable = { which = global_royalAuthority value = 100 }
 	}
 	if = {
-		limit = { NOT = { check_variable = { which = global_royalAuthority value = 0 } } }
-		set_variable = { which = global_royalAuthority value = 0 }
+		limit = { NOT = { check_variable = { which = global_royalAuthority value = -100 } } }
+		set_variable = { which = global_royalAuthority value = -100 }
 	}
 }
 
@@ -126,59 +127,50 @@ atxb_progress_all_works_effect = {
 	atxb_progress_granaries_effect = yes
 }
 
-# A puppet Earth King does not spend the treasury: the Grand Secretariat does.
-# The Secretariat is the holder of d_dai_li where that title exists, otherwise the king's chancellor.
-# Run in the king's scope.
+# A puppet Earth King does not spend the treasury: the Grand Secretariat does, in its own interest.
+# It first saves for the Royal Granaries and builds them once (they keep the Lower Ring quiet), never builds the roads or
+# the single law, and once the Granaries stand it takes a quarter of the treasury every year. The Secretariat is the holder of d_dai_li where that title
+# exists, otherwise the king's chancellor. Run in the king's scope, after income and work stages.
 atxb_secretariat_effect = {
-	if = {
-		limit = { d_dai_li = { has_holder = yes } }
-		d_dai_li = { holder_scope = { save_event_target_as = atxb_secretariat } }
-	}
-	else = {
-		job_chancellor = { save_event_target_as = atxb_secretariat }
-	}
-	# start one work at a time: granaries, then roads, then the single law
-	if = {
-		limit = { atxb_any_work_running_trigger = no }
-		if = {
-			limit = {
-				NOT = { has_global_flag = atxb_done_granaries }
-				check_variable = { which = global_atxb_treasury value = 100 }
-			}
-			atxb_start_granaries_effect = yes
-			set_character_flag = atxb_sec_started
-		}
-		else_if = {
-			limit = {
-				NOT = { has_global_flag = atxb_done_roads }
-				check_variable = { which = global_atxb_treasury value = 100 }
-			}
-			atxb_start_roads_effect = yes
-			set_character_flag = atxb_sec_started
-		}
-		else_if = {
-			limit = {
-				NOT = { has_global_flag = atxb_done_law }
-				check_variable = { which = global_atxb_treasury value = 200 }
-				k_earth_kingdom = { OR = { has_law = ek_unity_2 has_law = ek_unity_3 } }
-			}
-			atxb_start_law_effect = yes
-			set_character_flag = atxb_sec_started
-		}
-	}
-	# and helps itself now and then
+	atxb_find_secretariat_effect = yes
+	# Saves until the treasury covers the whole cost (100 + 2 x 100), so no stage ever stalls
 	if = {
 		limit = {
-			check_variable = { which = global_atxb_treasury value = 100 }
-			event_target:atxb_secretariat = { always = yes }
+			atxb_any_work_running_trigger = no
+			NOT = { has_global_flag = atxb_done_granaries }
+			check_variable = { which = global_atxb_treasury value = 300 }
 		}
-		random = {
-			chance = 20
-			change_variable = { which = global_atxb_treasury value = -100 }
-			event_target:atxb_secretariat = { wealth = 50 }
-			set_character_flag = atxb_sec_drew
-			log = "ATLA Ba Sing Se: the Grand Secretariat drew 100 from the treasury"
+		atxb_start_granaries_effect = yes
+		set_character_flag = atxb_sec_started
+	}
+	# Skims only once the Granaries are built
+	if = {
+		limit = {
+			has_global_flag = atxb_done_granaries
+			check_variable = { which = global_atxb_treasury value = 50 }
 		}
+		set_variable = { which = global_atxb_sec_take which = global_atxb_treasury }
+		multiply_variable = { which = global_atxb_sec_take value = 0.25 }
+		if = {
+			limit = { NOT = { check_variable = { which = global_atxb_sec_take value = 25 } } }
+			set_variable = { which = global_atxb_sec_take value = 25 }
+		}
+		set_variable = { which = global_atxb_left which = global_atxb_sec_take }
+		while = {
+			limit = { check_variable = { which = global_atxb_left value = 10 } }
+			change_variable = { which = global_atxb_treasury value = -10 }
+			change_variable = { which = global_atxb_left value = -10 }
+			event_target:atxb_secretariat = { wealth = 10 }
+		}
+		while = {
+			limit = { check_variable = { which = global_atxb_left value = 1 } }
+			change_variable = { which = global_atxb_treasury value = -1 }
+			change_variable = { which = global_atxb_left value = -1 }
+			event_target:atxb_secretariat = { wealth = 1 }
+		}
+		subtract_variable = { which = global_atxb_sec_take which = global_atxb_left }
+		set_character_flag = atxb_sec_drew
+		log = "ATLA Ba Sing Se: the Grand Secretariat took [global_atxb_sec_take.GetValue] from the treasury"
 	}
 	if = {
 		limit = {
@@ -193,6 +185,17 @@ atxb_secretariat_effect = {
 	else = {
 		clr_character_flag = atxb_sec_started
 		clr_character_flag = atxb_sec_drew
+	}
+}
+
+# Saves event_target:atxb_secretariat: the holder of d_dai_li, otherwise the king's chancellor (king's scope)
+atxb_find_secretariat_effect = {
+	if = {
+		limit = { d_dai_li = { has_holder = yes } }
+		d_dai_li = { holder_scope = { save_event_target_as = atxb_secretariat } }
+	}
+	else = {
+		job_chancellor = { save_event_target_as = atxb_secretariat }
 	}
 }
 
@@ -313,37 +316,6 @@ atxb_breakaway_effect = {
 			is_tributary = yes
 		}
 		character_event = { id = ATLAE.210 }
-	}
-}
-
-# Makes FROM a territory tributary of ROOT, as the base pledge_to_earth_king decision does (ROOT = the king)
-atxb_accept_tributary_effect = {
-	make_tributary = { who = FROM percentage = 0.01 tributary_type = earth_kingdom_territory_tributary }
-	FROM = {
-		clr_character_flag = atxb_recent_pledge
-		set_character_flag = atxb_recent_pledge
-	}
-}
-
-# Fund Local Defense: a war subsidy and a small host raised at the petitioner's capital, gone at peace (FROM = petitioner)
-atxb_fund_local_defense_effect = {
-	change_variable = { which = global_atxb_treasury value = -50 }
-	FROM = {
-		wealth = 25
-		capital_scope = { save_event_target_as = atxb_pet_capital }
-		spawn_unit = {
-			province = event_target:atxb_pet_capital
-			home = event_target:atxb_pet_capital
-			owner = THIS
-			troops = {
-				light_infantry = { 350 350 }
-				heavy_infantry = { 150 150 }
-				archers = { 150 150 }
-			}
-			attrition = 1.0
-			maintenance_multiplier = 0
-			disband_on_peace = yes
-		}
 	}
 }
 
@@ -487,4 +459,301 @@ atxb_start_granaries_effect = {
 	set_variable = { which = global_atxb_w_granaries_stage value = 1 }
 	set_variable = { which = global_atxb_w_granaries_stall value = 0 }
 	log = "ATLA Ba Sing Se: work granaries started"
+}
+
+# ---- v2: the reach of Ba Sing Se ----
+# Marks every Earth tributary connected to Ba Sing Se by a chain of tributaries (flag atxb_linked).
+# Land: spread out from the king's realm through bordering tributaries (at most 20 rings).
+# Sea: island tributaries (world_earth_islands) count as connected while Ba Sing Se or a connected tributary holds a port.
+# Run in the king's scope. atxb_unlink_all_effect clears the flags again at the end of the yearly run.
+atxb_flood_fill_effect = {
+	any_tributary = { clr_character_flag = atxb_linked }
+	set_character_flag = atxb_linked
+	set_variable = { which = global_atxb_rings value = 0 }
+	atxb_flood_land_effect = yes
+	if = {
+		limit = {
+			OR = {
+				any_realm_province = { port = yes }
+				any_tributary = {
+					has_character_flag = atxb_linked
+					any_realm_province = { port = yes }
+				}
+			}
+		}
+		any_tributary = {
+			limit = {
+				atxb_ek_tributary_trigger = yes
+				NOT = { has_character_flag = atxb_linked }
+				capital_scope = { region = world_earth_islands }
+			}
+			set_character_flag = atxb_linked
+		}
+		atxb_flood_land_effect = yes
+	}
+	set_variable = { which = global_atxb_unlinked value = 0 }
+	any_tributary = {
+		limit = {
+			atxb_ek_tributary_trigger = yes
+			NOT = { has_character_flag = atxb_linked }
+		}
+		change_variable = { which = global_atxb_unlinked value = 1 }
+	}
+}
+atxb_flood_land_effect = {
+	while = {
+		limit = {
+			NOT = { check_variable = { which = global_atxb_rings value = 20 } }
+			any_tributary = {
+				atxb_ek_tributary_trigger = yes
+				NOT = { has_character_flag = atxb_linked }
+				any_neighbor_independent_ruler = { has_character_flag = atxb_linked }
+			}
+		}
+		change_variable = { which = global_atxb_rings value = 1 }
+		any_tributary = {
+			limit = {
+				atxb_ek_tributary_trigger = yes
+				NOT = { has_character_flag = atxb_linked }
+				any_neighbor_independent_ruler = { has_character_flag = atxb_linked }
+			}
+			set_character_flag = atxb_linked
+		}
+	}
+}
+atxb_unlink_all_effect = {
+	any_tributary = { clr_character_flag = atxb_linked }
+	clr_character_flag = atxb_linked
+}
+
+# Notices a change of the Earth Kingdom unity law (global flag atxb_law_changed, for the 5-year grace)
+atxb_law_watch_effect = {
+	set_variable = { which = global_atxb_unity_now value = 0 }
+	if = {
+		limit = { k_earth_kingdom = { has_law = ek_unity_1 } }
+		set_variable = { which = global_atxb_unity_now value = 1 }
+	}
+	if = {
+		limit = { k_earth_kingdom = { has_law = ek_unity_2 } }
+		set_variable = { which = global_atxb_unity_now value = 2 }
+	}
+	if = {
+		limit = { k_earth_kingdom = { has_law = ek_unity_3 } }
+		set_variable = { which = global_atxb_unity_now value = 3 }
+	}
+	if = {
+		limit = {
+			has_global_flag = atxb_unity_seen
+			NOT = {
+				AND = {
+					check_variable = { which = global_atxb_unity_now which = global_atxb_unity_last }
+					check_variable = { which = global_atxb_unity_last which = global_atxb_unity_now }
+				}
+			}
+		}
+		clr_global_flag = atxb_law_changed
+		set_global_flag = atxb_law_changed
+		log = "ATLA Ba Sing Se: the unity law changed, 5 years' grace for tributaries"
+	}
+	set_variable = { which = global_atxb_unity_last which = global_atxb_unity_now }
+	if = {
+		limit = { NOT = { has_global_flag = atxb_unity_seen } }
+		set_global_flag = atxb_unity_seen
+	}
+}
+
+# ---- v2: Plea to Ba Sing Se ----
+# The pleader (character scope) sends its plea to the ruler of Ba Sing Se.
+# A puppet king never sees it: the Grand Secretariat answers instead (atxb_secretariat_answer_plea_effect).
+atxb_send_plea_effect = {
+	atxb_find_king_effect = yes
+	if = {
+		limit = {
+			event_target:atxb_king = { always = yes }
+			NOT = { war_with = event_target:atxb_king }
+		}
+		clr_character_flag = atxb_pleaded
+		set_character_flag = atxb_pleaded
+		log = "ATLA Ba Sing Se: [Root.GetTitledName] pleaded with Ba Sing Se for help"
+		if = {
+			limit = { event_target:atxb_king = { trait = earthkingpuppet } }
+			atxb_secretariat_answer_plea_effect = yes
+		}
+		else = {
+			event_target:atxb_king = { character_event = { id = atxb.31 } }
+		}
+	}
+}
+
+# The Grand Secretariat answers a plea for a puppet king: three times in four it turns the envoy away,
+# otherwise it sends a token host of 300 (30 from the treasury, if the treasury has it). Pleader's scope.
+atxb_secretariat_answer_plea_effect = {
+	random_list = {
+		75 = {
+			set_character_flag = atxb_ans_sec_refused
+			atxb_plea_refused_effect = yes
+		}
+		25 = {
+			modifier = { factor = 0 NOT = { check_variable = { which = global_atxb_treasury value = 30 } } }
+			set_character_flag = atxb_ans_sec_token
+			change_variable = { which = global_atxb_treasury value = -30 }
+			atxb_raise_host_small_effect = yes
+			opinion = { who = event_target:atxb_king modifier = opinion_atxb_token_help years = 5 }
+			clr_character_flag = atxb_helped_plea
+			set_character_flag = atxb_helped_plea
+		}
+	}
+	event_target:atxb_king = {
+		character_event = { id = atxb.34 } # sends atxb.32 to the pleader, so the letter comes from the king
+		if = {
+			limit = { ai = no }
+			character_event = { id = atxb.33 days = 8 }
+		}
+	}
+}
+
+# The crown helped (pleader's scope; FROM-free so both the king's event and the Secretariat can use it)
+atxb_plea_helped_effect = {
+	clr_character_flag = atxb_helped_plea
+	set_character_flag = atxb_helped_plea
+	clr_character_flag = atxb_refused_plea
+}
+# The crown refused (pleader's scope)
+atxb_plea_refused_effect = {
+	change_variable = { which = global_royalAuthority value = -1 }
+	atxb_clamp_authority_effect = yes
+	opinion = { who = event_target:atxb_king modifier = opinion_atxb_refused years = 10 }
+	clr_character_flag = atxb_refused_plea
+	set_character_flag = atxb_refused_plea
+}
+atxb_raise_host_small_effect = {
+	capital_scope = { save_event_target_as = atxb_host_capital }
+	spawn_unit = {
+		province = event_target:atxb_host_capital
+		home = event_target:atxb_host_capital
+		owner = THIS
+		troops = {
+			light_infantry = { 180 180 }
+			heavy_infantry = { 60 60 }
+			archers = { 60 60 }
+		}
+		attrition = 1.0
+		maintenance_multiplier = 0
+		disband_on_peace = yes
+	}
+}
+atxb_raise_host_medium_effect = {
+	capital_scope = { save_event_target_as = atxb_host_capital }
+	spawn_unit = {
+		province = event_target:atxb_host_capital
+		home = event_target:atxb_host_capital
+		owner = THIS
+		troops = {
+			light_infantry = { 360 360 }
+			heavy_infantry = { 120 120 }
+			archers = { 120 120 }
+		}
+		attrition = 1.0
+		maintenance_multiplier = 0
+		disband_on_peace = yes
+	}
+}
+atxb_raise_host_large_effect = {
+	capital_scope = { save_event_target_as = atxb_host_capital }
+	spawn_unit = {
+		province = event_target:atxb_host_capital
+		home = event_target:atxb_host_capital
+		owner = THIS
+		troops = {
+			light_infantry = { 600 600 }
+			heavy_infantry = { 200 200 }
+			archers = { 200 200 }
+		}
+		attrition = 1.0
+		maintenance_multiplier = 0
+		disband_on_peace = yes
+	}
+}
+
+# ---- v2: the crown pays for aid, from the treasury first, otherwise from the king's own purse (king's scope) ----
+atxb_crown_pays_25_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 25 } }
+		change_variable = { which = global_atxb_treasury value = -25 }
+	}
+	else = {
+		wealth = -25
+	}
+}
+atxb_crown_pays_30_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 30 } }
+		change_variable = { which = global_atxb_treasury value = -30 }
+	}
+	else = {
+		wealth = -30
+	}
+}
+atxb_crown_pays_40_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 40 } }
+		change_variable = { which = global_atxb_treasury value = -40 }
+	}
+	else = {
+		wealth = -40
+	}
+}
+atxb_crown_pays_50_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 50 } }
+		change_variable = { which = global_atxb_treasury value = -50 }
+	}
+	else = {
+		wealth = -50
+	}
+}
+atxb_crown_pays_55_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 55 } }
+		change_variable = { which = global_atxb_treasury value = -55 }
+	}
+	else = {
+		wealth = -55
+	}
+}
+atxb_crown_pays_60_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 60 } }
+		change_variable = { which = global_atxb_treasury value = -60 }
+	}
+	else = {
+		wealth = -60
+	}
+}
+atxb_crown_pays_75_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 75 } }
+		change_variable = { which = global_atxb_treasury value = -75 }
+	}
+	else = {
+		wealth = -75
+	}
+}
+atxb_crown_pays_90_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 90 } }
+		change_variable = { which = global_atxb_treasury value = -90 }
+	}
+	else = {
+		wealth = -90
+	}
+}
+atxb_crown_pays_135_effect = {
+	if = {
+		limit = { check_variable = { which = global_atxb_treasury value = 135 } }
+		change_variable = { which = global_atxb_treasury value = -135 }
+	}
+	else = {
+		wealth = -135
+	}
 }

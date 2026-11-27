@@ -161,11 +161,30 @@ decisions = {
 		}
 		ai_will_do = {
 			factor = 0.05
+			modifier = { factor = 0 atxb_hostile_to_crown_trigger = no } # only realms that dislike the king, are his rival, or follow the Way of Chin
 			modifier = { factor = 4 religion = way_of_chin }
 			modifier = { factor = 3 trait = ambitious }
 			modifier = { factor = 2 trait = deceitful }
 			modifier = { factor = 0.2 trait = honest }
 			modifier = { factor = 0 NOT = { wealth = 100 } }
 		}
+	}
+
+	# Plea to Ba Sing Se (players): an Earth realm under attack by the Fire Nation, the Way of Chin or rebels asks the crown for help.
+	# The AI pleads through the yearly run. Player pleas do not count toward the yearly cap.
+	atxb_plea_to_ba_sing_se = {
+		ai = no
+		potential = {
+			war = yes
+			atxb_plea_base_trigger = yes
+		}
+		allow = {
+			atxb_plea_war_trigger = yes
+		}
+		effect = {
+			custom_tooltip = { text = atxb_plea_tt }
+			character_event = { id = atxb.28 }
+		}
+		ai_will_do = { factor = 0 }
 	}
 }

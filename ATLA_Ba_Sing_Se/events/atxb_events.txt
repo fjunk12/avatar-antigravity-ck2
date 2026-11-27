@@ -7,10 +7,12 @@
 # atxb.15  a work is finished                   atxb.16  news to tributaries: A Single Law for the Kingdom
 # atxb.18  sabotage: what came of it (saboteur) atxb.19  sabotage: the agents were caught (king, FROM = saboteur)
 # atxb.20  a tributary breaks away (hidden, ROOT = tributary)
-# atxb.29  wartime petition check (hidden, ROOT = petitioner)
-# atxb.30  a realm pledges in peacetime (hidden, ROOT = pledger)
-# atxb.31  a realm at war petitions Ba Sing Se (king, FROM = petitioner)
-# atxb.32  the petitioner hears the answer
+# atxb.28  a player's plea (hidden, ROOT = pleader, from the decision)
+# atxb.29  an AI plea (hidden, ROOT = pleader; the yearly cap is counted here)
+# atxb.31  Plea to Ba Sing Se: the king answers (ROOT = king, FROM = pleader)
+# atxb.32  the pleader hears the answer (letter)
+# atxb.33  memorandum to a puppet king: the Grand Secretariat answered a plea
+# atxb.34  hidden relay (ROOT = king, FROM = pleader): sends the Secretariat's answer letter in the king's name
 namespace = atxb
 
 character_event = {
@@ -35,8 +37,7 @@ character_event = {
 			set_global_flag = atxb_bss_started
 		}
 		set_variable = { which = global_atxb_breaks value = 0 }
-		set_variable = { which = global_atxb_pledges value = 0 }
-		set_variable = { which = global_atxb_petitions value = 0 }
+		set_variable = { which = global_atxb_pleas value = 0 }
 
 		# A foreign or Way of Chin ruler holding the Royal Palace loots the treasury
 		if = {
@@ -61,6 +62,7 @@ character_event = {
 		atxb_find_king_effect = yes
 		if = {
 			limit = { event_target:atxb_king = { always = yes } }
+			atxb_law_watch_effect = yes
 			event_target:atxb_king = {
 				atxb_yearly_income_effect = yes
 				atxb_progress_all_works_effect = yes
@@ -68,12 +70,27 @@ character_event = {
 					limit = { trait = earthkingpuppet }
 					atxb_secretariat_effect = yes
 				}
-				log = "ATLA Ba Sing Se: [This.GetTitledName] crown [global_atxb_last_crown.GetValue], skim [global_atxb_last_skim.GetValue] from [global_atxb_tribs.GetValue] tributaries, treasury [global_atxb_treasury.GetValue], Royal Authority [global_royalAuthority.GetValue]"
+				# The reach of Ba Sing Se: which tributaries are connected to the capital
+				atxb_flood_fill_effect = yes
+				log = "ATLA Ba Sing Se: [This.GetTitledName] crown [global_atxb_last_crown.GetValue], skim [global_atxb_last_skim.GetValue] from [global_atxb_tribs.GetValue] tributaries ([global_atxb_unlinked.GetValue] out of reach), treasury [global_atxb_treasury.GetValue], Royal Authority [global_royalAuthority.GetValue]"
 
-				# Living tributaries 1: AI tributaries of a weak crown break away (at most 2 a year)
+				# Breakaways (at most 2 a year): twice as likely after the crown refused their plea, half as likely after A Single Law
 				any_tributary = {
 					limit = { atxb_breakaway_candidate_trigger = yes }
 					if = {
+						limit = {
+							has_character_flag = atxb_refused_plea
+							NOT = { had_character_flag = { flag = atxb_refused_plea days = 3650 } }
+						}
+						if = {
+							limit = { has_global_flag = atxb_done_law }
+							random = { chance = 20 character_event = { id = atxb.20 } }
+						}
+						else = {
+							random = { chance = 40 character_event = { id = atxb.20 } }
+						}
+					}
+					else_if = {
 						limit = { has_global_flag = atxb_done_law }
 						random = { chance = 10 character_event = { id = atxb.20 } }
 					}
@@ -81,41 +98,17 @@ character_event = {
 						random = { chance = 20 character_event = { id = atxb.20 } }
 					}
 				}
+				atxb_unlink_all_effect = yes
 			}
 
-			# Living tributaries 2: peacetime pledges (at most 2 a year, rarer the more tributaries the crown already has)
-			any_independent_ruler = {
-				limit = { atxb_peacetime_pledge_trigger = yes }
-				if = {
-					limit = { check_variable = { which = global_atxb_tribs value = 20 } }
-					random = { chance = 4 character_event = { id = atxb.30 } }
-				}
-				else_if = {
-					limit = { check_variable = { which = global_atxb_tribs value = 10 } }
-					random = { chance = 8 character_event = { id = atxb.30 } }
-				}
-				else = {
-					random = { chance = 15 character_event = { id = atxb.30 } }
-				}
-			}
-
-			# Living tributaries 3: realms at war with the Fire Nation or the Way of Chin petition Ba Sing Se
+			# Plea to Ba Sing Se: AI Earth realms under attack ask the crown for help (at most 2 a year, counted in atxb.29)
 			any_independent_ruler = {
 				limit = {
-					atxb_pledge_base_trigger = yes
+					ai = yes
 					war = yes
+					atxb_plea_base_trigger = yes
 				}
-				if = {
-					limit = { check_variable = { which = global_atxb_tribs value = 20 } }
-					random = { chance = 6 character_event = { id = atxb.29 } }
-				}
-				else_if = {
-					limit = { check_variable = { which = global_atxb_tribs value = 10 } }
-					random = { chance = 12 character_event = { id = atxb.29 } }
-				}
-				else = {
-					random = { chance = 25 character_event = { id = atxb.29 } }
-				}
+				random = { chance = 25 character_event = { id = atxb.29 } }
 			}
 		}
 	}
@@ -391,158 +384,256 @@ character_event = {
 	}
 }
 
-# Wartime petition check (ROOT = an independent Earth realm at war). The cap is counted here.
+# A player's plea, from the decision (ROOT = pleader). Players are never blocked by the yearly AI cap.
+character_event = {
+	id = atxb.28
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		atxb_send_plea_effect = yes
+	}
+}
+
+# An AI plea (ROOT = pleader). At most 2 a year across the world, once per war (5 years) per realm.
 character_event = {
 	id = atxb.29
 	hide_window = yes
 	is_triggered_only = yes
 
 	trigger = {
-		NOT = { check_variable = { which = global_atxb_petitions value = 2 } }
-		is_tributary = no
-		OR = { # at most one petition every 5 years
-			NOT = { has_character_flag = atxb_petitioned }
-			had_character_flag = { flag = atxb_petitioned days = 1825 }
-		}
-		any_war = {
-			defender = { character = ROOT }
-			attacker = {
-				OR = {
-					culture_group = fire_nation_cultures
-					religion = way_of_chin
-				}
-			}
-		}
+		NOT = { check_variable = { which = global_atxb_pleas value = 2 } }
+		atxb_plea_war_trigger = yes
 	}
 
 	immediate = {
-		atxb_find_king_effect = yes
-		if = {
-			limit = {
-				event_target:atxb_king = { always = yes }
-				NOT = { war_with = event_target:atxb_king }
-			}
-			change_variable = { which = global_atxb_petitions value = 1 }
-			clr_character_flag = atxb_petitioned
-			set_character_flag = atxb_petitioned
-			event_target:atxb_king = { character_event = { id = atxb.31 } }
-		}
+		change_variable = { which = global_atxb_pleas value = 1 }
+		atxb_send_plea_effect = yes
 	}
 }
 
-# A realm pledges in peacetime (ROOT = pledger). The cap is counted here.
-character_event = {
-	id = atxb.30
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		NOT = { check_variable = { which = global_atxb_pledges value = 2 } }
-		is_tributary = no
-		war = no
-	}
-
-	immediate = {
-		atxb_find_king_effect = yes
-		if = {
-			limit = { event_target:atxb_king = { always = yes } }
-			change_variable = { which = global_atxb_pledges value = 1 }
-			log = "ATLA Ba Sing Se: [Root.GetTitledName] pledged to the Earth King"
-			clr_character_flag = atxb_recent_pledge
-			set_character_flag = atxb_recent_pledge
-			event_target:atxb_king = {
-				make_tributary = { who = ROOT percentage = 0.01 tributary_type = earth_kingdom_territory_tributary }
-				character_event = { id = ATLAE.212 }
-			}
-		}
-	}
-}
-
-# A realm at war petitions Ba Sing Se (ROOT = king, FROM = petitioner)
+# Plea to Ba Sing Se: the king answers (ROOT = king, FROM = pleader). Aid is paid from the treasury, or from the king's
+# own purse when the treasury cannot cover it. How much the crown can send depends on Royal Authority:
+# below 30: 25 gold / 300 men; 30-59: 40 gold / 600 men; 60+: 60 gold / 1,000 men. The host is raised at the
+# pleader's capital, costs no upkeep and disbands at peace.
 character_event = {
 	id = atxb.31
-	desc = atxb.31.d
+	desc = atxb.31.desc
 	picture = GFX_evt_ba_sing_se
 	is_triggered_only = yes
 
 	immediate = {
-		109 = { save_event_target_as = atxb_bss }
+		atxb_find_king_effect = yes
 	}
 
-	option = { # Fund Local Defense
+	option = { # Send gold
 		name = atxb.31.a
-		trigger = { check_variable = { which = global_atxb_treasury value = 50 } }
-		atxb_accept_tributary_effect = yes
-		atxb_fund_local_defense_effect = yes
+		trigger = {
+			OR = {
+				AND = {
+					atxb_band_weak_trigger = yes
+					atxb_crown_can_pay_25_trigger = yes
+				}
+				AND = {
+					atxb_band_steady_trigger = yes
+					atxb_crown_can_pay_40_trigger = yes
+				}
+				AND = {
+					atxb_band_strong_trigger = yes
+					atxb_crown_can_pay_60_trigger = yes
+				}
+			}
+		}
+		if = {
+			limit = { atxb_band_weak_trigger = yes }
+			atxb_crown_pays_25_effect = yes
+			FROM = { wealth = 25 }
+		}
+		else_if = {
+			limit = { atxb_band_steady_trigger = yes }
+			atxb_crown_pays_40_effect = yes
+			FROM = { wealth = 40 }
+		}
+		else_if = {
+			limit = { atxb_band_strong_trigger = yes }
+			atxb_crown_pays_60_effect = yes
+			FROM = { wealth = 60 }
+		}
+		change_variable = { which = global_royalAuthority value = 1 }
+		atxb_clamp_authority_effect = yes
 		FROM = {
-			opinion = { who = ROOT modifier = opinion_atxb_aid_funded years = 10 }
-			set_character_flag = atxb_ans_funded
-			letter_event = { id = atxb.32 days = 5 }
+			atxb_plea_helped_effect = yes
+			opinion = { who = ROOT modifier = opinion_atxb_helped years = 10 }
+			set_character_flag = atxb_ans_gold
+			letter_event = { id = atxb.32 days = 10 }
 		}
 		ai_chance = {
-			factor = 60
-			modifier = { factor = 0 trait = earthkingpuppet }
+			factor = 30
+			modifier = { factor = 0.5 trait = greedy }
 		}
 	}
-	option = { # March to Their Aid (only for realms near Ba Sing Se)
+	option = { # Raise a host at their capital
 		name = atxb.31.b
 		trigger = {
-			NOT = { trait = earthkingpuppet }
-			FROM = { capital_scope = { NOT = { distance = { where = event_target:atxb_bss value > 450 } } } }
+			OR = {
+				AND = {
+					atxb_band_weak_trigger = yes
+					atxb_crown_can_pay_30_trigger = yes
+				}
+				AND = {
+					atxb_band_steady_trigger = yes
+					atxb_crown_can_pay_50_trigger = yes
+				}
+				AND = {
+					atxb_band_strong_trigger = yes
+					atxb_crown_can_pay_75_trigger = yes
+				}
+			}
 		}
-		atxb_accept_tributary_effect = yes
-		join_defender_wars = FROM
+		if = {
+			limit = { atxb_band_weak_trigger = yes }
+			atxb_crown_pays_30_effect = yes
+			FROM = { atxb_raise_host_small_effect = yes }
+		}
+		else_if = {
+			limit = { atxb_band_steady_trigger = yes }
+			atxb_crown_pays_50_effect = yes
+			FROM = { atxb_raise_host_medium_effect = yes }
+		}
+		else_if = {
+			limit = { atxb_band_strong_trigger = yes }
+			atxb_crown_pays_75_effect = yes
+			FROM = { atxb_raise_host_large_effect = yes }
+		}
+		change_variable = { which = global_royalAuthority value = 1 }
+		atxb_clamp_authority_effect = yes
 		FROM = {
-			opinion = { who = ROOT modifier = opinion_atxb_marched years = 10 }
-			set_character_flag = atxb_ans_marched
-			letter_event = { id = atxb.32 days = 5 }
+			atxb_plea_helped_effect = yes
+			opinion = { who = ROOT modifier = opinion_atxb_helped years = 10 }
+			set_character_flag = atxb_ans_host
+			letter_event = { id = atxb.32 days = 10 }
 		}
 		ai_chance = {
 			factor = 40
-			modifier = { factor = 0.25 trait = craven }
-			modifier = { factor = 0.5 war = yes }
+			modifier = { factor = 1.5 trait = brave }
 		}
 	}
-	option = { # Accept Tribute Only
+	option = { # Gold and a host
 		name = atxb.31.c
-		atxb_accept_tributary_effect = yes
+		trigger = {
+			OR = {
+				AND = {
+					atxb_band_weak_trigger = yes
+					atxb_crown_can_pay_55_trigger = yes
+				}
+				AND = {
+					atxb_band_steady_trigger = yes
+					atxb_crown_can_pay_90_trigger = yes
+				}
+				AND = {
+					atxb_band_strong_trigger = yes
+					atxb_crown_can_pay_135_trigger = yes
+				}
+			}
+		}
+		if = {
+			limit = { atxb_band_weak_trigger = yes }
+			atxb_crown_pays_55_effect = yes
+			FROM = {
+				wealth = 25
+				atxb_raise_host_small_effect = yes
+			}
+		}
+		else_if = {
+			limit = { atxb_band_steady_trigger = yes }
+			atxb_crown_pays_90_effect = yes
+			FROM = {
+				wealth = 40
+				atxb_raise_host_medium_effect = yes
+			}
+		}
+		else_if = {
+			limit = { atxb_band_strong_trigger = yes }
+			atxb_crown_pays_135_effect = yes
+			FROM = {
+				wealth = 60
+				atxb_raise_host_large_effect = yes
+			}
+		}
+		change_variable = { which = global_royalAuthority value = 2 }
+		atxb_clamp_authority_effect = yes
 		FROM = {
-			opinion = { who = ROOT modifier = opinion_atxb_tribute_only years = 5 }
-			set_character_flag = atxb_ans_tribute_only
-			letter_event = { id = atxb.32 days = 5 }
+			atxb_plea_helped_effect = yes
+			opinion = { who = ROOT modifier = opinion_atxb_helped_both years = 10 }
+			set_character_flag = atxb_ans_both
+			letter_event = { id = atxb.32 days = 10 }
 		}
 		ai_chance = {
 			factor = 20
-			modifier = { factor = 3 trait = earthkingpuppet }
+			modifier = { factor = 2 check_variable = { which = global_atxb_treasury value = 300 } }
+			modifier = { factor = 1.5 trait = kind }
 		}
 	}
 	option = { # Refuse
 		name = atxb.31.d
 		FROM = {
-			opinion = { who = ROOT modifier = opinion_atxb_refused years = 10 }
+			atxb_plea_refused_effect = yes
 			set_character_flag = atxb_ans_refused
-			letter_event = { id = atxb.32 days = 5 }
+			letter_event = { id = atxb.32 days = 10 }
 		}
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 10
+			modifier = { factor = 3 trait = greedy }
+			modifier = { factor = 2 trait = craven }
+			modifier = { factor = 0.5 trait = kind }
+		}
 	}
 }
 
-# The petitioner hears the answer (ROOT = petitioner, FROM = king)
+# The pleader hears the answer (ROOT = pleader)
 letter_event = {
 	id = atxb.32
-	desc = { trigger = { has_character_flag = atxb_ans_funded } text = atxb.32.d_funded }
-	desc = { trigger = { has_character_flag = atxb_ans_marched } text = atxb.32.d_marched }
-	desc = { trigger = { has_character_flag = atxb_ans_tribute_only } text = atxb.32.d_tribute_only }
+	desc = { trigger = { has_character_flag = atxb_ans_gold } text = atxb.32.d_gold }
+	desc = { trigger = { has_character_flag = atxb_ans_host } text = atxb.32.d_host }
+	desc = { trigger = { has_character_flag = atxb_ans_both } text = atxb.32.d_both }
 	desc = { trigger = { has_character_flag = atxb_ans_refused } text = atxb.32.d_refused }
+	desc = { trigger = { has_character_flag = atxb_ans_sec_token } text = atxb.32.d_sec_token }
+	desc = { trigger = { has_character_flag = atxb_ans_sec_refused } text = atxb.32.d_sec_refused }
 	is_triggered_only = yes
 
 	option = {
 		name = atxb.32.a
 	}
 	after = {
-		clr_character_flag = atxb_ans_funded
-		clr_character_flag = atxb_ans_marched
-		clr_character_flag = atxb_ans_tribute_only
+		clr_character_flag = atxb_ans_gold
+		clr_character_flag = atxb_ans_host
+		clr_character_flag = atxb_ans_both
 		clr_character_flag = atxb_ans_refused
+		clr_character_flag = atxb_ans_sec_token
+		clr_character_flag = atxb_ans_sec_refused
+	}
+}
+
+# Memorandum to a player puppet king: the Grand Secretariat answered a plea on his behalf (FROM = pleader)
+character_event = {
+	id = atxb.33
+	desc = { trigger = { FROM = { has_character_flag = atxb_ans_sec_token } } text = atxb.33.d_token }
+	desc = { trigger = { NOT = { FROM = { has_character_flag = atxb_ans_sec_token } } } text = atxb.33.d_refused }
+	picture = GFX_evt_ba_sing_se
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.33.a
+	}
+}
+
+# Hidden relay: the Secretariat's answer reaches the pleader as a letter from the king (ROOT = king, FROM = pleader)
+character_event = {
+	id = atxb.34
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { letter_event = { id = atxb.32 days = 10 } }
 	}
 }
