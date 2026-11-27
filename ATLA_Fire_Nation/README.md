@@ -1,4 +1,4 @@
-# ATLA Fire Nation
+# Avatar - Fire Nation
 
 Fire Nation submod for **Avatar - Four Nations Restored** (`Rystic/ATLA-restored`). It depends only on the main mod and overrides no base file. Everything is prefixed `atxf_` (event namespace `atxf`). **Not yet tested in game.**
 
