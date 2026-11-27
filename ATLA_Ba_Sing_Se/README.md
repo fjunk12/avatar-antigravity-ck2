@@ -1,4 +1,6 @@
-# ATLA Ba Sing Se
+# Avatar - Earth Kingdom
+
+Shown in the launcher as **Avatar - Earth Kingdom** (formerly "ATLA Ba Sing Se"). The folder (`ATLA_Ba_Sing_Se`), the prefix (`atxb_`) and the `ATLA Ba Sing Se:` lines in game.log are unchanged, so saves keep working.
 
 Earth Kingdom submod for **Avatar - Four Nations Restored** (`Rystic/ATLA-restored`). It depends only on the main mod and overrides no base file. Everything is prefixed `atxb_` (event namespace `atxb`), so it can run alongside `ATLA_Restored_Bugfixes` and `ATLA_Avatars_Legacy` (`atxl_`).
 
