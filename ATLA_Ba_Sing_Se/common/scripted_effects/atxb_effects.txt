@@ -788,7 +788,7 @@ atxb_overextension_effect = {
 	clr_global_flag = atxb_overext_2
 	if = {
 		limit = {
-			has_law = ek_unity_3
+			primary_title = { has_law = ek_unity_3 }
 			has_global_flag = atxb_done_roads
 			has_global_flag = atxb_done_law
 		}

@@ -90,8 +90,10 @@ atxb.33.d_refused;A memorandum from the Grand Secretariat: an envoy from [From.G
 atxb.33.a;I see.;;;;;;;;;;;;;x
 atxb_overextended_1;Overextended Crown;;;;;;;;;;;;;x
 atxb_overextended_1_desc;Ba Sing Se rules more of the Earth Kingdom directly than its officials can govern.;;;;;;;;;;;;;x
+desc_atxb_overextended_1;Ba Sing Se rules more of the Earth Kingdom directly than its officials can govern.;;;;;;;;;;;;;x
 atxb_overextended_2;Badly Overextended Crown;;;;;;;;;;;;;x
 atxb_overextended_2_desc;Ba Sing Se rules far more of the Earth Kingdom directly than its officials can govern. Distant lords ignore the crown's orders.;;;;;;;;;;;;;x
+desc_atxb_overextended_2;Ba Sing Se rules far more of the Earth Kingdom directly than its officials can govern. Distant lords ignore the crown's orders.;;;;;;;;;;;;;x
 atxb_overext_count_tt;Provinces ruled directly outside the walls of Ba Sing Se: [global_atxb_outside.GetValue]. The crown is overextended from [global_atxb_cap1.GetValue] and badly overextended from [global_atxb_cap2.GetValue]. The Royal Roads and A Single Law each raise both by 15.;;;;;;;;;;;;;x
 atxb_overext_1_tt;The crown is overextended: vassal opinion -10, tax -15%, revolt risk +2%.;;;;;;;;;;;;;x
 atxb_overext_2_tt;The crown is badly overextended: vassal opinion -20, tax -25%, revolt risk +4%.;;;;;;;;;;;;;x
