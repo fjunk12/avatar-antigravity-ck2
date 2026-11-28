@@ -30,3 +30,15 @@ atxb_daofei_presence = {
 	local_tax_modifier = -0.15
 	local_revolt_risk = 0.02
 }
+
+# The daofei helped their patron win a war, and now they collect (10 years)
+atxb_daofei_influence = {
+	icon = 13
+	local_tax_modifier = -0.2
+	local_revolt_risk = 0.02
+}
+atxb_daofei_patron = {
+	icon = 13
+	intrigue = 1
+	plot_power_modifier = 0.1
+}

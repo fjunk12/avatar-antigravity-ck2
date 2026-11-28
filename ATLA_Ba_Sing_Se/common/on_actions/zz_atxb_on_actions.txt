@@ -4,3 +4,21 @@ on_yearly_pulse = {
 		atxb.1 # treasury, works, living tributaries (once a year for the whole world)
 	}
 }
+
+# Daofei debts: whoever hired daofei and wins their war pays the brotherhoods in influence
+# From = Attacker, Root = Defender
+on_war_ended_victory = {
+	events = {
+		atxb.62 # the attacker won
+	}
+}
+on_war_ended_defeat = {
+	events = {
+		atxb.63 # the defender won
+	}
+}
+on_war_ended_whitepeace = {
+	events = {
+		atxb.64 # nobody won
+	}
+}

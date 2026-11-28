@@ -11,6 +11,8 @@
 # atxb.53  Royal Grant: hidden relay for the Grand Secretariat's refusal (ROOT = king, FROM = tributary)
 # atxb.54  Royal Grant: an AI tributary asks (hidden, at most 2 a year)
 # atxb.60  the Daofei Underworld: outlaws appear in an Earth lord's realm (at most 3 a year)
+# atxb.61  the daofei collect after a won war (players)
+# atxb.62/63/64  hidden: a war ended (victory / defeat / white peace); settles daofei debts
 # atxb.6   the Grand Secretariat's report to a puppet Earth King (players)
 # atxb.10  a work completes a stage            atxb.11  a work stalls or is abandoned
 # atxb.15  a work is finished                   atxb.16  news to tributaries: A Single Law for the Kingdom
@@ -113,7 +115,7 @@ character_event = {
 				}
 				atxb_unlink_all_effect = yes
 
-				# Royal Grants: short-of-gold AI tributaries that like the king ask for money (at most 2 a year, counted in atxb.54)
+				# Royal Grants: short-of-gold AI tributaries that don't dislike the king (opinion 10+) ask for money, 25% each (at most 2 a year, counted in atxb.54)
 				if = {
 					limit = { check_variable = { which = global_atxb_treasury value = 50 } }
 					any_tributary = {
@@ -121,9 +123,9 @@ character_event = {
 							ai = yes
 							atxb_grant_base_trigger = yes
 							NOT = { wealth = 50 }
-							opinion = { who = event_target:atxb_king value = 25 }
+							opinion = { who = event_target:atxb_king value = 10 }
 						}
-						random = { chance = 10 character_event = { id = atxb.54 days = 10 random = 60 } }
+						random = { chance = 25 character_event = { id = atxb.54 days = 10 random = 60 } }
 					}
 				}
 			}
@@ -1017,9 +1019,88 @@ character_event = {
 		wealth = -25
 		atxb_daofei_irregulars_effect = yes
 		atxb_daofei_settle_effect = yes
+		set_character_flag = atxb_daofei_debt
+		custom_tooltip = { text = atxb_daofei_debt_tt }
 		ai_chance = {
 			factor = 60
 			modifier = { factor = 0.5 trait = honest }
 		}
+	}
+}
+
+# The daofei collect after a won war (ROOT = the patron, players only)
+character_event = {
+	id = atxb.61
+	desc = atxb.61.d
+	picture = GFX_evt_bandits
+	is_triggered_only = yes
+
+	option = {
+		name = atxb.61.a
+	}
+}
+
+# A war ended in the attacker's victory (ROOT = defender, FROM = attacker)
+character_event = {
+	id = atxb.62
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_character_flag = atxb_daofei_debt
+			FROM = { has_character_flag = atxb_daofei_debt }
+		}
+	}
+
+	immediate = {
+		clr_character_flag = atxb_daofei_debt # lost: the brotherhoods move on
+		FROM = {
+			if = {
+				limit = { has_character_flag = atxb_daofei_debt }
+				atxb_daofei_collect_effect = yes
+			}
+		}
+	}
+}
+
+# A war ended in the defender's victory (ROOT = defender, FROM = attacker)
+character_event = {
+	id = atxb.63
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_character_flag = atxb_daofei_debt
+			FROM = { has_character_flag = atxb_daofei_debt }
+		}
+	}
+
+	immediate = {
+		FROM = { clr_character_flag = atxb_daofei_debt }
+		if = {
+			limit = { has_character_flag = atxb_daofei_debt }
+			atxb_daofei_collect_effect = yes
+		}
+	}
+}
+
+# A war ended in a white peace (ROOT = defender, FROM = attacker): nobody owes anything
+character_event = {
+	id = atxb.64
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_character_flag = atxb_daofei_debt
+			FROM = { has_character_flag = atxb_daofei_debt }
+		}
+	}
+
+	immediate = {
+		clr_character_flag = atxb_daofei_debt
+		FROM = { clr_character_flag = atxb_daofei_debt }
 	}
 }

@@ -63,6 +63,7 @@ atxb_crown_weak_trigger = {
 # An AI tributary that may break away (character scope, the tributary; needs event_target:atxb_king).
 # Close to Ba Sing Se it takes a weak crown and a tributary that dislikes the king.
 # Out of reach (no chain of tributaries to Ba Sing Se, flag atxb_linked missing) it only takes opinion below 25.
+# A Way of Chin tributary only needs opinion below 50.
 atxb_breakaway_candidate_trigger = {
 	ai = yes
 	higher_tier_than = COUNT
@@ -86,6 +87,11 @@ atxb_breakaway_candidate_trigger = {
 		AND = {
 			NOT = { has_character_flag = atxb_linked }
 			NOT = { opinion = { who = event_target:atxb_king value = 25 } }
+		}
+		# Way of Chin tributaries never forgot Chin the Conqueror: whatever the crown's strength, unless they truly like the king
+		AND = {
+			religion = way_of_chin
+			NOT = { opinion = { who = event_target:atxb_king value = 50 } }
 		}
 	}
 }

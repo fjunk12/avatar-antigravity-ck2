@@ -151,3 +151,12 @@ atxb_hire_daofei;Hire Daofei Irregulars;;;;;;;;;;;;;x
 atxb_hire_daofei_desc;Buy the swords of the outlaw brotherhoods for this war. They fight cheaply and leave when the war is over, but they don't leave the land entirely.;;;;;;;;;;;;;x
 atxb_hire_daofei_tt;500 irregulars (light infantry and archers) at your capital until the war ends. If no daofei operate in your realm yet, they settle at your capital for 5 years (tax -15%, revolt risk +2%).;;;;;;;;;;;;;x
 atxb_daofei_cooldown_tt;You have not hired daofei in the last 3 years;;;;;;;;;;;;;x
+atxb_daofei_debt_tt;The daofei will want their due: if you win this war, they gain influence in your capital for 10 years (tax -20%, revolt risk +2%), and you gain their friendship (intrigue +1, plot power +10%). If you lose, they move on.;;;;;;;;;;;;;x
+atxb.61.d;The war is won, and the daofei who fought for us have come to collect. Their brotherhoods now run the markets and docks of our capital, and nothing moves there without their say. In return, they hear everything, and they tell us.;;;;;;;;;;;;;x
+atxb.61.a;A debt is a debt.;;;;;;;;;;;;;x
+atxb_daofei_influence;Daofei Influence;;;;;;;;;;;;;x
+atxb_daofei_influence_desc;The daofei helped the lord of this province win a war. Now their brotherhoods run its markets.;;;;;;;;;;;;;x
+desc_atxb_daofei_influence;The daofei helped the lord of this province win a war. Now their brotherhoods run its markets.;;;;;;;;;;;;;x
+atxb_daofei_patron;Friend of the Daofei;;;;;;;;;;;;;x
+atxb_daofei_patron_desc;The outlaw brotherhoods owe this lord a war, and this lord owes them a city. They hear everything.;;;;;;;;;;;;;x
+desc_atxb_daofei_patron;The outlaw brotherhoods owe this lord a war, and this lord owes them a city. They hear everything.;;;;;;;;;;;;;x

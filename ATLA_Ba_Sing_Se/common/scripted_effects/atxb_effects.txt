@@ -342,10 +342,12 @@ atxb_progress_roads_effect = {
 		}
 		else = {
 			change_variable = { which = global_atxb_w_roads_stall value = 1 }
+			log = "ATLA Ba Sing Se: work roads stalled (treasury [global_atxb_treasury.GetValue])"
 			if = {
 				limit = { check_variable = { which = global_atxb_w_roads_stall value = 3 } }
 				set_variable = { which = global_atxb_w_roads_stage value = 0 }
 				set_variable = { which = global_atxb_w_roads_stall value = 0 }
+				log = "ATLA Ba Sing Se: work roads abandoned after 3 stalls (treasury [global_atxb_treasury.GetValue])"
 				if = {
 					limit = { ai = no }
 					set_character_flag = atxb_abandon_roads
@@ -389,10 +391,12 @@ atxb_progress_law_effect = {
 		}
 		else = {
 			change_variable = { which = global_atxb_w_law_stall value = 1 }
+			log = "ATLA Ba Sing Se: work law stalled (treasury [global_atxb_treasury.GetValue])"
 			if = {
 				limit = { check_variable = { which = global_atxb_w_law_stall value = 3 } }
 				set_variable = { which = global_atxb_w_law_stage value = 0 }
 				set_variable = { which = global_atxb_w_law_stall value = 0 }
+				log = "ATLA Ba Sing Se: work law abandoned after 3 stalls (treasury [global_atxb_treasury.GetValue])"
 				if = {
 					limit = { ai = no }
 					set_character_flag = atxb_abandon_law
@@ -436,10 +440,12 @@ atxb_progress_granaries_effect = {
 		}
 		else = {
 			change_variable = { which = global_atxb_w_granaries_stall value = 1 }
+			log = "ATLA Ba Sing Se: work granaries stalled (treasury [global_atxb_treasury.GetValue])"
 			if = {
 				limit = { check_variable = { which = global_atxb_w_granaries_stall value = 3 } }
 				set_variable = { which = global_atxb_w_granaries_stage value = 0 }
 				set_variable = { which = global_atxb_w_granaries_stall value = 0 }
+				log = "ATLA Ba Sing Se: work granaries abandoned after 3 stalls (treasury [global_atxb_treasury.GetValue])"
 				if = {
 					limit = { ai = no }
 					set_character_flag = atxb_abandon_granaries
@@ -627,10 +633,9 @@ atxb_plea_refused_effect = {
 	set_character_flag = atxb_refused_plea
 }
 atxb_raise_host_small_effect = {
-	capital_scope = { save_event_target_as = atxb_host_capital }
 	spawn_unit = {
-		province = event_target:atxb_host_capital
-		home = event_target:atxb_host_capital
+		province = capital_scope
+		home = capital_scope
 		owner = THIS
 		troops = {
 			light_infantry = { 180 180 }
@@ -643,10 +648,9 @@ atxb_raise_host_small_effect = {
 	}
 }
 atxb_raise_host_medium_effect = {
-	capital_scope = { save_event_target_as = atxb_host_capital }
 	spawn_unit = {
-		province = event_target:atxb_host_capital
-		home = event_target:atxb_host_capital
+		province = capital_scope
+		home = capital_scope
 		owner = THIS
 		troops = {
 			light_infantry = { 360 360 }
@@ -659,10 +663,9 @@ atxb_raise_host_medium_effect = {
 	}
 }
 atxb_raise_host_large_effect = {
-	capital_scope = { save_event_target_as = atxb_host_capital }
 	spawn_unit = {
-		province = event_target:atxb_host_capital
-		home = event_target:atxb_host_capital
+		province = capital_scope
+		home = capital_scope
 		owner = THIS
 		troops = {
 			light_infantry = { 600 600 }
@@ -910,10 +913,9 @@ atxb_daofei_clear_effect = {
 }
 # A band of daofei irregulars at the lord's capital: 500 men, normal upkeep, gone at peace
 atxb_daofei_irregulars_effect = {
-	capital_scope = { save_event_target_as = atxb_daofei_capital }
 	spawn_unit = {
-		province = event_target:atxb_daofei_capital
-		home = event_target:atxb_daofei_capital
+		province = capital_scope
+		home = capital_scope
 		owner = THIS
 		troops = {
 			light_infantry = { 350 350 }
@@ -921,5 +923,24 @@ atxb_daofei_irregulars_effect = {
 		}
 		attrition = 1.0
 		disband_on_peace = yes
+	}
+}
+
+# Daofei debts (character scope: a lord who hired daofei). Won the war: the brotherhoods collect at the capital for 10 years.
+atxb_daofei_collect_effect = {
+	clr_character_flag = atxb_daofei_debt
+	if = {
+		limit = { is_landed = yes }
+		capital_scope = {
+			remove_province_modifier = atxb_daofei_influence
+			add_province_modifier = { name = atxb_daofei_influence duration = 3650 }
+		}
+		remove_character_modifier = atxb_daofei_patron
+		add_character_modifier = { name = atxb_daofei_patron duration = 3650 }
+		log = "ATLA Ba Sing Se: the daofei collect their due from [This.GetTitledName] after the war"
+		if = {
+			limit = { ai = no }
+			character_event = { id = atxb.61 }
+		}
 	}
 }
