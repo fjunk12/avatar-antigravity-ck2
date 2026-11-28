@@ -176,6 +176,8 @@ decisions = {
 			wealth = -50
 			clr_character_flag = atxb_hired_daofei
 			set_character_flag = atxb_hired_daofei
+			set_character_flag = atxb_daofei_debt
+			custom_tooltip = { text = atxb_daofei_debt_tt }
 			custom_tooltip = { text = atxb_hire_daofei_tt }
 			hidden_tooltip = {
 				atxb_daofei_irregulars_effect = yes

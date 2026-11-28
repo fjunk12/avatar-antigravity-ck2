@@ -925,3 +925,22 @@ atxb_daofei_irregulars_effect = {
 		disband_on_peace = yes
 	}
 }
+
+# Daofei debts (character scope: a lord who hired daofei). Won the war: the brotherhoods collect at the capital for 10 years.
+atxb_daofei_collect_effect = {
+	clr_character_flag = atxb_daofei_debt
+	if = {
+		limit = { is_landed = yes }
+		capital_scope = {
+			remove_province_modifier = atxb_daofei_influence
+			add_province_modifier = { name = atxb_daofei_influence duration = 3650 }
+		}
+		remove_character_modifier = atxb_daofei_patron
+		add_character_modifier = { name = atxb_daofei_patron duration = 3650 }
+		log = "ATLA Ba Sing Se: the daofei collect their due from [This.GetTitledName] after the war"
+		if = {
+			limit = { ai = no }
+			character_event = { id = atxb.61 }
+		}
+	}
+}

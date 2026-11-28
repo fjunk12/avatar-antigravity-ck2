@@ -135,6 +135,13 @@ Daofei are the outlaw brotherhoods of the Earth Kingdom.
 
 - **Daofei presence** (`atxb_daofei_presence`): a province modifier lasting 5 years, with tax −15% and revolt risk +2%.
 - **Hire Daofei Irregulars** (decision, at war, every 3 years): 50 gold for 500 irregulars (light infantry and archers, normal upkeep) until peace. If no daofei are in your realm yet, they settle at your capital.
+- **Daofei debts:** anyone who hires daofei, by the event or the decision (revolt leaders included), owes them. The debt is settled through vanilla's war-end hooks (`on_war_ended_victory` / `_defeat` / `_whitepeace`).
+  - **If the hirer wins the war** (as attacker or defender), the daofei collect for 10 years:
+    - the capital gets **Daofei Influence** (tax −20%, revolt risk +2%);
+    - the lord becomes a **Friend of the Daofei** (intrigue +1, plot power +10%).
+  - **A loss or a white peace** clears the debt.
+
+  Example: a count who overthrows his liege for another heir with daofei help ends up with the brotherhoods running his county.
 
 ## Royal Arbitration
 
