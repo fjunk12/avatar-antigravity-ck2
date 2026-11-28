@@ -18,6 +18,8 @@ decisions = {
 		potential = {
 			ai = yes
 			atxb_can_start_roads_trigger = yes
+			atxb_any_work_running_trigger = no # the AI builds one work at a time
+			check_variable = { which = global_atxb_treasury value = 225 } # first payment plus one yearly stage in hand
 		}
 		allow = { always = yes }
 		effect = {
@@ -31,6 +33,8 @@ decisions = {
 		potential = {
 			ai = yes
 			atxb_can_start_law_trigger = yes
+			atxb_any_work_running_trigger = no # the AI builds one work at a time
+			check_variable = { which = global_atxb_treasury value = 400 } # first payment plus one yearly stage in hand
 		}
 		allow = { always = yes }
 		effect = {
@@ -44,6 +48,8 @@ decisions = {
 		potential = {
 			ai = yes
 			atxb_can_start_granaries_trigger = yes
+			atxb_any_work_running_trigger = no # the AI builds one work at a time
+			check_variable = { which = global_atxb_treasury value = 200 } # first payment plus one yearly stage in hand
 		}
 		allow = { always = yes }
 		effect = {
