@@ -358,7 +358,6 @@ atxb_daofei_ruler_trigger = {
 	higher_tier_than = COUNT
 	culture_group = earth_kingdom_cultures
 	atxb_is_king_trigger = no
-	in_revolt = no # not the leader of a faction revolt (rebel = no covers only peasant/religious rebels)
 	NOR = {
 		religion = way_of_chin
 		mercenary = yes
