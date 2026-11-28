@@ -93,6 +93,8 @@ After each action the popup reopens with the new figures. The AI takes the same 
 **Rules for works:**
 - One stage is paid each year.
 - If the treasury can't pay, the work stalls. Three stalls in a row abandon it, and the money spent is lost.
+- The AI builds one work at a time, and only starts one with the first payment plus one yearly stage in hand (Roads 225, Law 400, Granaries 200).
+- game.log records every stall and abandonment.
 
 **Also:**
 - **Draw on the Treasury:** 100 out, 50 to your purse, Royal Authority −5, every 2 years.
