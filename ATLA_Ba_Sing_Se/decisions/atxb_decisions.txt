@@ -219,7 +219,7 @@ decisions = {
 # Royal Arbitration: the Earth King orders an Earth realm to end its war against another Earth realm (diplomacy screen of the attacker)
 targetted_decisions = {
 	atxb_royal_arbitration = {
-		ai = no
+		ai_check_interval = 12
 		filter = independent_rulers
 		ai_target_filter = independent_rulers
 		from_potential = {
@@ -293,6 +293,12 @@ targetted_decisions = {
 			log = "ATLA Ba Sing Se: [From.GetTitledName] demanded that [Root.GetTitledName] make peace"
 			character_event = { id = atxb.42 }
 		}
-		ai_will_do = { factor = 0 }
+		# AI kings arbitrate rarely, only with a strong crown (Royal Authority 60+); FROM is the king
+		ai_will_do = {
+			factor = 0.05
+			modifier = { factor = 0 NOT = { check_variable = { which = global_royalAuthority value = 60 } } }
+			modifier = { factor = 2 check_variable = { which = global_royalAuthority value = 90 } }
+			modifier = { factor = 2 pays_tribute_to = FROM }
+		}
 	}
 }

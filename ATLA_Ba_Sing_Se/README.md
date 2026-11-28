@@ -20,6 +20,7 @@ The base mod already has four Earth Kingdom tributary types: outpost 10%, territ
 **Breakaways.** An AI tributary (duke or above) may break away. It uses the base decision's effect (`ATLAE.208`–`210`), and the base `earth_kingdom_reconquest` war is the crown's answer. Conditions:
 - **Close to Ba Sing Se:** the crown is weak (puppet king, Royal Authority below 30, or at war below 50) **and** the tributary dislikes the king (opinion below 0).
 - **Out of reach:** opinion below 25 is enough, whatever the crown's strength.
+- **Way of Chin tributaries** (made tributaries by the base "Peace at Last!" event): opinion below 50 is enough, whatever the crown's strength.
 - **Odds:** 20% a year, 10% after A Single Law, and twice as likely for 10 years after the crown refused its plea. At most 2 a year.
 - **Grace periods:** the first 3 years of a campaign, 5 years after a unity-law change, and 10 years after the crown answered its plea.
 
@@ -107,7 +108,7 @@ After each action the popup reopens with the new figures. The AI takes the same 
 An Earth Kingdom tributary (duke or above, not Way of Chin) can ask the crown for gold from the treasury. It needs a treasury of 50 or more, and it can ask once every 5 years.
 
 - **Players:** the **Petition for a Royal Grant** decision.
-- **AI tributaries:** they ask through the yearly run, only if they have less than 50 gold and an opinion of the king of 25 or more. At most 2 a year across the world.
+- **AI tributaries:** they ask through the yearly run, only if they have less than 50 gold and an opinion of the king of 10 or more (25% chance each). At most 2 a year across the world.
 
 The Earth King answers:
 
@@ -147,7 +148,7 @@ The Earth King can order an Earth realm to stop a war against a fellow Earth rea
   - It thinks 10 less of the king for 5 years.
 - **Defy:** the crown loses another 5 Royal Authority, and the king loses 25 prestige.
 - **AI odds:** obeying is likelier with a strong crown (Royal Authority 60+), as the king's tributary, or with good opinion of the king. It is less likely with a weak crown, bad opinion, or an ambitious or proud ruler. A player target chooses.
-- **AI kings:** they don't use it yet.
+- **AI kings:** they use it rarely, and only with Royal Authority 60 or more (more often at 90+ and for their own tributaries).
 
 The base mod's other Royal Authority actions remain:
 - Recognise Noble, Annex Subject, Demand Reverence and Loyalty Campaign (targeted decisions on tributaries).

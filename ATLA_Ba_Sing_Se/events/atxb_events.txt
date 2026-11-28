@@ -113,7 +113,7 @@ character_event = {
 				}
 				atxb_unlink_all_effect = yes
 
-				# Royal Grants: short-of-gold AI tributaries that like the king ask for money (at most 2 a year, counted in atxb.54)
+				# Royal Grants: short-of-gold AI tributaries that don't dislike the king (opinion 10+) ask for money, 25% each (at most 2 a year, counted in atxb.54)
 				if = {
 					limit = { check_variable = { which = global_atxb_treasury value = 50 } }
 					any_tributary = {
@@ -121,9 +121,9 @@ character_event = {
 							ai = yes
 							atxb_grant_base_trigger = yes
 							NOT = { wealth = 50 }
-							opinion = { who = event_target:atxb_king value = 25 }
+							opinion = { who = event_target:atxb_king value = 10 }
 						}
-						random = { chance = 10 character_event = { id = atxb.54 days = 10 random = 60 } }
+						random = { chance = 25 character_event = { id = atxb.54 days = 10 random = 60 } }
 					}
 				}
 			}
