@@ -105,12 +105,19 @@ character_event = {
 		atxf_find_fire_lord_effect = yes
 		if = {
 			limit = {
-				event_target:atxf_fire_lord = { culture_group = fire_nation_cultures }
+				# a stale target (both titles gone) fails atxf_is_fire_lord_trigger, so nothing below runs for a former Fire Lord
+				event_target:atxf_fire_lord = {
+					atxf_is_fire_lord_trigger = yes
+					culture_group = fire_nation_cultures
+				}
 			}
 			# The Fire Sages ask every new Fire Lord where they stand
 			event_target:atxf_fire_lord = {
 				if = {
-					limit = { NOT = { has_character_flag = atxf_sages_asked } }
+					limit = {
+						NOT = { has_character_flag = atxf_sages_asked }
+						NOT = { has_global_flag = atxf_cpw } # the Sages wait for the succession war to end
+					}
 					set_character_flag = atxf_sages_asked
 					character_event = { id = atxf.60 days = 30 }
 				}
@@ -150,6 +157,7 @@ character_event = {
 			if = {
 				limit = { has_global_flag = atxf_throne_absolute }
 				event_target:atxf_fire_lord = {
+					remove_character_modifier = atxf_clans_broken # the Absolute Throne replaces it
 					remove_character_modifier = atxf_absolute_throne
 					add_character_modifier = { name = atxf_absolute_throne duration = 400 }
 				}
