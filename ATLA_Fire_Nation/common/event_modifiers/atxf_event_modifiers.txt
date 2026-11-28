@@ -10,3 +10,27 @@ atxf_clan_compact = {
 	vassal_opinion = 10
 	global_tax_modifier = -0.05
 }
+# The project to break the clans is complete: reapplied to every Fire Lord by the yearly run
+atxf_absolute_throne = {
+	icon = 24
+	global_tax_modifier = 0.1
+	global_levy_size = 0.1
+	monthly_character_prestige = 0.5
+}
+# The Compact granted the clans a seat on the council (10 years)
+atxf_clan_council = {
+	icon = 13
+	global_tax_modifier = -0.05
+	vassal_opinion = 5
+}
+# The Fire Sages and the throne (for the Fire Lord's life)
+atxf_sages_revered = {
+	icon = 24
+	monthly_character_piety = 0.5
+	vassal_opinion = 5
+}
+atxf_sages_subordinated = {
+	icon = 24
+	monthly_character_prestige = 0.5
+	global_tax_modifier = 0.05
+}

@@ -166,3 +166,77 @@ atxf_send_petition_effect = {
 	log = "ATLA Fire Nation: [Root.GetTitledName] petitioned the Fire Lord"
 	top_liege = { character_event = { id = atxf.41 } }
 }
+
+# ---- v1.1: the generational clan aftermath ----
+# The Fire Lord (e_fire_nation holder, else k_fire_nation holder) as a global event target
+atxf_find_fire_lord_effect = {
+	if = {
+		limit = { e_fire_nation = { has_holder = yes } }
+		e_fire_nation = { holder_scope = { save_global_event_target_as = atxf_fire_lord } }
+	}
+	else_if = {
+		limit = { k_fire_nation = { has_holder = yes } }
+		k_fire_nation = { holder_scope = { save_global_event_target_as = atxf_fire_lord } }
+	}
+}
+# Progress of the project to break the clans: keep it between 0 and 100
+atxf_clamp_project_effect = {
+	if = {
+		limit = { NOT = { check_variable = { which = global_atxf_centralization value = 0 } } }
+		set_variable = { which = global_atxf_centralization value = 0 }
+	}
+	if = {
+		limit = { check_variable = { which = global_atxf_centralization value = 100 } }
+		set_variable = { which = global_atxf_centralization value = 100 }
+	}
+}
+# The purge of the Saowon (Fire Lord's scope)
+atxf_purge_saowon_effect = {
+	any_character = {
+		limit = { dynasty = 3995 NOT = { character = ROOT } }
+		opinion = { who = ROOT modifier = opinion_atxf_purged years = 20 }
+	}
+	change_variable = { which = global_atxf_centralization value = 25 }
+	atxf_clamp_project_effect = yes
+	if = {
+		limit = { NOT = { trait = dishonourable } }
+		random = { chance = 50 add_trait = dishonourable }
+	}
+	log = "ATLA Fire Nation: [Root.GetTitledName] purged the Saowon (project [global_atxf_centralization.GetValue]/100)"
+}
+# The Compact shatters (any scope): the clans are furious, and the throne turns to breaking them instead
+atxf_compact_shatter_effect = {
+	clr_global_flag = atxf_path_compact
+	set_global_flag = atxf_compact_broken
+	set_global_flag = atxf_path_broken
+	set_variable = { which = global_atxf_centralization value = 0 }
+	event_target:atxf_fire_lord = { remove_character_modifier = atxf_clan_compact }
+	any_character = {
+		limit = {
+			OR = {
+				dynasty = 3994
+				dynasty = 3995
+			}
+			NOT = { character = event_target:atxf_fire_lord }
+		}
+		opinion = { who = event_target:atxf_fire_lord modifier = opinion_atxf_compact_broken years = 20 }
+	}
+	log = "ATLA Fire Nation: the Compact with the clans has shattered"
+}
+# The Fire Lord honours a demand of the clan council (Fire Lord's scope)
+atxf_compact_honoured_effect = {
+	any_character = {
+		limit = {
+			OR = {
+				dynasty = 3994
+				dynasty = 3995
+			}
+			NOT = { character = ROOT }
+		}
+		opinion = { who = ROOT modifier = opinion_atxf_compact_honoured years = 10 }
+	}
+	clr_character_flag = atxf_dem_gold
+	clr_character_flag = atxf_dem_seat
+	clr_character_flag = atxf_dem_match
+	log = "ATLA Fire Nation: [Root.GetTitledName] honoured a demand of the clan council"
+}

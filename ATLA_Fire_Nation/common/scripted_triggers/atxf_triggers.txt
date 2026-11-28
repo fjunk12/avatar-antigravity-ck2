@@ -98,3 +98,28 @@ atxf_has_denounceable_rival_trigger = {
 		NOT = { atxf_is_fire_lord_trigger = yes }
 	}
 }
+
+# ---- v1.1: the generational clan aftermath ----
+# A landed Keohso or Saowon lord in the Fire Lord's realm (character scope; needs event_target:atxf_fire_lord)
+atxf_clan_lord_trigger = {
+	is_ruler = yes
+	is_landed = yes
+	OR = {
+		dynasty = 3994
+		dynasty = 3995
+	}
+	NOT = { character = event_target:atxf_fire_lord }
+	top_liege = { character = event_target:atxf_fire_lord }
+}
+# The project to break the clans is under way and not finished
+atxf_project_running_trigger = {
+	has_global_flag = atxf_path_broken
+	NOT = { has_global_flag = atxf_throne_absolute }
+}
+# Purges are allowed: the Avatar's clemency (10 years) is not in force
+atxf_purge_allowed_trigger = {
+	OR = {
+		NOT = { has_global_flag = atxf_clemency }
+		had_global_flag = { flag = atxf_clemency days = 3650 }
+	}
+}

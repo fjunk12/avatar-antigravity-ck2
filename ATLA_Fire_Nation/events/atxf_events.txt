@@ -6,6 +6,13 @@
 # atxf.5   hidden relay on the Avatar: sends atxf.4 to both claimants, so the letter comes from the Avatar
 # atxf.10  an envoy courts a lord for the other side (capped)
 # atxf.30  the aftermath: the fate of the clans (to the winner)
+# atxf.50  the project to break the clans: a hard step (to the Fire Lord)
+# atxf.52  a clan remonstrance (backlash while the project runs)
+# atxf.53  the Absolute Throne: the project is complete
+# atxf.54  the Avatar's demand for clemency (letter to the Fire Lord, FROM = the Avatar)
+# atxf.55  the clan council's demand under the Compact
+# atxf.56  hidden relay on the Avatar: sends atxf.54
+# atxf.60  the Fire Sages and the throne (once per Fire Lord)
 # atxf.40  Petition the Fire Lord: a player chooses what to ask (decision)
 # atxf.41  Petition the Fire Lord: the Fire Lord answers (ROOT = Fire Lord, FROM = petitioner)
 # atxf.42  Petition the Fire Lord: the answer letter (ROOT = petitioner, FROM = Fire Lord)
@@ -90,6 +97,73 @@ character_event = {
 						}
 						character_event = { id = atxf.10 }
 					}
+				}
+			}
+		}
+
+		# ---- The Fire Lord: the Fire Sages, the clan project, the Compact ----
+		atxf_find_fire_lord_effect = yes
+		if = {
+			limit = {
+				event_target:atxf_fire_lord = { culture_group = fire_nation_cultures }
+			}
+			# The Fire Sages ask every new Fire Lord where they stand
+			event_target:atxf_fire_lord = {
+				if = {
+					limit = { NOT = { has_character_flag = atxf_sages_asked } }
+					set_character_flag = atxf_sages_asked
+					character_event = { id = atxf.60 days = 30 }
+				}
+			}
+			# Breaking the clans: a generational project (+4 a year, more with every hard step)
+			if = {
+				limit = { atxf_project_running_trigger = yes }
+				change_variable = { which = global_atxf_centralization value = 4 }
+				atxf_clamp_project_effect = yes
+				if = {
+					limit = { check_variable = { which = global_atxf_centralization value = 100 } }
+					set_global_flag = atxf_throne_absolute
+					log = "ATLA Fire Nation: the clans are broken; the Absolute Throne is established"
+					event_target:atxf_fire_lord = { character_event = { id = atxf.53 } }
+				}
+				else = {
+					log = "ATLA Fire Nation: the project to break the clans stands at [global_atxf_centralization.GetValue]/100"
+					random = {
+						chance = 33
+						event_target:atxf_fire_lord = { character_event = { id = atxf.50 days = 30 random = 200 } }
+					}
+					# Backlash: an aggrieved clan lord remonstrates
+					random = {
+						chance = 20
+						random_character = {
+							limit = {
+								atxf_clan_lord_trigger = yes
+								NOT = { opinion = { who = event_target:atxf_fire_lord value = 0 } }
+							}
+							save_global_event_target_as = atxf_remonstrant
+							event_target:atxf_fire_lord = { character_event = { id = atxf.52 days = 30 random = 200 } }
+						}
+					}
+				}
+			}
+			# The Absolute Throne passes to every Fire Lord
+			if = {
+				limit = { has_global_flag = atxf_throne_absolute }
+				event_target:atxf_fire_lord = {
+					remove_character_modifier = atxf_absolute_throne
+					add_character_modifier = { name = atxf_absolute_throne duration = 400 }
+				}
+			}
+			# The Compact passes to every Fire Lord while it holds, and the clan council makes demands
+			if = {
+				limit = { has_global_flag = atxf_path_compact }
+				event_target:atxf_fire_lord = {
+					remove_character_modifier = atxf_clan_compact
+					add_character_modifier = { name = atxf_clan_compact duration = 400 }
+				}
+				random = {
+					chance = 33
+					event_target:atxf_fire_lord = { character_event = { id = atxf.55 days = 30 random = 200 } }
 				}
 			}
 		}
@@ -306,6 +380,9 @@ character_event = {
 	option = {
 		name = atxf.30.a # break the clans (canon: Zoryu)
 		add_character_modifier = { name = atxf_clans_broken years = 20 }
+		custom_tooltip = { text = atxf_project_begins_tt }
+		set_global_flag = atxf_path_broken
+		set_variable = { which = global_atxf_centralization value = 10 }
 		any_character = {
 			limit = {
 				OR = {
@@ -330,7 +407,10 @@ character_event = {
 	}
 	option = {
 		name = atxf.30.b # power-sharing compact
-		add_character_modifier = { name = atxf_clan_compact years = 20 }
+		add_character_modifier = { name = atxf_clan_compact duration = 400 } # renewed every year while the Compact holds
+		custom_tooltip = { text = atxf_compact_begins_tt }
+		set_global_flag = atxf_path_compact
+		set_variable = { which = global_atxf_compact_refusals value = 0 }
 		any_character = {
 			limit = {
 				OR = {
@@ -503,5 +583,326 @@ letter_event = {
 		clr_character_flag = atxf_ans_granted
 		clr_character_flag = atxf_ans_rebuked
 		clr_character_flag = atxf_ans_refused
+	}
+}
+
+# The project to break the clans: a hard step (ROOT = the Fire Lord)
+character_event = {
+	id = atxf.50
+	desc = atxf.50.d
+	picture = GFX_evt_throne_room
+	is_triggered_only = yes
+
+	trigger = {
+		atxf_project_running_trigger = yes
+		atxf_is_fire_lord_trigger = yes
+	}
+
+	immediate = { atxf_find_fire_lord_effect = yes }
+
+	option = {
+		name = atxf.50.a # confiscate a clan's estates
+		trigger = { any_realm_character = { atxf_clan_lord_trigger = yes } }
+		random_realm_character = {
+			limit = { atxf_clan_lord_trigger = yes }
+			opinion = { who = ROOT modifier = opinion_atxf_estates_seized years = 20 }
+			save_event_target_as = atxf_seized
+		}
+		wealth = 75
+		change_variable = { which = global_atxf_centralization value = 15 }
+		atxf_clamp_project_effect = yes
+		log = "ATLA Fire Nation: [Root.GetTitledName] seized the estates of [atxf_seized.GetTitledName] (project [global_atxf_centralization.GetValue]/100)"
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 1.5 trait = greedy }
+			modifier = { factor = 0.5 trait = just }
+		}
+	}
+	option = {
+		name = atxf.50.b # appoint commoner officials
+		prestige = -25
+		any_character = {
+			limit = {
+				OR = {
+					dynasty = 3994
+					dynasty = 3995
+				}
+				NOT = { character = ROOT }
+			}
+			opinion = { who = ROOT modifier = opinion_atxf_commoners years = 10 }
+		}
+		change_variable = { which = global_atxf_centralization value = 10 }
+		atxf_clamp_project_effect = yes
+		log = "ATLA Fire Nation: [Root.GetTitledName] appointed commoner officials (project [global_atxf_centralization.GetValue]/100)"
+		ai_chance = {
+			factor = 40
+			modifier = { factor = 1.5 trait = diligent }
+		}
+	}
+	option = {
+		name = atxf.50.c # purge the Saowon
+		trigger = {
+			atxf_purge_allowed_trigger = yes
+			any_character = { dynasty = 3995 }
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = atxf_clemency_asked }
+				any_character = { trait = avatar culture_group = earth_kingdom_cultures }
+			}
+			# The first purge: a living Earth Avatar demands clemency before it goes ahead
+			set_global_flag = atxf_clemency_asked
+			custom_tooltip = { text = atxf_clemency_tt }
+			random_character = {
+				limit = { trait = avatar culture_group = earth_kingdom_cultures }
+				save_global_event_target_as = atxf_avatar
+				character_event = { id = atxf.56 }
+			}
+		}
+		else = {
+			atxf_purge_saowon_effect = yes
+		}
+		ai_chance = {
+			factor = 20
+			modifier = { factor = 2 trait = wroth }
+			modifier = { factor = 2 trait = paranoid }
+			modifier = { factor = 0.25 trait = kind }
+		}
+	}
+	option = {
+		name = atxf.50.e # not now
+		ai_chance = { factor = 20 }
+	}
+}
+
+# A clan remonstrance (ROOT = the Fire Lord, event_target:atxf_remonstrant = the clan lord)
+character_event = {
+	id = atxf.52
+	desc = atxf.52.d
+	picture = GFX_evt_courtiers_talking
+	is_triggered_only = yes
+
+	trigger = {
+		atxf_project_running_trigger = yes
+		atxf_is_fire_lord_trigger = yes
+		event_target:atxf_remonstrant = { is_alive = yes }
+	}
+
+	option = {
+		name = atxf.52.a # crush it
+		prestige = 10
+		event_target:atxf_remonstrant = {
+			opinion = { who = ROOT modifier = opinion_atxf_remonstrance_crushed years = 10 }
+		}
+		change_variable = { which = global_atxf_centralization value = 5 }
+		atxf_clamp_project_effect = yes
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 1.5 trait = wroth }
+			modifier = { factor = 1.5 trait = proud }
+		}
+	}
+	option = {
+		name = atxf.52.b # concede
+		event_target:atxf_remonstrant = {
+			opinion = { who = ROOT modifier = opinion_atxf_remonstrance_heard years = 10 }
+		}
+		change_variable = { which = global_atxf_centralization value = -10 }
+		atxf_clamp_project_effect = yes
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 1.5 trait = kind }
+			modifier = { factor = 1.5 trait = content }
+		}
+	}
+}
+
+# The Absolute Throne (ROOT = the Fire Lord)
+character_event = {
+	id = atxf.53
+	desc = atxf.53.d
+	picture = GFX_evt_throne_room
+	is_triggered_only = yes
+
+	option = {
+		name = atxf.53.a
+		custom_tooltip = { text = atxf_absolute_throne_tt }
+	}
+}
+
+# Hidden relay (ROOT = the Avatar): the demand for clemency goes out in the Avatar's name
+character_event = {
+	id = atxf.56
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		event_target:atxf_fire_lord = { letter_event = { id = atxf.54 days = 10 } }
+	}
+}
+
+# The Avatar demands clemency for the Saowon (ROOT = the Fire Lord, FROM = the Avatar)
+letter_event = {
+	id = atxf.54
+	desc = atxf.54.d
+	is_triggered_only = yes
+
+	option = {
+		name = atxf.54.a # heed
+		set_global_flag = atxf_clemency
+		piety = 25
+		custom_tooltip = { text = atxf_clemency_heed_tt }
+		log = "ATLA Fire Nation: [Root.GetTitledName] heeded the Avatar and spared the Saowon"
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 1.5 trait = kind }
+			modifier = { factor = 0.5 trait = wroth }
+		}
+	}
+	option = {
+		name = atxf.54.b # defy
+		piety = -50
+		atxf_purge_saowon_effect = yes
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 1.5 trait = proud }
+			modifier = { factor = 1.5 trait = wroth }
+		}
+	}
+}
+
+# The clan council's demand under the Compact (ROOT = the Fire Lord)
+character_event = {
+	id = atxf.55
+	desc = {
+		trigger = { has_character_flag = atxf_dem_gold }
+		text = atxf.55.d_gold
+	}
+	desc = {
+		trigger = { has_character_flag = atxf_dem_seat }
+		text = atxf.55.d_seat
+	}
+	desc = {
+		trigger = { has_character_flag = atxf_dem_match }
+		text = atxf.55.d_match
+	}
+	picture = GFX_evt_courtiers_talking
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = atxf_path_compact
+		atxf_is_fire_lord_trigger = yes
+	}
+
+	immediate = {
+		atxf_find_fire_lord_effect = yes
+		clr_character_flag = atxf_dem_gold
+		clr_character_flag = atxf_dem_seat
+		clr_character_flag = atxf_dem_match
+		random_list = {
+			34 = { set_character_flag = atxf_dem_gold }
+			33 = { set_character_flag = atxf_dem_seat }
+			33 = { set_character_flag = atxf_dem_match }
+		}
+	}
+
+	option = {
+		name = atxf.55.a # grant the gold
+		trigger = {
+			has_character_flag = atxf_dem_gold
+			wealth = 100
+		}
+		wealth = -100
+		atxf_compact_honoured_effect = yes
+		ai_chance = { factor = 70 modifier = { factor = 0.3 trait = greedy } }
+	}
+	option = {
+		name = atxf.55.b # grant the seat
+		trigger = { has_character_flag = atxf_dem_seat }
+		prestige = -50
+		add_character_modifier = { name = atxf_clan_council years = 10 }
+		atxf_compact_honoured_effect = yes
+		ai_chance = { factor = 70 modifier = { factor = 0.3 trait = proud } }
+	}
+	option = {
+		name = atxf.55.c # promise the match
+		trigger = { has_character_flag = atxf_dem_match }
+		prestige = -25
+		atxf_compact_honoured_effect = yes
+		ai_chance = { factor = 70 modifier = { factor = 0.5 trait = proud } }
+	}
+	option = {
+		name = atxf.55.d # refuse
+		custom_tooltip = { text = atxf_compact_refuse_tt }
+		clr_character_flag = atxf_dem_gold
+		clr_character_flag = atxf_dem_seat
+		clr_character_flag = atxf_dem_match
+		change_variable = { which = global_atxf_compact_refusals value = 1 }
+		if = {
+			limit = { check_variable = { which = global_atxf_compact_refusals value = 2 } }
+			atxf_compact_shatter_effect = yes
+		}
+		else = {
+			log = "ATLA Fire Nation: [Root.GetTitledName] refused the clan council ([global_atxf_compact_refusals.GetValue] of 2)"
+		}
+		ai_chance = {
+			factor = 30
+			modifier = { factor = 2 trait = ambitious }
+			modifier = { factor = 2 trait = greedy }
+		}
+	}
+}
+
+# The Fire Sages and the throne (ROOT = a new Fire Lord)
+character_event = {
+	id = atxf.60
+	desc = atxf.60.d
+	picture = GFX_evt_avatar_shrine_fire
+	is_triggered_only = yes
+
+	trigger = { atxf_is_fire_lord_trigger = yes }
+
+	option = {
+		name = atxf.60.a # revere the old ways
+		add_character_modifier = { name = atxf_sages_revered duration = -1 }
+		if = {
+			limit = { atxf_project_running_trigger = yes }
+			custom_tooltip = { text = atxf_sages_slow_tt }
+			change_variable = { which = global_atxf_centralization value = -10 }
+			atxf_clamp_project_effect = yes
+		}
+		log = "ATLA Fire Nation: [Root.GetTitledName] revered the Fire Sages"
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 2 trait = zealous }
+			modifier = { factor = 1.5 trait = humble }
+			modifier = { factor = 0.5 trait = cynical }
+		}
+	}
+	option = {
+		name = atxf.60.b # subordinate the Sages to the crown
+		add_character_modifier = { name = atxf_sages_subordinated duration = -1 }
+		piety = -50
+		d_fire_sages = {
+			if = {
+				limit = { has_holder = yes }
+				holder_scope = {
+					opinion = { who = ROOT modifier = opinion_atxf_sages_subordinated years = 20 }
+				}
+			}
+		}
+		if = {
+			limit = { atxf_project_running_trigger = yes }
+			custom_tooltip = { text = atxf_sages_speed_tt }
+			change_variable = { which = global_atxf_centralization value = 10 }
+			atxf_clamp_project_effect = yes
+		}
+		log = "ATLA Fire Nation: [Root.GetTitledName] subordinated the Fire Sages to the crown"
+		ai_chance = {
+			factor = 50
+			modifier = { factor = 2 trait = ambitious }
+			modifier = { factor = 1.5 trait = cynical }
+			modifier = { factor = 0.5 trait = zealous }
+		}
 	}
 }
