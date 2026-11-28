@@ -43,5 +43,56 @@ atxf_clans_broken;The Clans Broken;;;;;;;;;;;;;x
 atxf_clans_broken_desc;The noble clans of the Fire Nation have been broken. Their wealth and levies answer to the throne, and their grudges to no one.;;;;;;;;;;;;;x
 desc_atxf_clans_broken;The noble clans of the Fire Nation have been broken. Their wealth and levies answer to the throne, and their grudges to no one.;;;;;;;;;;;;;x
 atxf_clan_compact;Compact with the Clans;;;;;;;;;;;;;x
-atxf_clan_compact_desc;The Fire Lord rules with the consent of the great clans, and shares the realm's wealth with them.;;;;;;;;;;;;;x
+atxf_clan_compact_desc;The Fire Lord rules with the consent of the great clans, and shares the realm's wealth with them. It passes to every Fire Lord while the Compact holds.;;;;;;;;;;;;;x
 desc_atxf_clan_compact;The Fire Lord rules with the consent of the great clans, and shares the realm's wealth with them.;;;;;;;;;;;;;x
+atxf_project_begins_tt;Breaking the clans is the work of generations. Every year the throne grows stronger at their expense, and every few years you and your heirs will face a hard choice. At 100, the Absolute Throne passes to every Fire Lord after you.;;;;;;;;;;;;;x
+atxf_compact_begins_tt;While the Compact holds, every Fire Lord rules with the clans' consent, and their council will make demands every few years. Refuse twice, and the Compact shatters.;;;;;;;;;;;;;x
+atxf.50.d;The clans have not forgotten that they once made Fire Lords. Breaking them is the work of generations, and it stands at [global_atxf_centralization.GetValue]/100.\n\nThe Keohso and Saowon still hold estates, offices and pride. Which of them shall the throne take this time?;;;;;;;;;;;;;x
+atxf.50.a;Confiscate a great clan's estates.;;;;;;;;;;;;;x
+atxf.50.b;Fill the offices with commoners, loyal to the throne alone.;;;;;;;;;;;;;x
+atxf.50.c;Purge the Saowon.;;;;;;;;;;;;;x
+atxf.50.e;Not yet.;;;;;;;;;;;;;x
+atxf.52.d;[atxf_remonstrant.GetTitledName] has come before the court to remonstrate: the throne tramples rights the clans held before there was a Fire Lord. Other houses are watching how we answer.;;;;;;;;;;;;;x
+atxf.52.a;Silence them.;;;;;;;;;;;;;x
+atxf.52.b;Hear them out, and give a little ground.;;;;;;;;;;;;;x
+atxf.53.d;It took generations, but it is done. The great clans are a memory: their estates belong to the throne, their offices to men and women who owe everything to the Fire Lord. From now on, the Fire Nation has one loyalty.;;;;;;;;;;;;;x
+atxf.53.a;One nation, one throne.;;;;;;;;;;;;;x
+atxf_absolute_throne_tt;Every Fire Lord from now on gains the Absolute Throne: tax +10%, levies +10%, +0.5 prestige a month.;;;;;;;;;;;;;x
+atxf.54.d;A letter from Avatar [atxf_avatar.GetFirstName]. The Avatar has heard that the throne means to purge the Saowon, and demands clemency. The Saowon fought and lost, the Avatar writes, but their children did not. If the Fire Lord wants a nation loyal to the throne, it will not be built on a massacre.;;;;;;;;;;;;;x
+atxf.54.a;We will spare the Saowon.;;;;;;;;;;;;;x
+atxf.54.b;The Avatar does not rule the Fire Nation.;;;;;;;;;;;;;x
+atxf_clemency_tt;A living Avatar will demand clemency before the purge goes ahead.;;;;;;;;;;;;;x
+atxf_clemency_heed_tt;No purges for 10 years.;;;;;;;;;;;;;x
+atxf.55.d_gold;The clan council invokes the Compact: the great houses have paid for the throne's peace, and now the throne must pay for theirs. They ask for 100 gold.;;;;;;;;;;;;;x
+atxf.55.d_seat;The clan council invokes the Compact: the great houses want a voice in the Fire Lord's council, not only in their own halls.;;;;;;;;;;;;;x
+atxf.55.d_match;The clan council invokes the Compact: the great houses expect a royal match, a promise that a child of the throne will marry into a clan.;;;;;;;;;;;;;x
+atxf.55.a;Pay the 100 gold.;;;;;;;;;;;;;x
+atxf.55.b;Give the clans a seat on the council.;;;;;;;;;;;;;x
+atxf.55.c;Promise the match.;;;;;;;;;;;;;x
+atxf.55.d;The throne owes the clans nothing more.;;;;;;;;;;;;;x
+atxf_compact_refuse_tt;A second refusal shatters the Compact: the Keohso and Saowon think 40 less of you for 20 years, and the throne turns to breaking them instead.;;;;;;;;;;;;;x
+atxf.60.d;The Fire Sages have come to the palace, as they do for every new Fire Lord. They crowned your forebears, and they expect to be heard: in the temples, on the council, in matters of war. Others at court whisper that a Fire Lord who kneels to priests is no Fire Lord at all.;;;;;;;;;;;;;x
+atxf.60.a;Revere the old ways.;;;;;;;;;;;;;x
+atxf.60.b;The Sages serve the crown, not the other way around.;;;;;;;;;;;;;x
+atxf_sages_slow_tt;The Sages counsel patience with the clans: the project to break them falls back by 10.;;;;;;;;;;;;;x
+atxf_sages_speed_tt;With the Sages subordinated, the project to break the clans advances by 10.;;;;;;;;;;;;;x
+opinion_atxf_estates_seized;Seized our estates;;;;;;;;;;;;;x
+opinion_atxf_commoners;Raised commoners over the clans;;;;;;;;;;;;;x
+opinion_atxf_purged;Purged the Saowon;;;;;;;;;;;;;x
+opinion_atxf_remonstrance_crushed;Silenced my remonstrance;;;;;;;;;;;;;x
+opinion_atxf_remonstrance_heard;Heard my remonstrance;;;;;;;;;;;;;x
+opinion_atxf_compact_honoured;Honoured the Compact;;;;;;;;;;;;;x
+opinion_atxf_compact_broken;Broke the Compact;;;;;;;;;;;;;x
+opinion_atxf_sages_subordinated;Subordinated the Fire Sages;;;;;;;;;;;;;x
+atxf_absolute_throne;The Absolute Throne;;;;;;;;;;;;;x
+atxf_absolute_throne_desc;The great clans were broken generations ago. The Fire Nation has one loyalty: the throne.;;;;;;;;;;;;;x
+desc_atxf_absolute_throne;The great clans were broken generations ago. The Fire Nation has one loyalty: the throne.;;;;;;;;;;;;;x
+atxf_clan_council;Clans on the Council;;;;;;;;;;;;;x
+atxf_clan_council_desc;The great clans sit on the Fire Lord's council, as the Compact demanded.;;;;;;;;;;;;;x
+desc_atxf_clan_council;The great clans sit on the Fire Lord's council, as the Compact demanded.;;;;;;;;;;;;;x
+atxf_sages_revered;Revered by the Fire Sages;;;;;;;;;;;;;x
+atxf_sages_revered_desc;This Fire Lord honours the Fire Sages and the old ways.;;;;;;;;;;;;;x
+desc_atxf_sages_revered;This Fire Lord honours the Fire Sages and the old ways.;;;;;;;;;;;;;x
+atxf_sages_subordinated;Master of the Fire Sages;;;;;;;;;;;;;x
+atxf_sages_subordinated_desc;The Fire Sages serve the crown, and preach what the throne tells them to.;;;;;;;;;;;;;x
+desc_atxf_sages_subordinated;The Fire Sages serve the crown, and preach what the throne tells them to.;;;;;;;;;;;;;x

@@ -20,3 +20,27 @@ opinion_atxf_petition_refused = {
 opinion_atxf_rebuked = {
 	opinion = -20
 }
+opinion_atxf_estates_seized = {
+	opinion = -30
+}
+opinion_atxf_commoners = {
+	opinion = -10
+}
+opinion_atxf_purged = {
+	opinion = -40
+}
+opinion_atxf_remonstrance_crushed = {
+	opinion = -20
+}
+opinion_atxf_remonstrance_heard = {
+	opinion = 20
+}
+opinion_atxf_compact_honoured = {
+	opinion = 10
+}
+opinion_atxf_compact_broken = {
+	opinion = -40
+}
+opinion_atxf_sages_subordinated = {
+	opinion = -30
+}
